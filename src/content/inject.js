@@ -12,6 +12,10 @@ function enableReadMode() {
   const documentClone = document.cloneNode(true);
   const article = new Readability(documentClone).parse();
   console.log("Article", article);
+  const settings = {
+    theme: "dark",
+    initialFontSize: 22,
+  };
 
   if (article) {
     // Set Pico.css dark mode
@@ -19,7 +23,12 @@ function enableReadMode() {
     document.body.innerHTML = "";
 
     render(
-      html`<${ReaderApp} article=${article} onToggle=${toggleReadMode} />`,
+      html`<${ReaderApp}
+        article=${article}
+        settings=${settings}
+        onToggle=${toggleReadMode}
+        +
+      />`,
       document.body
     );
   } else {

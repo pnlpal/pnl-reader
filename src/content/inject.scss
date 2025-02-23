@@ -5,13 +5,24 @@
 #PNLReader {
   padding: 20px;
   background-color: var(--pico-background-color);
-  main > article.container {
+  height: 100%; // fix for reddit
+  min-height: 100vh; // fix for reddit
+
+  > header {
+    background: unset; // fix for reddit
+    h1.title {
+      font-size: 2.5em;
+    }
+  }
+  #PNLReaderArticle {
     color: var(--pico-color);
     font-family: var(--pico-font-family);
     font-size: var(--pico-font-size);
+    line-height: var(--pico-line-height);
 
     header {
       details {
+        background: unset; // fix for reddit
         summary.title {
           font-size: var(--pico-font-size);
           line-height: var(--pico-line-height);
@@ -32,22 +43,12 @@
         color: var(--pico-muted-color);
       }
     }
+    figure[typeof~="mw:File/Thumb"] > figcaption {
+      display: none; // hide image caption for wikipedia, temporary fix
+    }
     article {
       box-shadow: none;
       padding: 0;
     }
-  }
-
-  #toggleReadModeBtn {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    z-index: 1000;
-    border-radius: 5px;
   }
 }
