@@ -19,10 +19,7 @@ function enableReadMode() {
     document.body.innerHTML = "";
 
     render(
-      html`<${ReaderApp}
-        articleContent=${article.content}
-        onToggle=${toggleReadMode}
-      />`,
+      html`<${ReaderApp} article=${article} onToggle=${toggleReadMode} />`,
       document.body
     );
   } else {

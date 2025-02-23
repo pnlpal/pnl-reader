@@ -10,6 +10,16 @@
     font-family: var(--pico-font-family);
     font-size: var(--pico-font-size);
 
+    header {
+      details {
+        summary.title {
+          font-size: var(--pico-font-size);
+          line-height: var(--pico-line-height);
+          color: var(--pico-h1-color) !important;
+        }
+      }
+    }
+
     img {
       max-width: 100%;
       height: auto;
