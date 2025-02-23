@@ -1,6 +1,9 @@
 import { Readability } from "@mozilla/readability";
 import "./inject.scss";
-
+import { h, render } from "preact";
+import ReaderApp from "./app.js";
+import htm from "htm";
+const html = htm.bind(h);
 let originalContent = document.body.cloneNode(true);
 let isReadMode = false;
 
@@ -9,35 +12,19 @@ function enableReadMode() {
   const documentClone = document.cloneNode(true);
   const article = new Readability(documentClone).parse();
   console.log("Article", article);
-  const wrapperDiv = document.createElement("div");
-
-  function createToggleButton() {
-    const toggleButton = document.createElement("button");
-    toggleButton.id = "toggleReadModeBtn";
-    toggleButton.innerText = "Toggle Read Mode";
-    toggleButton.className =
-      "fixed top-4 right-4 px-4 py-2 bg-blue-500 text-white rounded shadow";
-    toggleButton.onclick = toggleReadMode;
-
-    wrapperDiv.appendChild(toggleButton);
-  }
-
-  function renderArticleInWrapper() {
-    const mainContentDiv = document.createElement("article");
-    mainContentDiv.className = "container";
-    mainContentDiv.innerHTML = article.content;
-
-    wrapperDiv.className = "pnl-read-mode-wrapper";
-    wrapperDiv.appendChild(mainContentDiv);
-    document.body.appendChild(wrapperDiv);
-  }
 
   if (article) {
     // Set Pico.css dark mode
     document.documentElement.setAttribute("data-theme", "dark");
     document.body.innerHTML = "";
-    renderArticleInWrapper(article);
-    createToggleButton();
+
+    render(
+      html`<${ReaderApp}
+        articleContent=${article.content}
+        onToggle=${toggleReadMode}
+      />`,
+      document.body
+    );
   } else {
     console.error("Failed to parse the article content.");
   }
