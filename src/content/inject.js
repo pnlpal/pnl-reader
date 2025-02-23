@@ -14,7 +14,8 @@ function enableReadMode() {
   console.log("Article", article);
   const settings = {
     theme: "dark",
-    initialFontSize: 22,
+    fontSize: 22,
+    isFixedHeader: true,
   };
 
   if (article) {

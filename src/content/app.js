@@ -6,10 +6,15 @@ const html = htm.bind(h);
 
 export default function ReaderApp({
   article: { title, byline, publishedTime, content, length },
-  settings: { theme, initialFontSize },
+  settings: {
+    theme,
+    fontSize: initialFontSize,
+    isFixedHeader: initialIsFixedHeader,
+  },
   onToggle,
 }) {
   const [fontSize, setFontSize] = useState(initialFontSize);
+  const [isFixedHeader, setIsFixedHeader] = useState(initialIsFixedHeader);
 
   useEffect(() => {
     if (!fontSize) {
@@ -19,21 +24,21 @@ export default function ReaderApp({
     $article.style.fontSize = `${fontSize}px`;
     // change line-height based on font-size
     $article.style.lineHeight = `${fontSize * 1.5}px`;
-    console.log(
-      "Font Size changed to",
-      fontSize,
-      "line-height",
-      fontSize * 1.5
-    );
   }, [fontSize]);
 
   const handleFontSizeChange = (e) => {
     setFontSize(e.target.value);
   };
+  const toggleHeaderSticky = () => {
+    setIsFixedHeader(!isFixedHeader);
+  };
 
   return html`
     <div id="PNLReader">
-      <header>
+      <header
+        id="PNLReaderHeader"
+        class=${isFixedHeader ? "sticky-on-top" : ""}
+      >
         <nav class="topbar">
           <h1 class="title">PNL Reader</h1>
           <ul class="toolbar">
@@ -56,6 +61,16 @@ export default function ReaderApp({
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
               </select>
+            </li>
+
+            <li>
+              <label class="switch"> Sticky Header </label>
+              <input
+                type="checkbox"
+                role="switch"
+                checked=${isFixedHeader}
+                onChange=${toggleHeaderSticky}
+              />
             </li>
 
             <li>
