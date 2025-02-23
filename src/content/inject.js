@@ -5,7 +5,7 @@ import ReaderApp from "./app.js";
 import htm from "htm";
 const html = htm.bind(h);
 let originalContent = document.body.cloneNode(true);
-let isReadMode = false;
+let isReadMode = !!document.getElementById("PNLReader");
 
 // Function to enable read mode
 function enableReadMode() {
@@ -31,11 +31,10 @@ function enableReadMode() {
 }
 function toggleReadMode() {
   if (isReadMode) {
-    document.body.innerHTML = "";
-    document.body.appendChild(originalContent.cloneNode(true));
-    const readModeStyle = document.getElementById("readModeStyle");
-    if (readModeStyle) {
-      readModeStyle.remove();
+    document.body = originalContent;
+    const PNLReader = document.getElementById("PNLReader");
+    if (PNLReader) {
+      PNLReader.remove();
     }
     document.documentElement.removeAttribute("data-theme");
   } else {
@@ -44,4 +43,6 @@ function toggleReadMode() {
   isReadMode = !isReadMode;
 }
 
-toggleReadMode();
+if (!isReadMode) {
+  toggleReadMode();
+}

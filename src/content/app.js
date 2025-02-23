@@ -5,7 +5,7 @@ const html = htm.bind(h);
 
 export default function ReaderApp({ articleContent, onToggle }) {
   return html`
-    <div class="pnl-read-mode-wrapper">
+    <div id="PNLReader">
       <header>
         <nav class="topbar">
           <h1 class="title">PNL Reader</h1>

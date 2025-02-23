@@ -1,8 +1,8 @@
 @use "@picocss/pico/scss/pico" with (
-  $parent-selector: ".pnl-read-mode-wrapper"
+  $parent-selector: "#PNLReader"
 );
 
-.pnl-read-mode-wrapper {
+#PNLReader {
   padding: 20px;
   background-color: var(--pico-background-color);
   .container {
