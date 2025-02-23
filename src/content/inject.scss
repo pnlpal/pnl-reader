@@ -13,6 +13,14 @@
     img {
       max-width: 100%;
       height: auto;
+      display: block;
+      margin: 0 auto;
+      & + span {
+        display: block;
+        text-align: center;
+        font-size: 0.8em;
+        color: var(--pico-muted-color);
+      }
     }
     article {
       box-shadow: none;
