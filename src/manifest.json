@@ -7,22 +7,10 @@
     "service_worker": "background.bundle.js",
     "scripts": ["background.bundle.js"]
   },
-  "content_scripts": [
-    {
-      "js": ["inject.bundle.js"],
-      "matches": ["<all_urls>"]
-    }
-  ],
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
   },
-  "web_accessible_resources": [
-    {
-      "resources": ["*.js", "*.json", "*.html", "fonts/*"],
-      "matches": ["https://chatgpt.com/*"]
-    }
-  ],
   "action": {
     "default_title": "Browser extension boilerplate: start your browser extension development"
   },

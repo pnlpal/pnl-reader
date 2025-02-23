@@ -57,4 +57,4 @@ function toggleReadMode() {
   isReadMode = !isReadMode;
 }
 
-// toggleReadMode();
+toggleReadMode();

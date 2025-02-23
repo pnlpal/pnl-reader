@@ -25,3 +25,12 @@ chrome.runtime.onMessage.addListener(function (...args) {
   // unless you return true from the event listener to indicate you wish to send a response asynchronously
   return true;
 });
+
+chrome.action.onClicked.addListener((tab) => {
+  if (!tab.url.includes("chrome://")) {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["inject.bundle.js"],
+    });
+  }
+});
