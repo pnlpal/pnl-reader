@@ -5,10 +5,7 @@
 #PNLReader {
   padding: 20px;
   background-color: var(--pico-background-color);
-  .container {
-    padding: 20px;
-    background-color: var(--pico-card-background-color);
-    box-shadow: var(--pico-card-box-shadow);
+  main > article.container {
     color: var(--pico-color);
     font-family: var(--pico-font-family);
     font-size: var(--pico-font-size);
@@ -16,6 +13,10 @@
     img {
       max-width: 100%;
       height: auto;
+    }
+    article {
+      box-shadow: none;
+      padding: 0;
     }
   }
 
