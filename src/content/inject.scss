@@ -7,12 +7,11 @@
   background-color: var(--pico-background-color);
   height: 100%; // fix for reddit
   min-height: 100vh; // fix for reddit
-  overflow-x: hidden;
 
   > #PNLReaderHeader {
     display: block; // fix for ign
     background: unset; // fix for reddit
-    padding: 10px 50px;
+    padding: 15px 50px;
     background-color: var(--pico-background-color);
     &.sticky-on-top {
       position: sticky;
@@ -21,27 +20,32 @@
     }
     h1.title {
       font-size: 2.5em;
+      margin-bottom: 0;
     }
     .toolbar {
       li {
-        margin-left: 35px;
+        margin-left: 25px;
         padding: 0;
-        // label,
-        // input,
-        // select {
-        //   font-size: 18px;
-        //   // display: inline-block;
-        //   // padding-right: 15px;
-        // }
-        // select {
-        //   width: 150px;
-        //   // margin: 0;
-        // }
-        // input#fontSize {
-        //   width: 200px;
-        //   margin: 0;
-        //   // vertical-align: middle;
-        // }
+        height: 50px;
+        display: flex;
+        align-items: center;
+        label,
+        input,
+        select {
+          font-size: 18px;
+          margin: 0 5px;
+        }
+        select {
+          width: 150px;
+        }
+        input#fontSize {
+          width: 180px;
+        }
+        #toggleReadModeBtn {
+          display: flex;
+          align-items: center;
+          padding: 10px;
+        }
       }
     }
   }

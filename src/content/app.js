@@ -81,7 +81,7 @@ export default function ReaderApp({
                 onClick=${onToggle}
                 aria-label="Exit PNL Reader"
                 data-tooltip="Exit PNL Reader"
-                data-placement="bottom"
+                data-placement="left"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
