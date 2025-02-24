@@ -52,4 +52,6 @@ function toggleReadMode() {
 
 if (!isReadMode) {
   toggleReadMode();
+} else {
+  location.reload();
 }
