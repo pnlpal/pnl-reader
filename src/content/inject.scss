@@ -7,6 +7,7 @@
   background-color: var(--pico-background-color);
   height: 100%; // fix for reddit
   min-height: 100vh; // fix for reddit
+  overflow-x: hidden;
 
   > #PNLReaderHeader {
     display: block; // fix for ign
@@ -20,6 +21,28 @@
     }
     h1.title {
       font-size: 2.5em;
+    }
+    .toolbar {
+      li {
+        margin-left: 35px;
+        padding: 0;
+        // label,
+        // input,
+        // select {
+        //   font-size: 18px;
+        //   // display: inline-block;
+        //   // padding-right: 15px;
+        // }
+        // select {
+        //   width: 150px;
+        //   // margin: 0;
+        // }
+        // input#fontSize {
+        //   width: 200px;
+        //   margin: 0;
+        //   // vertical-align: middle;
+        // }
+      }
     }
   }
   #PNLReaderArticle {
@@ -40,13 +63,14 @@
     }
 
     img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
+      width: auto; // fix for svt news
+      // max-width: 100%;
+      // height: auto;
+      // display: block;
+      // margin: 0 auto;
       & + span {
-        display: block;
-        text-align: center;
+        display: block; // fix for bbc news
+        // text-align: center;
         font-size: 0.8em;
         color: var(--pico-muted-color);
       }

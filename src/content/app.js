@@ -50,6 +50,7 @@ export default function ReaderApp({
                 min="16"
                 max="64"
                 data-tooltip="Font Size: ${fontSize}px"
+                data-placement="bottom"
                 value=${fontSize}
                 onInput=${handleFontSizeChange}
               />
@@ -78,8 +79,9 @@ export default function ReaderApp({
                 id="toggleReadModeBtn"
                 class="secondary"
                 onClick=${onToggle}
-                aria-label="Exit Reader Mode"
-                data-tooltip="Exit Reader Mode"
+                aria-label="Exit PNL Reader"
+                data-tooltip="Exit PNL Reader"
+                data-placement="bottom"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
