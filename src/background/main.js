@@ -34,3 +34,26 @@ chrome.action.onClicked.addListener((tab) => {
     });
   }
 });
+
+(function setupPageUpdater() {
+  let updatedTabId = null;
+
+  message.on("goToLink", async ({ url }, sender) => {
+    const tabId = sender.tab.id;
+    await chrome.tabs.update(tabId, { url });
+    updatedTabId = tabId;
+    setTimeout(() => {
+      updatedTabId = null;
+    }, 3000);
+  });
+
+  chrome.tabs.onUpdated.addListener((tabId) => {
+    if (tabId === updatedTabId) {
+      updatedTabId = null;
+      chrome.scripting.executeScript({
+        target: { tabId: tabId },
+        files: ["inject.bundle.js"],
+      });
+    }
+  });
+})();

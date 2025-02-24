@@ -11,10 +11,12 @@ export default function ReaderApp({
     fontSize: initialFontSize,
     isFixedHeader: initialIsFixedHeader,
   },
+  pageData: { nextPageLink, previousPageLink },
   onToggle,
 }) {
   const [fontSize, setFontSize] = useState(initialFontSize);
   const [isFixedHeader, setIsFixedHeader] = useState(initialIsFixedHeader);
+  console.log("pageData", { nextPageLink, previousPageLink });
 
   useEffect(() => {
     if (!fontSize) {
@@ -31,6 +33,22 @@ export default function ReaderApp({
   };
   const toggleHeaderSticky = () => {
     setIsFixedHeader(!isFixedHeader);
+  };
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const goToNext = () => {
+    if (!nextPageLink) {
+      return;
+    }
+    console.log("Go to next", nextPageLink);
+    chrome.runtime.sendMessage({ type: "goToLink", url: nextPageLink });
+  };
+  const goToPrevious = () => {
+    if (!previousPageLink) {
+      return;
+    }
+    chrome.runtime.sendMessage({ type: "goToLink", url: previousPageLink });
   };
 
   return html`
@@ -119,6 +137,53 @@ export default function ReaderApp({
           ></section>
         </article>
       </main>
+      <footer>
+        <button
+          class="scroll-to-top"
+          onClick=${scrollToTop}
+          aria-label="Scroll to top"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="currentColor"
+          >
+            <path d="M12 2L6 8h4v8h4V8h4l-6-6z" />
+          </svg>
+        </button>
+        <button
+          class="scroll-to-previous"
+          aria-label="Go to previous"
+          onClick=${goToPrevious}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="currentColor"
+          >
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          </svg>
+        </button>
+        <button
+          class="scroll-to-next"
+          aria-label="Go to next"
+          onClick=${goToNext}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="currentColor"
+          >
+            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
+          </svg>
+        </button>
+      </footer>
     </div>
   `;
 }

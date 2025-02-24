@@ -19,6 +19,17 @@ function enableReadMode() {
   };
 
   if (article) {
+    function getPageData() {
+      const nextPageLink = document.querySelector(
+        "a.btn-next:not(.disabled)"
+      )?.href;
+      const previousPageLink = document.querySelector(
+        "a.btn-prev:not(.disabled)"
+      )?.href;
+      return { nextPageLink, previousPageLink };
+    }
+
+    const pageData = getPageData();
     // Set Pico.css dark mode
     document.documentElement.setAttribute("data-theme", "dark");
     document.body.innerHTML = "";
@@ -28,6 +39,7 @@ function enableReadMode() {
         article=${article}
         settings=${settings}
         onToggle=${toggleReadMode}
+        pageData=${pageData}
         +
       />`,
       document.body
