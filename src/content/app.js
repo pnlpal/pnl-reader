@@ -142,13 +142,13 @@ export default function ReaderApp({
         <${Arrow}
           direction="left"
           onClick=${goToPrevious}
-          tooltip="Go to previous"
+          tooltip="Previous Page. Shortcut [<-]"
           href=${previousPageLink}
         />
         <${Arrow}
           direction="right"
           onClick=${goToNext}
-          tooltip="Go to next"
+          tooltip="Next Page. Shortcut [->]"
           href=${nextPageLink}
         />
       </footer>
