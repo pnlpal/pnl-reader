@@ -29,7 +29,7 @@
       width: 100%;
 
       &:after {
-        background-color: #fff;
+        background-color: var(--pico-contrast-hover-background);
         content: "";
         height: 100%;
         position: absolute;
