@@ -7,17 +7,21 @@ const html = htm.bind(h);
 
 export default function ReaderApp({
   article: { title, byline, publishedTime, content, length },
-  settings: {
-    theme,
-    fontSize: initialFontSize,
-    isFixedHeader: initialIsFixedHeader,
-  },
   pageData: { nextPageLink, previousPageLink },
   onToggle,
 }) {
-  const [fontSize, setFontSize] = useState(initialFontSize);
-  const [isFixedHeader, setIsFixedHeader] = useState(initialIsFixedHeader);
-  console.log("pageData", { nextPageLink, previousPageLink });
+  const settings = JSON.parse(localStorage.getItem("PNLReader-settings")) || {
+    theme: "dark",
+    fontSize: 22,
+    isFixedHeader: true,
+    isHeaderDetailsOpen: true,
+  };
+  const [fontSize, setFontSize] = useState(settings.fontSize);
+  const [isFixedHeader, setIsFixedHeader] = useState(settings.isFixedHeader);
+  const saveSettings = (update) => {
+    Object.assign(settings, update);
+    localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
+  };
 
   useEffect(() => {
     if (!fontSize) {
@@ -27,6 +31,7 @@ export default function ReaderApp({
     $article.style.fontSize = `${fontSize}px`;
     // change line-height based on font-size
     $article.style.lineHeight = `${fontSize * 1.5}px`;
+    saveSettings({ fontSize });
   }, [fontSize]);
 
   const handleFontSizeChange = (e) => {
@@ -34,15 +39,12 @@ export default function ReaderApp({
   };
   const toggleHeaderSticky = () => {
     setIsFixedHeader(!isFixedHeader);
-  };
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    saveSettings({ isFixedHeader: !isFixedHeader });
   };
   const goToNext = () => {
     if (!nextPageLink) {
       return;
     }
-    console.log("Go to next", nextPageLink);
     chrome.runtime.sendMessage({ type: "goToLink", url: nextPageLink });
   };
   const goToPrevious = () => {
@@ -121,7 +123,13 @@ export default function ReaderApp({
       <main>
         <article class="container" id="PNLReaderArticle">
           <header>
-            <details open>
+            <details
+              open=${settings.isHeaderDetailsOpen}
+              onClick=${() =>
+                saveSettings({
+                  isHeaderDetailsOpen: !settings.isHeaderDetailsOpen,
+                })}
+            >
               <summary class="title">${title}</summary>
               <p class="byline">
                 ${byline ? html`<span>By ${byline}</span>` : ""}

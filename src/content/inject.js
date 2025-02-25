@@ -48,11 +48,6 @@ function getPageData() {
 function enableReadMode() {
   const documentClone = document.cloneNode(true);
   const article = new Readability(documentClone).parse();
-  const settings = {
-    theme: "dark",
-    fontSize: 22,
-    isFixedHeader: true,
-  };
 
   if (article) {
     const pageData = getPageData();
@@ -63,7 +58,6 @@ function enableReadMode() {
     render(
       html`<${ReaderApp}
         article=${article}
-        settings=${settings}
         onToggle=${toggleReadMode}
         pageData=${pageData}
         +
