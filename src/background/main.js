@@ -37,12 +37,15 @@ chrome.action.onClicked.addListener((tab) => {
 
 (function setupPageUpdater() {
   let updatedTabId = null;
+  let timer = null;
 
   message.on("goToLink", async ({ url }, sender) => {
     const tabId = sender.tab.id;
     await chrome.tabs.update(tabId, { url });
     updatedTabId = tabId;
-    setTimeout(() => {
+
+    clearTimeout(timer);
+    timer = setTimeout(() => {
       updatedTabId = null;
     }, 3000);
   });
