@@ -51,8 +51,6 @@ function enableReadMode() {
 
   if (article) {
     const pageData = getPageData();
-    // Set Pico.css dark mode
-    document.documentElement.setAttribute("data-theme", "dark");
     document.body.innerHTML = "";
 
     render(

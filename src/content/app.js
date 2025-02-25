@@ -11,7 +11,7 @@ export default function ReaderApp({
   onToggle,
 }) {
   const settings = JSON.parse(localStorage.getItem("PNLReader-settings")) || {
-    theme: "dark",
+    theme: "auto",
     fontSize: 22,
     isFixedHeader: true,
     isHeaderDetailsOpen: true,
@@ -22,6 +22,15 @@ export default function ReaderApp({
     Object.assign(settings, update);
     localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
   };
+  const changeTheme = (theme) => {
+    if (theme === "auto") {
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+    saveSettings({ theme });
+  };
+  changeTheme(settings.theme);
 
   useEffect(() => {
     if (!fontSize) {
@@ -78,10 +87,16 @@ export default function ReaderApp({
             </li>
             <li>
               <label> Theme </label>
-              <select id="theme">
-                <option value="auto">Auto</option>
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
+              <select id="theme" onChange=${(e) => changeTheme(e.target.value)}>
+                <option value="auto" selected=${settings.theme === "auto"}>
+                  Auto
+                </option>
+                <option value="dark" selected=${settings.theme === "dark"}>
+                  Dark
+                </option>
+                <option value="light" selected=${settings.theme === "light"}>
+                  Light
+                </option>
               </select>
             </li>
 
