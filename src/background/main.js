@@ -47,7 +47,7 @@ chrome.action.onClicked.addListener((tab) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       updatedTabId = null;
-    }, 3000);
+    }, 5000);
   });
 
   chrome.tabs.onUpdated.addListener((tabId) => {
