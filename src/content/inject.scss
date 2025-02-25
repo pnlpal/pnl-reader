@@ -68,13 +68,9 @@
 
     img {
       width: auto; // fix for svt news
-      // max-width: 100%;
-      // height: auto;
-      // display: block;
-      // margin: 0 auto;
+
       & + span {
         display: block; // fix for bbc news
-        // text-align: center;
         font-size: 0.8em;
         color: var(--pico-muted-color);
       }
@@ -87,42 +83,14 @@
       padding: 0;
     }
   }
-
-  footer {
-    position: fixed;
-    right: 50px;
-    bottom: 20px;
-    z-index: 1000;
-
-    .scroll-buttons {
+  > footer {
+    .arrow {
       position: fixed;
       bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+      right: 30px;
 
-    .scroll-button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: #0056b3;
-      }
-
-      svg {
-        width: 24px;
-        height: 24px;
+      &[data-direction="left"] {
+        right: 100px;
       }
     }
   }

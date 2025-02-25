@@ -1,6 +1,7 @@
 import { h } from "preact";
 import htm from "htm";
 import { useState, useEffect } from "preact/hooks";
+import Arrow from "./arrow.js";
 
 const html = htm.bind(h);
 
@@ -138,51 +139,18 @@ export default function ReaderApp({
         </article>
       </main>
       <footer>
-        <button
-          class="scroll-to-top"
-          onClick=${scrollToTop}
-          aria-label="Scroll to top"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            fill="currentColor"
-          >
-            <path d="M12 2L6 8h4v8h4V8h4l-6-6z" />
-          </svg>
-        </button>
-        <button
-          class="scroll-to-previous"
-          aria-label="Go to previous"
+        <${Arrow}
+          direction="left"
           onClick=${goToPrevious}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            fill="currentColor"
-          >
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-          </svg>
-        </button>
-        <button
-          class="scroll-to-next"
-          aria-label="Go to next"
+          tooltip="Go to previous"
+          href=${previousPageLink}
+        />
+        <${Arrow}
+          direction="right"
           onClick=${goToNext}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            fill="currentColor"
-          >
-            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
-          </svg>
-        </button>
+          tooltip="Go to next"
+          href=${nextPageLink}
+        />
       </footer>
     </div>
   `;
