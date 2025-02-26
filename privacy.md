@@ -1,0 +1,1 @@
+This extension does not collect any browser information or user data, nor does it store any information on any server. While the extension may alter the page structure when activated by the user, it does not collect any information from the web page or transmit any data to any server.
