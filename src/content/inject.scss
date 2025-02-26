@@ -5,8 +5,6 @@
 #PNLReader {
   padding: 0;
   background-color: var(--pico-background-color);
-  height: 100%; // fix for reddit
-  min-height: 100vh; // fix for reddit
 
   > #PNLReaderHeader {
     display: block; // fix for ign
