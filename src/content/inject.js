@@ -34,11 +34,14 @@ function getPageData() {
         (el) =>
           el.textContent.includes("Previous") ||
           el.textContent.match(/Prev[^\w]/) || // Such as lightnovelworld.co
-          el.textContent.includes("上一章")
+          el.textContent.includes("上一章") ||
+          el.textContent.includes("上一页")
       )?.href,
       nextPageLink: Array.from(document.querySelectorAll("a")).find(
         (el) =>
-          el.textContent.includes("Next") || el.textContent.includes("下一章")
+          el.textContent.includes("Next") ||
+          el.textContent.includes("下一章") ||
+          el.textContent.includes("下一页")
       )?.href,
     };
   };
