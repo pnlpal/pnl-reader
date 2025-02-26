@@ -16,6 +16,15 @@ To see PNL Reader in action, check out our [introduction video](https://www.yout
 [![PNL Reader Introduction](https://img.youtube.com/vi/ffwHpFl_fBo/0.jpg)](https://www.youtube.com/watch?v=ffwHpFl_fBo)
 
 
+## Build
+
+1. use `yarn` or `npm install` to install requirements.
+2. `npm start` to start a webpack dev-server, add the `build/` directory in your browser's extension page to load the extension.
+3. To build for Firefox, please use the environment variable `BROWSER=Firefox`. So `BROWSER=Firefox npm start` will build a development version of this add-on for Firefox.
+4. `npm run build` to build the release version. The dest path is `build/`. And `BROWSER=Firefox npm run build` to build the Firefox release version.  
+5. `./pack.sh` to pack the extension to zip file. For Firefox, use `BROWSER=Firefox ./pack.sh`.
+
+
 ## Feedback and Support
 
 We'd love to hear your thoughts and suggestions! If you encounter any issues or have any feedback, please reach out to us at [Programming N' Language Community](https://pnlpal.dev/category/3/feedback).
