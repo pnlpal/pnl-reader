@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(function (...args) {
   return true;
 });
 
-chrome.action.onClicked.addListener((tab) => {
+(chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
   if (!tab.url.includes("chrome://")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
@@ -32,20 +32,22 @@ chrome.action.onClicked.addListener((tab) => {
     const tabId = sender.tab.id;
     await chrome.tabs.update(tabId, { url });
     updatedTabId = tabId;
-
     clearTimeout(timer);
     timer = setTimeout(() => {
       updatedTabId = null;
     }, 5000);
   });
 
-  chrome.tabs.onUpdated.addListener((tabId) => {
-    if (tabId === updatedTabId) {
-      updatedTabId = null;
-      chrome.scripting.executeScript({
-        target: { tabId: tabId },
-        files: ["inject.bundle.js"],
-      });
+  chrome.tabs.onUpdated.addListener(async (tabId, info) => {
+    if (tabId === updatedTabId && info.status === "complete") {
+      try {
+        await chrome.scripting.executeScript({
+          target: { tabId: tabId },
+          files: ["inject.bundle.js"],
+        });
+      } catch (e) {
+        console.error("Exec script error", e);
+      }
     }
   });
 })();

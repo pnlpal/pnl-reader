@@ -101,6 +101,19 @@ var options = {
               ...JSON.parse(content.toString()),
             };
 
+            if (env.BROWSER === "Firefox") {
+              json.manifest_version = 2; // Firefox has host permission issue with manifest v3
+              json.browser_action = json.action;
+              delete json.action;
+              delete json.minimum_chrome_version;
+              json.background = {
+                scripts: ["background.bundle.js"],
+              };
+
+              // Firefox requires host permission for all urls to inject script when it's not trigger by user activities
+              json.permissions.push("<all_urls>");
+            }
+
             return Buffer.from(JSON.stringify(json));
           },
         },

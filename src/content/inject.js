@@ -84,8 +84,4 @@ function toggleReadMode() {
   isReadMode = !isReadMode;
 }
 
-if (!isReadMode) {
-  toggleReadMode();
-} else {
-  location.reload();
-}
+toggleReadMode();
