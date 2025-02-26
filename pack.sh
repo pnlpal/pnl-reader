@@ -1,6 +1,8 @@
-name="my-browser-extension.zip"
-srcname="my-browser-extension-src--for-firefox.zip" 
+browser="${BROWSER:-Chrome}"
+name="PNLReader_${browser}.zip"
+srcname="PNLReader-src_${browser}.zip" 
 
+BROWSER=${browser} npm run build
 rm -f ${name}
 rm -f ${srcname}
 
