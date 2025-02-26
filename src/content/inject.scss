@@ -56,6 +56,10 @@
     line-height: var(--pico-line-height);
 
     header {
+      position: initial; // fix for some sites
+      height: auto; // fix for some sites
+      width: auto; // fix for some sites
+
       details {
         background: unset; // fix for reddit
         summary.title {
