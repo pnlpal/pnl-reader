@@ -1,10 +1,10 @@
 {
-  "name": "browser-extension-boilerplate",
-  "version": "0.0.1",
-  "description": "Start developing your browser extension on Chrome, Edge and Firefox with webpack, hot-reload, manifest-v3, test-framework and other goodies.",
+  "name": "pnl-reader",
+  "version": "1.0.0",
+  "description": "PNL Reader: simple viewer mode for novel lovers",
   "repository": {
     "type": "git",
-    "url": "git@github.com:pnlpal/browser-extension-boilerplate.git"
+    "url": "git@github.com:pnlpal/pnl-reader.git"
   },
   "scripts": {
     "build": "node utils/build.js && ./pack.sh",
@@ -14,9 +14,9 @@
   "author": "River Yang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pnlpal/browser-extension-boilerplate/issues"
+    "url": "https://github.com/pnlpal/pnl-reader/issues"
   },
-  "homepage": "https://github.com/pnlpal/browser-extension-boilerplate#readme",
+  "homepage": "https://github.com/pnlpal/pnl-reader#readme",
   "keywords": [
     "chrome-extension",
     "firefox-addon",
@@ -26,16 +26,8 @@
     "webpack",
     "webpack5",
     "javascript",
-    "chrome-extension-boilerplate",
-    "firefox-addon-boilerplate",
-    "browser-extension-boilerplate",
-    "chrome-extension-starter",
-    "manifest-v3",
-    "boilerplate",
-    "mocha",
-    "chai",
-    "test-framework",
-    "chrome-extension-test"
+    "pnl-reader",
+    "manifest-v3"
   ],
   "dependencies": {
     "@mozilla/readability": "^0.5.0",

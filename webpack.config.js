@@ -34,9 +34,7 @@ var options = {
   entry: {
     // popup: path.join(__dirname, "src", "js", "popup.js"),
     inject: path.join(__dirname, "src", "content", "inject.js"),
-    options: path.join(__dirname, "src", "options", "options.js"),
     background: path.join(__dirname, "src", "background", "main.js"),
-    speak: path.join(__dirname, "src", "offscreen", "speak.js"),
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -116,18 +114,6 @@ var options = {
           force: true,
         },
       ],
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "options", "options.html"),
-      filename: "options.html",
-      chunks: ["options"],
-      cache: false,
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "offscreen", "offscreen.html"),
-      filename: "offscreen.html",
-      chunks: ["speak"],
-      cache: false,
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "welcome.html"),

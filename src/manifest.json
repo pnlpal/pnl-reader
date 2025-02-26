@@ -2,17 +2,14 @@
   "manifest_version": 3,
   "minimum_chrome_version": "100",
   "name": "PNL Reader",
-  "permissions": ["activeTab", "tabs", "storage", "scripting", "offscreen"],
+  "permissions": ["activeTab", "scripting"],
   "background": {
     "service_worker": "background.bundle.js",
     "scripts": ["background.bundle.js"]
   },
-  "options_ui": {
-    "page": "options.html",
-    "open_in_tab": true
-  },
+
   "action": {
-    "default_title": "PNL Reader: simple viewer mode for articles"
+    "default_title": "PNL Reader: simple viewer mode for novel lovers"
   },
   "icons": {
     "32": "images/logo32.png",
