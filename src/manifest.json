@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "minimum_chrome_version": "100",
-  "name": "Browser extension boilerplate",
+  "name": "PNL Reader",
   "permissions": ["activeTab", "tabs", "storage", "scripting", "offscreen"],
   "background": {
     "service_worker": "background.bundle.js",
@@ -12,10 +12,9 @@
     "open_in_tab": true
   },
   "action": {
-    "default_title": "Browser extension boilerplate: start your browser extension development"
+    "default_title": "PNL Reader: simple viewer mode for articles"
   },
   "icons": {
-    "16": "images/logo16.png",
     "32": "images/logo32.png",
     "64": "images/logo64.png",
     "128": "images/logo128.png"
