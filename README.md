@@ -13,8 +13,6 @@ PNL Reader is a simple browser extension designed to make reading more enjoyable
 
 To see PNL Reader in action, check out our [introduction video](https://www.youtube.com/watch?v=ffwHpFl_fBo).
 
-Or watch it directly here:
-
 [![PNL Reader Introduction](https://img.youtube.com/vi/ffwHpFl_fBo/0.jpg)](https://www.youtube.com/watch?v=ffwHpFl_fBo)
 
 
