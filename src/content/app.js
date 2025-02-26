@@ -37,9 +37,12 @@ export default function ReaderApp({
       return;
     }
     const $article = document.getElementById("PNLReaderArticle");
-    $article.style.fontSize = `${fontSize}px`;
-    // change line-height based on font-size
-    $article.style.lineHeight = `${fontSize * 1.5}px`;
+    $article.setAttribute(
+      "style",
+      `--pico-font-size: ${fontSize}px; --pico-line-height: ${
+        fontSize * 1.5
+      }px;`
+    );
     saveSettings({ fontSize });
   }, [fontSize]);
 

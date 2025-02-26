@@ -82,6 +82,12 @@
       box-shadow: none;
       padding: 0;
     }
+
+    .page p {
+      // fix for meganovel.com, override their fixed font size
+      font-size: var(--pico-font-size);
+      line-height: var(--pico-line-height);
+    }
   }
   > footer {
     .arrow {
