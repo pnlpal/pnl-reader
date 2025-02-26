@@ -1,63 +1,30 @@
-# Browser Extension Boilerplate
+# PNL Reader
 
-This is a super easy and efficient boilerplate project for creating awesome browser extensions. It honors simplicity while adding a touch of fun and creativity. It provides a basic structure and setup to help you get started on your extension adventure. Let your imagination run wild and create something truly amazing!
-
+PNL Reader is a simple browser extension designed to make reading more enjoyable and relaxing. Whether you're reading articles, novels, or any other web content, PNL Reader enhances your experience with its user-friendly features.
 
 ## Features
 
-- Cross-browser compatibility with Chrome and Firefox
-- Webpack 5 and hot-reload support
-- Content script injection
-- Pure vanilla JavaScript
-- Manifest v3 support
-- Offscreen support
-- Handy tools for message passing and storage setting
-- Testing framework with Mocha
+1. **Dictionary Integration**: Compatible with Dictionariez, allowing you to instantly look up any word on web pages by simply clicking on it.
+2. **Privacy First**: PNL Reader respects your privacy by only using the **ActiveTab** permission to create reader mode on the webpage you clicked on, without requiring any additional host permissions.
+3. **Dark and Light Mode**: Switch between dark and light modes to suit your reading preference and reduce eye strain.
+4. **Navigation Shortcuts**: Easily navigate to the previous or next page on popular web novel websites such as Scribble and RoyalRoad with convenient keyboard shortcuts.
 
 ## Getting Started
 
-1. Clone this repository.
-2. Install the required dependencies by running `yarn`.
-3. Customize the extension by modifying the files in the `src` directory.
-4. Build the extension by running `yarn build`.
-5. Load the extension in your browser by following the instructions specific to your browser.
+To see PNL Reader in action, check out our [introduction video](https://www.youtube.com/watch?v=ffwHpFl_fBo).
 
-## Directory Structure
+Or watch it directly here:
 
-```
-├── src
-│   ├── background
-│   ├── content
-│   ├── offscreen
-│   ├── options
-│   ├── images
-│   └── manifest.json
-├── build
-├── utils
-├── webpack.config.js
-├── package.json
-└── README.md
-```
-
-## Handy yarn commands
-
-- `yarn start`: Starts a local development server for the project.
-- `yarn test`: Runs the project's test suite in a local server environment.
-- `yarn build`: Compiles the project and pack it to zip for distribution.
+[![PNL Reader Introduction](https://img.youtube.com/vi/ffwHpFl_fBo/0.jpg)](https://www.youtube.com/watch?v=ffwHpFl_fBo)
 
 
-## Contributing
+## Feedback and Support
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
-
-## Thanks 
-
-I would like to express my sincere gratitude to the creators of the [chrome-extension-boilerplate-react](https://github.com/lxieyang/chrome-extension-boilerplate-react) project. I have learned a lot from it and this boilerplate is largely based on that project. I highly recommend checking out it too if you are interested in creating browser extensions with React. Once again, thank you to the creators for their hard work and dedication in creating such a valuable resource for the developer community.
-
-I would like to express my gratitude to [@octohedron](https://github.com/octohedron) for their contribution in fixing the HMR. They submitted a pull request [here](https://github.com/lxieyang/chrome-extension-boilerplate-react/pull/110). It's unfortunate that the chrome-extension-boilerplate-react project hasn't merged this valuable pull request yet. This is one of the reasons why I decided to create my own boilerplate. Thank you once again for your contribution.
-
+We'd love to hear your thoughts and suggestions! If you encounter any issues or have any feedback, please reach out to us at [Programming N' Language Community](https://pnlpal.dev/category/3/feedback).
 
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+PNL Reader is licensed under the MIT License. Feel free to use, modify, and distribute it as per the terms of the license.
+
+Happy Reading!
