@@ -1,11 +1,7 @@
 import message from "./message.js";
 
 chrome.runtime.onInstalled.addListener(function (details) {
-  const manifestData = chrome.runtime.getManifest();
-  if (
-    [chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason) &&
-    details.previousVersion != manifestData.version
-  ) {
+  if ([chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason)) {
     chrome.tabs.create({
       url: chrome.runtime.getURL("welcome.html"),
     });
