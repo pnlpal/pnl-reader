@@ -2,6 +2,10 @@
 
 PNL Reader is a simple browser extension designed to make reading more enjoyable and relaxing. Whether you're reading articles, novels, or any other web content, PNL Reader enhances your experience with its user-friendly features.
 
+## Download
+Chrome: [PNL Reader on Chrome Web Store](https://chromewebstore.google.com/detail/pnl-reader/amdebfiljmlhfkenbhhpckmmpkonpdfh)
+Firefox: [PNL Reader on Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/pnl-reader/)
+
 ## Features
 
 1. **Dictionary Integration**: Compatible with Dictionariez, allowing you to instantly look up any word on web pages by simply clicking on it.
