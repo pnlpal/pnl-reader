@@ -4,8 +4,7 @@
   "name": "PNL Reader",
   "permissions": ["activeTab", "scripting"],
   "background": {
-    "service_worker": "background.bundle.js",
-    "scripts": ["background.bundle.js"]
+    "service_worker": "background.bundle.js"
   },
   "action": {
     "default_title": "PNL Reader: simple viewer mode for novel lovers"
