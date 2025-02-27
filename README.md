@@ -17,7 +17,7 @@ Firefox: [PNL Reader on Mozilla Add-ons](https://addons.mozilla.org/en-US/firefo
 
 To see PNL Reader in action, check out our [introduction video](https://www.youtube.com/watch?v=0O605kMAnHI).
 
-![PNL Reader Introduction](https://www.youtube.com/watch?v=0O605kMAnHI)
+![PNL Reader Introduction](https://img.youtube.com/vi/0O605kMAnHI/0.jpg)(https://www.youtube.com/watch?v=0O605kMAnHI)
 
 
 ## Build
