@@ -5,7 +5,10 @@ import ReaderApp from "./app.js";
 import htm from "htm";
 const html = htm.bind(h);
 let originalContent = document.body.cloneNode(true);
-let isReadMode = !!document.getElementById("PNLReader");
+let readerModeEnabledDate = document.documentElement.getAttribute(
+  "data-pnl-reader-mode-date"
+);
+let isReadMode = !!readerModeEnabledDate;
 
 function getPageData() {
   const scribblehub = () => {
@@ -56,6 +59,10 @@ function enableReadMode() {
   if (article) {
     const pageData = getPageData();
     document.body.innerHTML = "";
+    document.documentElement.setAttribute(
+      "data-pnl-reader-mode-date",
+      Date.now()
+    );
 
     render(
       html`<${ReaderApp}
@@ -84,8 +91,13 @@ function toggleReadMode() {
   isReadMode = !isReadMode;
 }
 
-console.log("Read mode enabled", isReadMode);
-if (!isReadMode) {
+console.log(
+  "Read mode enabled time: ",
+  isReadMode ? new Date(parseInt(readerModeEnabledDate)) : "Not enabled"
+);
+if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 1000) {
+  console.log("Read mode is enabled in the last second. Ignoring.");
+} else if (!isReadMode) {
   toggleReadMode();
 } else {
   location.reload();
