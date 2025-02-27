@@ -57,12 +57,14 @@ export default function ReaderApp({
     if (!nextPageLink) {
       return;
     }
+    document.documentElement.setAttribute("data-pnl-reader-leaving", "true");
     chrome.runtime.sendMessage({ type: "goToLink", url: nextPageLink });
   };
   const goToPrevious = () => {
     if (!previousPageLink) {
       return;
     }
+    document.documentElement.setAttribute("data-pnl-reader-leaving", "true");
     chrome.runtime.sendMessage({ type: "goToLink", url: previousPageLink });
   };
 

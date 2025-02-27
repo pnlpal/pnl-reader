@@ -91,11 +91,9 @@ function toggleReadMode() {
   isReadMode = !isReadMode;
 }
 
-console.log(
-  "Read mode enabled time: ",
-  isReadMode ? new Date(parseInt(readerModeEnabledDate)) : "Not enabled"
-);
-if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 1000) {
+if (document.documentElement.getAttribute("data-pnl-reader-leaving")) {
+  console.log("Page is about to leave. Ignoring.");
+} else if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 1000) {
   console.log("Read mode is enabled in the last second. Ignoring.");
 } else if (!isReadMode) {
   toggleReadMode();

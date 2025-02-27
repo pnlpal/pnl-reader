@@ -41,7 +41,6 @@ chrome.runtime.onMessage.addListener(function (...args) {
   chrome.tabs.onUpdated.addListener(async (tabId, info) => {
     if (updatedTabId && tabId === updatedTabId && info.status === "complete") {
       try {
-        updatedTabId = null;
         await chrome.scripting.executeScript({
           target: { tabId: tabId },
           files: ["inject.bundle.js"],
