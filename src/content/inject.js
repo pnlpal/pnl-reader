@@ -84,4 +84,9 @@ function toggleReadMode() {
   isReadMode = !isReadMode;
 }
 
-toggleReadMode();
+console.log("Read mode enabled", isReadMode);
+if (!isReadMode) {
+  toggleReadMode();
+} else {
+  location.reload();
+}
