@@ -11,7 +11,12 @@
   > #PNLReaderHeader {
     display: block; // fix for ign
     background: unset; // fix for reddit
+
     padding: 15px 50px;
+    @media (max-width: 768px) {
+      padding: 15px 20px;
+    }
+
     background-color: var(--pico-background-color);
     &.sticky-on-top {
       position: sticky;
@@ -21,10 +26,18 @@
     h1.title {
       font-size: 2.5em;
       margin-bottom: 0;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
     .toolbar {
       li {
         margin-left: 25px;
+        @media (max-width: 768px) {
+          margin-left: 0;
+        }
+
         padding: 0;
         height: 50px;
         display: flex;
@@ -37,9 +50,15 @@
         }
         select {
           width: 210px;
+          @media (max-width: 768px) {
+            width: 130px;
+          }
         }
         input#fontSize {
           width: 180px;
+          @media (max-width: 768px) {
+            width: 90px;
+          }
         }
         input[type="checkbox"] {
           background-color: var(--pico-primary);
@@ -108,8 +127,16 @@
       bottom: 20px;
       right: 30px;
 
+      @media (max-width: 768px) {
+        left: 100px;
+      }
+
       &[data-direction="left"] {
         right: 100px;
+
+        @media (max-width: 768px) {
+          left: 30px;
+        }
       }
     }
   }
