@@ -6,6 +6,8 @@
   padding: 0;
   background-color: var(--pico-background-color);
 
+  --pico-form-element-background-color: var(--pico-card-background-color);
+
   > #PNLReaderHeader {
     display: block; // fix for ign
     background: unset; // fix for reddit
@@ -34,10 +36,14 @@
           margin: 0 5px;
         }
         select {
-          width: 180px;
+          width: 210px;
         }
         input#fontSize {
           width: 180px;
+        }
+        input[type="checkbox"] {
+          background-color: var(--pico-primary);
+          border-color: var(--pico-primary);
         }
         #toggleReadModeBtn {
           padding: 10px;
@@ -59,6 +65,9 @@
       position: initial; // fix for some sites
       height: auto; // fix for some sites
       width: auto; // fix for some sites
+
+      background-color: var(--pico-card-background-color);
+      filter: brightness(0.9);
 
       details {
         background: unset; // fix for reddit

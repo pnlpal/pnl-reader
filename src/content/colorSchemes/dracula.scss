@@ -1,0 +1,39 @@
+/* Light Mode */
+[data-color-scheme="dracula"][data-theme="light"] {
+  --pico-background-color: #f8f8f2;
+  --pico-card-background-color: #ffffff;
+  --pico-card-sectioning-background-color: var(--pico-background-color);
+  --pico-primary: #6272a4;
+  --pico-primary-hover: #44475a;
+  --pico-color: #282a36;
+  --pico-tag: #8671a3;
+  --pico-h1-color: #44475a;
+  --pico-code-background-color: var(--pico-background-color);
+  --pico-table-border-color: var(--pico-card-background-color);
+  --pico-color-azure-550: var(--pico-primary);
+}
+
+[data-color-scheme="dracula"][data-theme="light"]
+  pre:has(> code.language-mermaid) {
+  background-color: var(--pico-card-background-color);
+}
+
+/* Dark Mode */
+[data-color-scheme="dracula"][data-theme="dark"] {
+  --pico-background-color: #282a36;
+  --pico-card-background-color: #44475a;
+  --pico-card-sectioning-background-color: var(--pico-background-color);
+  --pico-primary: #bd93f9;
+  --pico-primary-hover: #ff79c6;
+  --pico-color: #f8f8f2;
+  --pico-tag: #6272a4;
+  --pico-h1-color: var(--pico-color);
+  --pico-code-background-color: var(--pico-background-color);
+  --pico-table-border-color: var(--pico-card-background-color);
+  --pico-color-azure-550: var(--pico-primary);
+}
+
+[data-color-scheme="dracula"][data-theme="dark"]
+  pre:has(> code.language-mermaid) {
+  background-color: var(--pico-code-color);
+}

@@ -1,0 +1,37 @@
+[data-color-scheme="iceberg"][data-theme="light"] {
+  --pico-background-color: #e8f3f8;
+  --pico-card-background-color: #ddeaf1;
+  --pico-card-sectioning-background-color: var(--pico-background-color);
+  --pico-primary: #4b6479;
+  --pico-primary-hover: #6b8ba4;
+  --pico-color: #1e272e;
+  --pico-tag: #3a4a58;
+  --pico-h1-color: var(--pico-primary);
+  --pico-code-background-color: var(--pico-background-color);
+  --pico-table-border-color: var(--pico-card-background-color);
+  --pico-color-azure-550: var(--pico-primary);
+}
+
+[data-color-scheme="iceberg"][data-theme="light"]
+  pre:has(> code.language-mermaid) {
+  background-color: var(--pico-card-background-color);
+}
+
+[data-color-scheme="iceberg"][data-theme="dark"] {
+  --pico-background-color: #1b2b34;
+  --pico-card-background-color: #243b4a;
+  --pico-card-sectioning-background-color: var(--pico-background-color);
+  --pico-primary: #4b6479;
+  --pico-primary-hover: #6b8ba4;
+  --pico-color: #c0c5ce;
+  --pico-tag: #3a4a58;
+  --pico-h1-color: var(--pico-color);
+  --pico-code-background-color: var(--pico-background-color);
+  --pico-table-border-color: var(--pico-card-background-color);
+  --pico-color-azure-550: var(--pico-primary);
+}
+
+[data-color-scheme="iceberg"][data-theme="dark"]
+  pre:has(> code.language-mermaid) {
+  background-color: var(--pico-code-color);
+}

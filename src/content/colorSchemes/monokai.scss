@@ -1,0 +1,44 @@
+[data-color-scheme="monokai"][data-theme="light"] {
+  --pico-background-color: #f8f8f2;
+  --pico-card-background-color: #f8f8f2;
+  --pico-card-sectioning-background-color: var(--pico-background-color);
+  --pico-primary: #4dadbf;
+  --pico-primary-hover: #a6e22e;
+  --pico-color: #272822;
+  --pico-tag: #adadac;
+  --pico-h1-color: var(--pico-primary);
+  --pico-code-background-color: var(--pico-background-color);
+  --pico-table-border-color: var(--pico-card-background-color);
+  --pico-color-azure-550: var(--pico-primary);
+}
+
+[data-color-scheme="monokai"][data-theme="light"]
+  pre:has(> code.language-mermaid) {
+  background-color: var(--pico-card-background-color);
+}
+
+[data-color-scheme="monokai"][data-theme="dark"] {
+  --pico-background-color: #272822;
+  --pico-card-background-color: #3e3d32;
+  --pico-card-sectioning-background-color: var(--pico-background-color);
+  --pico-primary: #f92672;
+  --pico-primary-hover: #fd971f;
+  --pico-color: #f8f8f2;
+  --pico-tag: #75715e;
+  --pico-h1-color: var(--pico-color);
+  --pico-code-background-color: var(--pico-background-color);
+  --pico-table-border-color: var(--pico-card-background-color);
+  --pico-color-azure-550: var(--pico-primary);
+
+  .toolbar input[type="checkbox"] {
+    background-color: var(
+      --pico-card-background-color
+    ) !important; /* This is a hack to make the checkbox switch visible in dark mode */
+    border-color: var(--pico-card-background-color) !important;
+  }
+}
+
+[data-color-scheme="monokai"][data-theme="dark"]
+  pre:has(> code.language-mermaid) {
+  background-color: var(--pico-code-color);
+}

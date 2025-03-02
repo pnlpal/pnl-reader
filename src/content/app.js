@@ -2,6 +2,7 @@ import { h } from "preact";
 import htm from "htm";
 import { useState, useEffect } from "preact/hooks";
 import Arrow from "./arrow.js";
+import ThemeSelector from "./themeSelector.js";
 
 const html = htm.bind(h);
 
@@ -23,20 +24,6 @@ export default function ReaderApp({
     Object.assign(settings, update);
     localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
   };
-  const changeTheme = (colorAndTheme = "auto") => {
-    const [colorScheme, theme] =
-      colorAndTheme.split(" ").length === 2
-        ? colorAndTheme.toLowerCase().split(" ")
-        : ["", colorAndTheme];
-    document.documentElement.setAttribute("data-color-scheme", colorScheme);
-    if (theme === "auto") {
-      document.documentElement.removeAttribute("data-theme");
-    } else {
-      document.documentElement.setAttribute("data-theme", theme);
-    }
-    saveSettings({ colorAndTheme: colorAndTheme });
-  };
-  changeTheme(settings.colorAndTheme);
 
   useEffect(() => {
     if (!fontSize) {
@@ -84,38 +71,10 @@ export default function ReaderApp({
             </li>
             <li>
               <label> Theme </label>
-              <select id="theme" onChange=${(e) => changeTheme(e.target.value)}>
-                <option
-                  value="auto"
-                  selected=${settings.colorAndTheme === "auto"}
-                >
-                  Auto
-                </option>
-                <option
-                  value="dark"
-                  selected=${settings.colorAndTheme === "dark"}
-                >
-                  Dark
-                </option>
-                <option
-                  value="light"
-                  selected=${settings.colorAndTheme === "light"}
-                >
-                  Light
-                </option>
-                <option
-                  value="solarized dark"
-                  selected=${settings.colorAndTheme === "solarized dark"}
-                >
-                  Solarized Dark
-                </option>
-                <option
-                  value="solarized light"
-                  selected=${settings.colorAndTheme === "solarized light"}
-                >
-                  Solarized Light
-                </option>
-              </select>
+              <${ThemeSelector}
+                settings=${settings}
+                saveSettings=${saveSettings}
+              />
             </li>
 
             <li>
