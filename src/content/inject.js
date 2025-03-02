@@ -97,7 +97,7 @@ function toggleReadMode() {
   }
   isReadMode = !isReadMode;
 }
-console.log("Reader mode:", readerModeEnabledDate);
+// console.log("Reader mode:", readerModeEnabledDate);
 if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 1000) {
   console.log("Read mode is enabled in the last second. Ignoring.");
 } else if (!isReadMode) {
