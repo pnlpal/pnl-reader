@@ -53,20 +53,6 @@ export default function ReaderApp({
     setIsFixedHeader(!isFixedHeader);
     saveSettings({ isFixedHeader: !isFixedHeader });
   };
-  const goToNext = () => {
-    if (!nextPageLink) {
-      return;
-    }
-    document.documentElement.setAttribute("data-pnl-reader-leaving", "true");
-    chrome.runtime.sendMessage({ type: "goToLink", url: nextPageLink });
-  };
-  const goToPrevious = () => {
-    if (!previousPageLink) {
-      return;
-    }
-    document.documentElement.setAttribute("data-pnl-reader-leaving", "true");
-    chrome.runtime.sendMessage({ type: "goToLink", url: previousPageLink });
-  };
 
   return html`
     <div id="PNLReader">
@@ -169,13 +155,11 @@ export default function ReaderApp({
       <footer>
         <${Arrow}
           direction="left"
-          onClick=${goToPrevious}
           tooltip="<- Previous Page"
           href=${previousPageLink}
         />
         <${Arrow}
           direction="right"
-          onClick=${goToNext}
           tooltip="Next Page ->"
           href=${nextPageLink}
         />

@@ -25,9 +25,6 @@ chrome.runtime.onMessage.addListener(function (...args) {
 });
 
 (function setupPageUpdater() {
-  let updatedTabId = null;
-  let timer = null;
-
   let enabledTabs = [];
   chrome.storage.local.get("enabledTabs", (data) => {
     enabledTabs = data.enabledTabs || [];
@@ -48,18 +45,6 @@ chrome.runtime.onMessage.addListener(function (...args) {
     chrome.storage.local.set({ enabledTabs });
   });
 
-  message.on("goToLink", async ({ url }, sender) => {
-    const tabId = sender.tab.id;
-    console.log("Go to link", tabId, url);
-    await chrome.tabs.update(tabId, { url });
-    updatedTabId = tabId;
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      updatedTabId = null;
-      console.log("Clearing updatedTabId");
-    }, 5000);
-  });
-
   chrome.tabs.onRemoved.addListener(async function (tid) {
     console.log("Tab removed", tid);
     enabledTabs = enabledTabs.filter((id) => id !== tid);
@@ -67,7 +52,7 @@ chrome.runtime.onMessage.addListener(function (...args) {
   });
 
   chrome.tabs.onUpdated.addListener(async (tabId, info) => {
-    console.log("Tab updated", tabId, updatedTabId, info);
+    console.log("Tab updated", tabId, info);
     if (info.status === "complete" && enabledTabs.includes(tabId)) {
       try {
         console.log("Executing script", tabId);
