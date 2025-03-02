@@ -11,26 +11,32 @@ export default function ReaderApp({
   onToggle,
 }) {
   const settings = JSON.parse(localStorage.getItem("PNLReader-settings")) || {
-    theme: "auto",
+    colorAndTheme: "auto",
     fontSize: 22,
     isFixedHeader: true,
     isHeaderDetailsOpen: true,
   };
   const [fontSize, setFontSize] = useState(settings.fontSize);
   const [isFixedHeader, setIsFixedHeader] = useState(settings.isFixedHeader);
+
   const saveSettings = (update) => {
     Object.assign(settings, update);
     localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
   };
-  const changeTheme = (theme) => {
+  const changeTheme = (colorAndTheme = "auto") => {
+    const [colorScheme, theme] =
+      colorAndTheme.split(" ").length === 2
+        ? colorAndTheme.toLowerCase().split(" ")
+        : ["", colorAndTheme];
+    document.documentElement.setAttribute("data-color-scheme", colorScheme);
     if (theme === "auto") {
       document.documentElement.removeAttribute("data-theme");
     } else {
       document.documentElement.setAttribute("data-theme", theme);
     }
-    saveSettings({ theme });
+    saveSettings({ colorAndTheme: colorAndTheme });
   };
-  changeTheme(settings.theme);
+  changeTheme(settings.colorAndTheme);
 
   useEffect(() => {
     if (!fontSize) {
@@ -79,14 +85,35 @@ export default function ReaderApp({
             <li>
               <label> Theme </label>
               <select id="theme" onChange=${(e) => changeTheme(e.target.value)}>
-                <option value="auto" selected=${settings.theme === "auto"}>
+                <option
+                  value="auto"
+                  selected=${settings.colorAndTheme === "auto"}
+                >
                   Auto
                 </option>
-                <option value="dark" selected=${settings.theme === "dark"}>
+                <option
+                  value="dark"
+                  selected=${settings.colorAndTheme === "dark"}
+                >
                   Dark
                 </option>
-                <option value="light" selected=${settings.theme === "light"}>
+                <option
+                  value="light"
+                  selected=${settings.colorAndTheme === "light"}
+                >
                   Light
+                </option>
+                <option
+                  value="solarized dark"
+                  selected=${settings.colorAndTheme === "solarized dark"}
+                >
+                  Solarized Dark
+                </option>
+                <option
+                  value="solarized light"
+                  selected=${settings.colorAndTheme === "solarized light"}
+                >
+                  Solarized Light
                 </option>
               </select>
             </li>
@@ -104,7 +131,7 @@ export default function ReaderApp({
             <li>
               <button
                 id="toggleReadModeBtn"
-                class="secondary"
+                class="secondary outline"
                 onClick=${onToggle}
                 aria-label="Exit PNL Reader"
                 data-tooltip="Exit PNL Reader"

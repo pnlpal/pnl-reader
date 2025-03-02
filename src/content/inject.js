@@ -1,5 +1,6 @@
 import { Readability } from "@mozilla/readability";
 import "./inject.scss";
+import "./colorSchemes/solarized.scss";
 import { h, render } from "preact";
 import ReaderApp from "./app.js";
 import htm from "htm";

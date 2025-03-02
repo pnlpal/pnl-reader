@@ -34,15 +34,14 @@
           margin: 0 5px;
         }
         select {
-          width: 150px;
+          width: 180px;
         }
         input#fontSize {
           width: 180px;
         }
         #toggleReadModeBtn {
-          display: flex;
-          align-items: center;
           padding: 10px;
+          border-color: var(--pico-form-element-border-color);
         }
       }
     }
