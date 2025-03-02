@@ -60,6 +60,12 @@ chrome.runtime.onMessage.addListener(function (...args) {
     }, 5000);
   });
 
+  chrome.tabs.onRemoved.addListener(async function (tid) {
+    console.log("Tab removed", tid);
+    enabledTabs = enabledTabs.filter((id) => id !== tid);
+    chrome.storage.local.set({ enabledTabs });
+  });
+
   chrome.tabs.onUpdated.addListener(async (tabId, info) => {
     console.log("Tab updated", tabId, updatedTabId, info);
     if (info.status === "complete" && enabledTabs.includes(tabId)) {
