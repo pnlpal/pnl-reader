@@ -53,6 +53,9 @@
     font-size: var(--pico-font-size);
     line-height: var(--pico-line-height);
 
+    --pico-block-spacing-horizontal: 2em;
+    --pico-block-spacing-vertical: 1.5em;
+
     header {
       position: initial; // fix for some sites
       height: auto; // fix for some sites
