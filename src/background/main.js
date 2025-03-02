@@ -28,19 +28,43 @@ chrome.runtime.onMessage.addListener(function (...args) {
   let updatedTabId = null;
   let timer = null;
 
+  let enabledTabs = [];
+  chrome.storage.local.get("enabledTabs", (data) => {
+    enabledTabs = data.enabledTabs || [];
+    console.log("Enabled tabs:", enabledTabs);
+  });
+  console.log("Setting up page updater");
+
+  message.on("reader mode enabled", async (_, sender) => {
+    console.log("Enabled reader mode", sender.tab.id);
+    if (!enabledTabs.includes(sender.tab.id)) {
+      enabledTabs.push(sender.tab.id);
+      chrome.storage.local.set({ enabledTabs });
+    }
+  });
+  message.on("reader mode disabled", async (_, sender) => {
+    console.log("Disable reader mode", sender.tab.id);
+    enabledTabs = enabledTabs.filter((id) => id !== sender.tab.id);
+    chrome.storage.local.set({ enabledTabs });
+  });
+
   message.on("goToLink", async ({ url }, sender) => {
     const tabId = sender.tab.id;
+    console.log("Go to link", tabId, url);
     await chrome.tabs.update(tabId, { url });
     updatedTabId = tabId;
     clearTimeout(timer);
     timer = setTimeout(() => {
       updatedTabId = null;
+      console.log("Clearing updatedTabId");
     }, 5000);
   });
 
   chrome.tabs.onUpdated.addListener(async (tabId, info) => {
-    if (updatedTabId && tabId === updatedTabId && info.status === "complete") {
+    console.log("Tab updated", tabId, updatedTabId, info);
+    if (info.status === "complete" && enabledTabs.includes(tabId)) {
       try {
+        console.log("Executing script", tabId);
         await chrome.scripting.executeScript({
           target: { tabId: tabId },
           files: ["inject.bundle.js"],

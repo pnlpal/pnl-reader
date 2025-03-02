@@ -57,6 +57,7 @@ function enableReadMode() {
   const article = new Readability(documentClone).parse();
 
   if (article) {
+    chrome.runtime.sendMessage({ type: "reader mode enabled" });
     const pageData = getPageData();
     document.body.innerHTML = "";
     document.documentElement.setAttribute(
@@ -85,12 +86,13 @@ function toggleReadMode() {
       PNLReader.remove();
     }
     document.documentElement.removeAttribute("data-theme");
+    chrome.runtime.sendMessage({ type: "reader mode disabled" });
   } else {
     enableReadMode();
   }
   isReadMode = !isReadMode;
 }
-
+console.log("Reader mode:", readerModeEnabledDate);
 if (document.documentElement.getAttribute("data-pnl-reader-leaving")) {
   console.log("Page is about to leave. Ignoring.");
 } else if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 1000) {
@@ -98,5 +100,6 @@ if (document.documentElement.getAttribute("data-pnl-reader-leaving")) {
 } else if (!isReadMode) {
   toggleReadMode();
 } else {
+  chrome.runtime.sendMessage({ type: "reader mode disabled" });
   location.reload();
 }

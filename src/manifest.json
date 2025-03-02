@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "minimum_chrome_version": "100",
   "name": "PNL Reader",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "background": {
     "service_worker": "background.bundle.js"
   },
