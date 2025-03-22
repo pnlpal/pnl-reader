@@ -58,7 +58,7 @@ export default function ReaderApp({
         <nav class="topbar">
           <h1 class="title">PNL Reader</h1>
           <ul class="toolbar">
-            <li>
+            <li class="hide-xs">
               <label> Font Size </label>
               <${FontSizeRange}
                 settings=${settings}

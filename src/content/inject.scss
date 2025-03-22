@@ -198,6 +198,17 @@
       }
     }
   }
+
+  .show-xs {
+    @media (min-width: 768px) {
+      display: none !important;
+    }
+  }
+  .hide-xs {
+    @media (max-width: 768px) {
+      display: none !important;
+    }
+  }
 }
 
 #PNLReaderWelcomePage {
