@@ -21,7 +21,12 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
               <span>Font Type</span>
 
               <!-- Select -->
-              <select name="fontType" aria-label="Select Font" required>
+              <select
+                id="fontType"
+                name="fontType"
+                aria-label="Select Font"
+                required
+              >
                 <option
                   value="'Source Serif Pro', serif"
                   selected

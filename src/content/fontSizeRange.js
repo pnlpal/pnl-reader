@@ -30,7 +30,7 @@ const FontSizeRange = ({ settings, saveSettings }) => {
   return html`
     <input
       type="range"
-      id="fontSize"
+      name="fontSize"
       min="16"
       max="64"
       data-tooltip="Font Size: ${fontSize}px"
