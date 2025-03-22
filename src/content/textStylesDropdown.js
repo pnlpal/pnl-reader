@@ -1,12 +1,20 @@
 import { h } from "preact";
 import { useEffect, useRef } from "preact/hooks";
 import htm from "htm";
-import "./arrow.scss";
 import "./fontello-embedded.scss";
 import FontSizeRange from "./fontSizeRange.js";
+import "./googleFonts/fonts.css";
 const html = htm.bind(h);
 
 const TextStylesDropdown = ({ settings, saveSettings }) => {
+  const changeFontType = (e) => {
+    const $article = document.getElementById("PNLReaderArticle");
+    if ($article) {
+      const fontFamily_ = `${e.target.value}, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, sans-serif`;
+      $article.style.setProperty("--pico-font-family", fontFamily_);
+    }
+  };
+
   return html`
     <details class="dropdown">
       <summary role="button" class="outline secondary">
@@ -25,14 +33,26 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                 id="fontType"
                 name="fontType"
                 aria-label="Select Font"
-                required
+                onChange=${changeFontType}
               >
                 <option
-                  value="'Source Serif Pro', serif"
+                  value="system-ui"
+                  style="font-family: system-ui;"
                   selected
-                  style="font-family: 'Source Serif Pro', serif;"
                 >
-                  Source Serif Pro
+                  System UI
+                </option>
+                <option
+                  value="'Source Serif 4'"
+                  style="font-family: 'Source Serif 4';"
+                >
+                  Source Serif 4
+                </option>
+                <option value="'Segoe UI'" style="font-family: 'Segoe UI';">
+                  Segoe UI
+                </option>
+                <option value="Calibri" style="font-family: Calibri;">
+                  Calibri
                 </option>
                 <option value="Georgia" style="font-family: Georgia;">
                   Georgia
@@ -41,7 +61,7 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                   Merriweather
                 </option>
                 <option
-                  value="Times New Roman"
+                  value="'Times New Roman'"
                   style="font-family: 'Times New Roman';"
                 >
                   Times New Roman
@@ -49,10 +69,13 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                 <option value="Roboto" style="font-family: Roboto;">
                   Roboto
                 </option>
-                <option value="Open Sans" style="font-family: 'Open Sans';">
+                <option value="'Open Sans'" style="font-family: 'Open Sans';">
                   Open Sans
                 </option>
-                <option value="Courier New" style="font-family: 'Courier New';">
+                <option
+                  value="'Courier New'"
+                  style="font-family: 'Courier New';"
+                >
                   Courier New
                 </option>
                 <option
@@ -74,10 +97,10 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                   Fredoka One
                 </option>
                 <option
-                  value="'Baloo', cursive"
-                  style="font-family: 'Baloo', cursive;"
+                  value="'Baloo 2', cursive"
+                  style="font-family: 'Baloo 2', cursive;"
                 >
-                  Baloo
+                  Baloo 2
                 </option>
                 <option
                   value="'Chewy', cursive"

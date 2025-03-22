@@ -13,12 +13,8 @@ const FontSizeRange = ({ settings, saveSettings }) => {
       return;
     }
     const $article = document.getElementById("PNLReaderArticle");
-    $article.setAttribute(
-      "style",
-      `--pico-font-size: ${fontSize}px; --pico-line-height: ${
-        fontSize * 1.5
-      }px;`
-    );
+    $article.style.setProperty("--pico-font-size", `${fontSize}px`);
+    $article.style.setProperty("--pico-line-height", `${fontSize * 1.5}px`);
     saveSettings({ fontSize });
   }, [fontSize]);
 

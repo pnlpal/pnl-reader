@@ -12,18 +12,7 @@ var alias = {};
 
 var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
 
-var fileExtensions = [
-  "jpg",
-  "jpeg",
-  "png",
-  "gif",
-  "eot",
-  "otf",
-  "svg",
-  "ttf",
-  "woff",
-  "woff2",
-];
+var fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf"];
 
 if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;
@@ -65,6 +54,10 @@ var options = {
             loader: "less-loader", // compiles Less to CSS
           },
         ],
+      },
+      {
+        test: /\.(woff|woff2)$/,
+        type: "asset/inline", // Inline the font files as Base64
       },
       {
         test: new RegExp(".(" + fileExtensions.join("|") + ")$"),
