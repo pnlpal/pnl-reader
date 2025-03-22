@@ -7,13 +7,21 @@ import "./googleFonts/fonts.css";
 const html = htm.bind(h);
 
 const TextStylesDropdown = ({ settings, saveSettings }) => {
+  const fontType = settings.fontType || "system-ui";
   const changeFontType = (e) => {
+    const newFontType = e.target.value;
     const $article = document.getElementById("PNLReaderArticle");
     if ($article) {
-      const fontFamily_ = `${e.target.value}, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, sans-serif`;
+      const fontFamily_ = `${newFontType}, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, sans-serif`;
       $article.style.setProperty("--pico-font-family", fontFamily_);
+      saveSettings({ fontType: newFontType });
     }
   };
+
+  // init the font family
+  useEffect(() => {
+    changeFontType({ target: { value: fontType } });
+  }, []);
 
   return html`
     <details class="dropdown">
@@ -34,12 +42,9 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                 name="fontType"
                 aria-label="Select Font"
                 onChange=${changeFontType}
+                value=${fontType}
               >
-                <option
-                  value="system-ui"
-                  style="font-family: system-ui;"
-                  selected
-                >
+                <option value="system-ui" style="font-family: system-ui;">
                   System UI
                 </option>
                 <option
@@ -85,57 +90,42 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                   Comic Sans MS
                 </option>
                 <option
-                  value="'Patrick Hand', sans-serif"
-                  style="font-family: 'Patrick Hand', sans-serif;"
+                  value="'Patrick Hand'"
+                  style="font-family: 'Patrick Hand';"
                 >
                   Patrick Hand
                 </option>
-                <option
-                  value="'Fredoka One', sans-serif"
-                  style="font-family: 'Fredoka One', sans-serif;"
-                >
-                  Fredoka One
+                <option value="Fredoka" style="font-family: Fredoka;">
+                  Fredoka
                 </option>
-                <option
-                  value="'Baloo 2', cursive"
-                  style="font-family: 'Baloo 2', cursive;"
-                >
+                <option value="'Baloo 2'" style="font-family: 'Baloo 2';">
                   Baloo 2
                 </option>
-                <option
-                  value="'Chewy', cursive"
-                  style="font-family: 'Chewy', cursive;"
-                >
+                <option value="'Chewy'" style="font-family: 'Chewy';">
                   Chewy
                 </option>
                 <option
-                  value="'Gloria Hallelujah', cursive"
-                  style="font-family: 'Gloria Hallelujah', cursive;"
+                  value="'Gloria Hallelujah'"
+                  style="font-family: 'Gloria Hallelujah';"
                 >
                   Gloria Hallelujah
                 </option>
                 <option
-                  value="'Permanent Marker', cursive"
-                  style="font-family: 'Permanent Marker', cursive;"
+                  value="'Permanent Marker'"
+                  style="font-family: 'Permanent Marker';"
                 >
                   Permanent Marker
                 </option>
                 <option
-                  value="'Luckiest Guy', cursive"
-                  style="font-family: 'Luckiest Guy', cursive;"
+                  value="'Luckiest Guy'"
+                  style="font-family: 'Luckiest Guy';"
                 >
                   Luckiest Guy
                 </option>
-                <option
-                  value="'Bangers', cursive"
-                  style="font-family: 'Bangers', cursive;"
-                >
+                <option value="Bangers" style="font-family: Bangers;">
                   Bangers
                 </option>
-                <option
-                  value="'Caveat', cursive"
-                  style="font-family: 'Caveat', cursive;"
-                >
+                <option value="Caveat" style="font-family: Caveat;">
                   Caveat
                 </option>
               </select>
