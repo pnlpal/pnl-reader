@@ -33,6 +33,7 @@
     }
     .toolbar {
       li {
+        font-size: 18px;
         margin-left: 25px;
         @media (max-width: 768px) {
           margin-left: 0;
@@ -42,31 +43,64 @@
         height: 50px;
         display: flex;
         align-items: center;
-        label,
-        input,
-        select {
-          font-size: 18px;
+        > label {
           margin: 0 5px;
         }
-        select {
+        select#theme {
+          margin: 0 5px;
           width: 210px;
           @media (max-width: 768px) {
             width: 130px;
           }
         }
         input#fontSize {
+          margin: 0 5px;
           width: 180px;
           @media (max-width: 768px) {
             width: 90px;
           }
         }
-        input[type="checkbox"] {
+        input#toggleHeaderSticky {
+          margin: 0 5px;
           background-color: var(--pico-primary);
           border-color: var(--pico-primary);
         }
         #toggleReadModeBtn {
+          margin: 0 5px;
           padding: 10px;
           border-color: var(--pico-form-element-border-color);
+        }
+        .dropdown {
+          overflow: initial;
+          summary {
+            .icon-font::before {
+              content: "\f088";
+            }
+          }
+          > ul {
+            left: auto;
+            right: 0;
+            article {
+              width: 600px;
+              height: 800px;
+
+              .list-in-row {
+                display: flex;
+                align-items: center;
+                > span {
+                  margin: 0 10px;
+                }
+                .pnl-icon {
+                  font-size: 32px;
+                }
+                [name="fontType"] {
+                  width: 300px;
+                  position: absolute;
+                  right: 10px;
+                }
+              }
+            }
+          }
         }
       }
     }

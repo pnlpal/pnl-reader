@@ -3,7 +3,8 @@ import htm from "htm";
 import { useState, useEffect } from "preact/hooks";
 import Arrow from "./arrow.js";
 import ThemeSelector from "./themeSelector.js";
-
+import TextStylesDropdown from "./textStylesDropdown.js";
+import FontSizeRange from "./fontSizeRange.js";
 const html = htm.bind(h);
 
 export default function ReaderApp({
@@ -17,7 +18,6 @@ export default function ReaderApp({
     isFixedHeader: true,
     isHeaderDetailsOpen: true,
   };
-  const [fontSize, setFontSize] = useState(settings.fontSize);
   const [isFixedHeader, setIsFixedHeader] = useState(settings.isFixedHeader);
 
   const saveSettings = (update) => {
@@ -25,23 +25,6 @@ export default function ReaderApp({
     localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
   };
 
-  useEffect(() => {
-    if (!fontSize) {
-      return;
-    }
-    const $article = document.getElementById("PNLReaderArticle");
-    $article.setAttribute(
-      "style",
-      `--pico-font-size: ${fontSize}px; --pico-line-height: ${
-        fontSize * 1.5
-      }px;`
-    );
-    saveSettings({ fontSize });
-  }, [fontSize]);
-
-  const handleFontSizeChange = (e) => {
-    setFontSize(e.target.value);
-  };
   const toggleHeaderSticky = () => {
     setIsFixedHeader(!isFixedHeader);
     saveSettings({ isFixedHeader: !isFixedHeader });
@@ -58,15 +41,9 @@ export default function ReaderApp({
           <ul class="toolbar">
             <li>
               <label> Font Size </label>
-              <input
-                type="range"
-                id="fontSize"
-                min="16"
-                max="64"
-                data-tooltip="Font Size: ${fontSize}px"
-                data-placement="bottom"
-                value=${fontSize}
-                onInput=${handleFontSizeChange}
+              <${FontSizeRange}
+                settings=${settings}
+                saveSettings=${saveSettings}
               />
             </li>
             <li>
@@ -78,9 +55,18 @@ export default function ReaderApp({
             </li>
 
             <li>
+              <!-- Primary outline -->
+              <${TextStylesDropdown}
+                settings=${settings}
+                saveSettings=${saveSettings}
+              />
+            </li>
+
+            <li>
               <label class="switch"> Sticky Header </label>
               <input
                 type="checkbox"
+                id="toggleHeaderSticky"
                 role="switch"
                 checked=${isFixedHeader}
                 onChange=${toggleHeaderSticky}
