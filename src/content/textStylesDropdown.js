@@ -9,7 +9,7 @@ const html = htm.bind(h);
 const TextStylesDropdown = ({ settings, saveSettings }) => {
   return html`
     <details class="dropdown">
-      <summary role="button" class="outline">
+      <summary role="button" class="outline secondary">
         <span class="icon-fontsize" title="Type controls"></span>
       </summary>
       <ul>

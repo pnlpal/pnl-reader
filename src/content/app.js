@@ -5,6 +5,7 @@ import Arrow from "./arrow.js";
 import ThemeSelector from "./themeSelector.js";
 import TextStylesDropdown from "./textStylesDropdown.js";
 import FontSizeRange from "./fontSizeRange.js";
+import { throttle } from "lodash";
 const html = htm.bind(h);
 
 export default function ReaderApp({
@@ -15,26 +16,44 @@ export default function ReaderApp({
   const settings = JSON.parse(localStorage.getItem("PNLReader-settings")) || {
     colorAndTheme: "auto",
     fontSize: 22,
-    isFixedHeader: true,
     isHeaderDetailsOpen: true,
   };
-  const [isFixedHeader, setIsFixedHeader] = useState(settings.isFixedHeader);
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
   const saveSettings = (update) => {
     Object.assign(settings, update);
     localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
   };
 
-  const toggleHeaderSticky = () => {
-    setIsFixedHeader(!isFixedHeader);
-    saveSettings({ isFixedHeader: !isFixedHeader });
-  };
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down and past 50px
+        setIsHeaderHidden(true);
+      } else {
+        // Scrolling up
+        setIsHeaderHidden(false);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    const throttledHandleScroll = throttle(handleScroll, 200);
+    window.addEventListener("scroll", throttledHandleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", throttledHandleScroll);
+    };
+  }, []);
 
   return html`
     <div id="PNLReader">
       <header
         id="PNLReaderHeader"
-        class=${isFixedHeader ? "sticky-on-top" : ""}
+        class="sticky-on-top ${isHeaderHidden ? "hidden-header" : ""}"
       >
         <nav class="topbar">
           <h1 class="title">PNL Reader</h1>
@@ -63,18 +82,8 @@ export default function ReaderApp({
             </li>
 
             <li>
-              <label class="switch"> Sticky Header </label>
-              <input
-                type="checkbox"
-                id="toggleHeaderSticky"
-                role="switch"
-                checked=${isFixedHeader}
-                onChange=${toggleHeaderSticky}
-              />
-            </li>
-
-            <li>
               <button
+                role="button"
                 id="toggleReadModeBtn"
                 class="secondary outline"
                 onClick=${onToggle}

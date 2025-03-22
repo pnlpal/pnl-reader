@@ -17,11 +17,16 @@
       padding: 15px 20px;
     }
 
+    transition: transform 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+
     background-color: var(--pico-background-color);
     &.sticky-on-top {
       position: sticky;
       top: 0;
       z-index: 1000;
+    }
+    &.hidden-header {
+      transform: translateY(-100%);
     }
     h1.title {
       font-size: 2.5em;
@@ -66,13 +71,14 @@
           border-color: var(--pico-primary);
         }
         #toggleReadModeBtn {
+          display: flex;
           margin: 0 5px;
-          padding: 10px;
           border-color: var(--pico-form-element-border-color);
         }
         .dropdown {
           overflow: initial;
           summary {
+            --pico-border-color: var(--pico-form-element-border-color);
             .icon-font::before {
               content: "\f088";
             }
