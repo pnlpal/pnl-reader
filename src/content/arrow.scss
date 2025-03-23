@@ -1,11 +1,14 @@
 #PNLReader {
   .arrow {
-    cursor: pointer;
     height: 120px;
-
-    transition: transform 0.1s;
     width: 80px;
+    @media (max-width: 768px) {
+      height: 70px;
+      width: 45px;
+    }
 
+    cursor: pointer;
+    transition: transform 0.1s;
     $transition-time: 0.15s;
 
     &[data-direction="left"] {
