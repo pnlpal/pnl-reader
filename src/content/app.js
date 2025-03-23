@@ -31,13 +31,21 @@ export default function ReaderApp({
 
     Object.assign(settings, update);
     const isOnOptionsPage =
-      window.location.href.startsWith("chrome-extension://") &&
+      window.location.href.includes("extension://") &&
       window.location.href.includes("/options.html");
 
     if (isOnOptionsPage) {
+      let _timer;
+      clearTimeout(_timer);
       Object.assign(globalSettings, settings);
       chrome.storage.sync.set({ globalPNLReaderSettings: settings }, () => {
-        console.log("Settings saved to chrome storage");
+        const $status = document.getElementById("PNLReaderStatus");
+        document.querySelector("#PNLReaderStatus>span").innerText =
+          "Success! Global settings are saved.";
+        $status.style.display = "block";
+        _timer = setTimeout(() => {
+          $status.style.display = "none";
+        }, 3000);
       });
     } else {
       localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
@@ -129,6 +137,26 @@ export default function ReaderApp({
           </ul>
         </nav>
       </header>
+      <article id="PNLReaderStatus">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 26 26"
+          width="26"
+          height="26"
+          fill="green"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path
+            d="M9 12l2 2 4-4"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="none"
+          />
+        </svg>
+        <span>Success! Your settings are saved.</span>
+      </article>
       <main>
         <article class="container" id="PNLReaderArticle">
           <header>

@@ -71,10 +71,8 @@ async function enableReadMode() {
     );
 
     if (!globalSettings) {
-      const { globalPNLReaderSettings } = await chrome.storage.sync.get(
-        "globalPNLReaderSettings"
-      );
-      globalSettings = globalPNLReaderSettings || {};
+      const saved_ = await chrome.storage.sync.get("globalPNLReaderSettings");
+      globalSettings = saved_?.globalPNLReaderSettings || {};
     }
 
     document.body.innerHTML = "";

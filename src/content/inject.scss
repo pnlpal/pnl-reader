@@ -243,6 +243,23 @@
       display: none !important;
     }
   }
+
+  #PNLReaderStatus {
+    display: none;
+    text-align: center;
+    width: 330px;
+    margin: 0;
+    position: fixed;
+    z-index: 999;
+    background-color: #8aae8c;
+    right: 50px;
+    padding: 20px;
+    color: #053805;
+    font-weight: 500;
+    svg {
+      margin-right: 10px;
+    }
+  }
 }
 
 #PNLReaderOptionsPage {
