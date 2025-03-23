@@ -1,5 +1,6 @@
 import { h } from "preact";
 import htm from "htm";
+import { useEffect } from "preact/hooks";
 import "./fontello-embedded.scss";
 import FontSizeRange from "./fontSizeRange.js";
 import FontSelector from "./fontSelector.js";
@@ -9,6 +10,26 @@ import "./googleFonts/fonts.css";
 const html = htm.bind(h);
 
 const TextStylesDropdown = ({ settings, saveSettings }) => {
+  useEffect(() => {
+    handleTextJustified(settings.textJustified);
+  }, []);
+
+  const handleTextJustified = (textJustified) => {
+    const $article = document.getElementById("PNLReaderArticle");
+    $article.style.setProperty(
+      "--pnl-reader-text-align",
+      textJustified ? "justify" : "initial"
+    );
+    const $icon = document.getElementById("textJustifiedIcon");
+    if (textJustified) {
+      $icon.classList.add("icon-align-justify");
+      $icon.classList.remove("icon-align-left");
+    } else {
+      $icon.classList.remove("icon-align-justify");
+      $icon.classList.add("icon-align-left");
+    }
+  };
+
   return html`
     <details class="dropdown">
       <summary role="button" class="outline secondary">
@@ -58,16 +79,22 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
               />
             </div>
             <div class="list-in-row">
-              <!-- Settings for text align justify -->
               <span
+                id="textJustifiedIcon"
                 class="pnl-icon icon-align-justify"
-                title="Text align justify"
+                title="Justified Alignment"
               ></span>
-              <span>Text align justify</span>
+              <span>Justified Alignment</span>
               <input
                 type="checkbox"
-                id="textAlignJustify"
-                name="textAlignJustify"
+                id="textJustified"
+                name="textJustified"
+                checked=${settings.textJustified}
+                onChange=${(e) => {
+                  const textJustified = e.target.checked;
+                  handleTextJustified(textJustified);
+                  saveSettings({ textJustified: textJustified });
+                }}
               />
             </div>
           </article>

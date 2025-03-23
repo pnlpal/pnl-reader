@@ -137,7 +137,7 @@
                   margin-right: 10px;
                   margin-bottom: 0;
                 }
-                #textAlignJustify {
+                #textJustified {
                   margin-left: auto;
                   margin-right: 10px;
                   margin-bottom: 0;
@@ -163,12 +163,13 @@
   #PNLReaderArticle {
     --pnl-reader-line-height: 1.5;
     --pnl-reader-line-width: 70%;
+    --pnl-reader-text-align: justify;
 
     color: var(--pico-color);
     font-family: var(--pico-font-family);
     font-size: var(--pico-font-size);
     line-height: var(--pnl-reader-line-height);
-    text-align: justify;
+    text-align: var(--pnl-reader-text-align);
     max-width: var(--pnl-reader-line-width);
 
     --pico-block-spacing-horizontal: 2em;
