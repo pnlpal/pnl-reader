@@ -10,6 +10,7 @@ const FontSizeRange = ({ settings, saveSettings }) => {
 
   useEffect(() => {
     const $article = document.getElementById("PNLReaderArticle");
+    if (!$article) return;
     if (!fontSize) {
       $article.style.setProperty("--pico-font-size", `${defaultFontSize}px`);
       return;
@@ -19,7 +20,6 @@ const FontSizeRange = ({ settings, saveSettings }) => {
   }, [fontSize]);
 
   const handleFontSizeChange = (e) => {
-    settings.fontSize = e.target.value;
     setFontSize(e.target.value);
   };
 

@@ -11,6 +11,7 @@ const FontSelector = ({ settings, saveSettings }) => {
   const changeFontType = (e) => {
     const newFontType = e.target.value;
     const $article = document.getElementById("PNLReaderArticle");
+    if (!$article) return;
     if (!newFontType) {
       $article.style.setProperty("--pico-font-family", defaultFontType);
       return;

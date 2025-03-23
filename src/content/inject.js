@@ -14,6 +14,7 @@ let readerModeEnabledDate = document.documentElement.getAttribute(
   "data-pnl-reader-mode-date"
 );
 let isReadMode = !!readerModeEnabledDate;
+let globalSettings;
 
 function getPageData() {
   const scribblehub = () => {
@@ -57,24 +58,32 @@ function getPageData() {
 }
 
 // Function to enable read mode
-function enableReadMode() {
+async function enableReadMode() {
   const documentClone = document.cloneNode(true);
   const article = new Readability(documentClone).parse();
 
   if (article) {
     chrome.runtime.sendMessage({ type: "reader mode enabled" });
     const pageData = getPageData();
-    document.body.innerHTML = "";
     document.documentElement.setAttribute(
       "data-pnl-reader-mode-date",
       Date.now()
     );
 
+    if (!globalSettings) {
+      const { globalPNLReaderSettings } = await chrome.storage.sync.get(
+        "globalPNLReaderSettings"
+      );
+      globalSettings = globalPNLReaderSettings || {};
+    }
+
+    document.body.innerHTML = "";
     render(
       html`<${ReaderApp}
         article=${article}
         onToggle=${toggleReadMode}
         pageData=${pageData}
+        globalSettings=${globalSettings}
         +
       />`,
       document.body

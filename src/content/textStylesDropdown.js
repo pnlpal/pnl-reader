@@ -21,6 +21,8 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
 
   const handleTextJustified = (textJustified) => {
     const $article = document.getElementById("PNLReaderArticle");
+    if (!$article) return;
+
     $article.style.setProperty(
       "--pnl-reader-text-align",
       textJustified ? "justify" : "initial"

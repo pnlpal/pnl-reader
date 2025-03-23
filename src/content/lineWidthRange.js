@@ -11,6 +11,7 @@ const LineWidthRange = ({ settings, saveSettings }) => {
 
   useEffect(() => {
     const $article = document.getElementById("PNLReaderArticle");
+    if (!$article) return;
     if (!lineWidth) {
       $article.style.setProperty(
         "--pnl-reader-line-width",
@@ -24,7 +25,6 @@ const LineWidthRange = ({ settings, saveSettings }) => {
   }, [lineWidth]);
 
   const handleLineWidthChange = (e) => {
-    settings.lineWidth = e.target.value;
     setLineWidth(e.target.value);
   };
 

@@ -10,6 +10,7 @@ const LineSpacingRange = ({ settings, saveSettings }) => {
 
   useEffect(() => {
     const $article = document.getElementById("PNLReaderArticle");
+    if (!$article) return;
     if (!lineHeight) {
       $article.style.setProperty("--pnl-reader-line-height", defaultLineHeight);
       return;
@@ -19,7 +20,6 @@ const LineSpacingRange = ({ settings, saveSettings }) => {
   }, [lineHeight]);
 
   const handleLineHeightChange = (e) => {
-    settings.lineHeight = e.target.value;
     setLineHeight(e.target.value);
   };
 

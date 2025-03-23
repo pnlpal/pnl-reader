@@ -13,13 +13,35 @@ export default function ReaderApp({
   article: { title, byline, publishedTime, content, length },
   pageData: { nextPageLink, previousPageLink },
   onToggle,
+  globalSettings,
 }) {
-  const settings = JSON.parse(localStorage.getItem("PNLReader-settings")) || {};
+  const settings = {
+    ...globalSettings,
+    ...JSON.parse(localStorage.getItem("PNLReader-settings")),
+  };
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
   const saveSettings = (update) => {
+    const hasChanged = Object.keys(update).some((key) => {
+      return settings[key] !== update[key];
+    });
+    if (!hasChanged) {
+      return;
+    }
+
     Object.assign(settings, update);
-    localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
+    const isOnOptionsPage =
+      window.location.href.startsWith("chrome-extension://") &&
+      window.location.href.includes("/options.html");
+
+    if (isOnOptionsPage) {
+      Object.assign(globalSettings, settings);
+      chrome.storage.sync.set({ globalPNLReaderSettings: settings }, () => {
+        console.log("Settings saved to chrome storage");
+      });
+    } else {
+      localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
+    }
   };
 
   useEffect(() => {
