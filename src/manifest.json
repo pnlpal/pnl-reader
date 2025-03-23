@@ -9,6 +9,10 @@
   "action": {
     "default_title": "PNL Reader: simple viewer mode for novel lovers"
   },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "icons": {
     "32": "images/logo32.png",
     "64": "images/logo64.png",

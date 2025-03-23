@@ -3,7 +3,7 @@ import message from "./message.js";
 chrome.runtime.onInstalled.addListener(function (details) {
   if ([chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason)) {
     chrome.tabs.create({
-      url: chrome.runtime.getURL("welcome.html"),
+      url: chrome.runtime.getURL("options.html"),
     });
   }
 });

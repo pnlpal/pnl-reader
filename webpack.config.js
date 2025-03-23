@@ -122,8 +122,8 @@ var options = {
       ],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "welcome.html"),
-      filename: "welcome.html",
+      template: path.join(__dirname, "src", "options.html"),
+      filename: "options.html",
       cache: false,
     }),
   ],
