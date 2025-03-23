@@ -4,6 +4,7 @@ import "./fontello-embedded.scss";
 import FontSizeRange from "./fontSizeRange.js";
 import FontSelector from "./fontSelector.js";
 import LineSpacingRange from "./lineSpacingRange.js";
+import LineWidthRange from "./lineWidthRange.js";
 import "./googleFonts/fonts.css";
 const html = htm.bind(h);
 
@@ -51,20 +52,9 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
               <!-- Settings for line-width -->
               <span class="pnl-icon icon-text-width" title="Line width"></span>
               <span>Line width</span>
-              <input
-                type="range"
-                id="lineWidth"
-                name="lineWidth"
-                min="30"
-                max="100"
-                step="5"
-                value="70"
-                onInput=${(e) => {
-                  const article = document.getElementById("PNLReaderArticle");
-                  if (article) {
-                    article.style.maxWidth = `${e.target.value}%`;
-                  }
-                }}
+              <${LineWidthRange}
+                settings=${settings}
+                saveSettings=${saveSettings}
               />
             </div>
             <div class="list-in-row">

@@ -162,12 +162,14 @@
   }
   #PNLReaderArticle {
     --pnl-reader-line-height: 1.5;
+    --pnl-reader-line-width: 70%;
 
     color: var(--pico-color);
     font-family: var(--pico-font-family);
     font-size: var(--pico-font-size);
     line-height: var(--pnl-reader-line-height);
     text-align: justify;
+    max-width: var(--pnl-reader-line-width);
 
     --pico-block-spacing-horizontal: 2em;
     --pico-block-spacing-vertical: 1.5em;
