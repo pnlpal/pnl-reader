@@ -105,13 +105,6 @@ var options = {
 
               // Firefox requires host permission for all urls to inject script when it's not trigger by user activities
               json.permissions.push("<all_urls>");
-
-              json["browser_specific_settings"] = {
-                gecko: {
-                  id: "revir.qing_pnl_reader@gmail.com",
-                  strict_min_version: "109.0",
-                },
-              };
             }
 
             return Buffer.from(JSON.stringify(json));

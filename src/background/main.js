@@ -47,12 +47,15 @@ chrome.runtime.onMessage.addListener(function (...args) {
 
   message.on("save settings", async ({ globalSettings }) => {
     // console.log("Save settings", settings);
-    chrome.storage.sync.set({ globalPNLReaderSettings: globalSettings });
+    chrome.storage.local.set({ globalPNLReaderSettings: globalSettings });
   });
   message.on("get settings", async () => {
     // console.log("Get settings");
-    const data = await chrome.storage.sync.get("globalPNLReaderSettings");
-    return data?.globalPNLReaderSettings;
+    return new Promise(async (resolve) => {
+      chrome.storage.local.get("globalPNLReaderSettings", (data) => {
+        resolve(data?.globalPNLReaderSettings);
+      });
+    });
   });
 
   chrome.tabs.onRemoved.addListener(async function (tid) {
