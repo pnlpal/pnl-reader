@@ -3,6 +3,7 @@ import htm from "htm";
 import "./fontello-embedded.scss";
 import FontSizeRange from "./fontSizeRange.js";
 import FontSelector from "./fontSelector.js";
+import LineSpacingRange from "./lineSpacingRange.js";
 import "./googleFonts/fonts.css";
 const html = htm.bind(h);
 
@@ -41,20 +42,9 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                 title="Line spacing"
               ></span>
               <span>Line spacing</span>
-              <input
-                type="range"
-                id="lineSpacing"
-                name="lineSpacing"
-                min="1"
-                max="2.5"
-                step="0.1"
-                value="1.5"
-                onInput=${(e) => {
-                  const article = document.getElementById("PNLReaderArticle");
-                  if (article) {
-                    article.style.lineHeight = e.target.value;
-                  }
-                }}
+              <${LineSpacingRange}
+                settings=${settings}
+                saveSettings=${saveSettings}
               />
             </div>
             <div class="list-in-row">

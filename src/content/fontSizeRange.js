@@ -1,6 +1,5 @@
 import { h } from "preact";
 import htm from "htm";
-import "./arrow.scss";
 import { useState, useEffect } from "preact/hooks";
 
 const html = htm.bind(h);
@@ -14,7 +13,6 @@ const FontSizeRange = ({ settings, saveSettings }) => {
     }
     const $article = document.getElementById("PNLReaderArticle");
     $article.style.setProperty("--pico-font-size", `${fontSize}px`);
-    $article.style.setProperty("--pico-line-height", `${fontSize * 1.5}px`);
     saveSettings({ fontSize });
   }, [fontSize]);
 

@@ -161,10 +161,12 @@
     }
   }
   #PNLReaderArticle {
+    --pnl-reader-line-height: 1.5;
+
     color: var(--pico-color);
     font-family: var(--pico-font-family);
     font-size: var(--pico-font-size);
-    line-height: var(--pico-line-height);
+    line-height: var(--pnl-reader-line-height);
     text-align: justify;
 
     --pico-block-spacing-horizontal: 2em;
@@ -182,7 +184,7 @@
         background: unset; // fix for reddit
         summary.title {
           font-size: var(--pico-font-size);
-          line-height: var(--pico-line-height);
+          line-height: var(--pnl-reader-line-height);
           color: var(--pico-h1-color) !important;
         }
       }
@@ -208,7 +210,7 @@
     .page p {
       // fix for meganovel.com, override their fixed font size
       font-size: var(--pico-font-size);
-      line-height: var(--pico-line-height);
+      line-height: var(--pnl-reader-line-height);
     }
   }
   > footer {
