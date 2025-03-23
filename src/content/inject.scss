@@ -175,6 +175,11 @@
     --pico-block-spacing-horizontal: 2em;
     --pico-block-spacing-vertical: 1.5em;
 
+    @media (max-width: 768px) {
+      --pico-block-spacing-horizontal: 1em;
+      --pico-block-spacing-vertical: 1em;
+    }
+
     header {
       position: initial; // fix for some sites
       height: auto; // fix for some sites
