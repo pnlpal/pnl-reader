@@ -6,12 +6,14 @@ const html = htm.bind(h);
 
 const FontSizeRange = ({ settings, saveSettings }) => {
   const [fontSize, setFontSize] = useState(settings.fontSize);
+  const defaultFontSize = 22;
 
   useEffect(() => {
+    const $article = document.getElementById("PNLReaderArticle");
     if (!fontSize) {
+      $article.style.setProperty("--pico-font-size", `${defaultFontSize}px`);
       return;
     }
-    const $article = document.getElementById("PNLReaderArticle");
     $article.style.setProperty("--pico-font-size", `${fontSize}px`);
     saveSettings({ fontSize });
   }, [fontSize]);
@@ -27,9 +29,9 @@ const FontSizeRange = ({ settings, saveSettings }) => {
       name="fontSize"
       min="16"
       max="64"
-      data-tooltip="Font Size: ${fontSize}px"
+      data-tooltip="Font Size: ${fontSize || defaultFontSize}px"
       data-placement="bottom"
-      value=${fontSize}
+      value=${fontSize || defaultFontSize}
       onInput=${handleFontSizeChange}
     />
   `;

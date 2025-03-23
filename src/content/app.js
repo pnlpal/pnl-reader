@@ -14,11 +14,7 @@ export default function ReaderApp({
   pageData: { nextPageLink, previousPageLink },
   onToggle,
 }) {
-  const settings = JSON.parse(localStorage.getItem("PNLReader-settings")) || {
-    colorAndTheme: "auto",
-    fontSize: 22,
-    isHeaderDetailsOpen: true,
-  };
+  const settings = JSON.parse(localStorage.getItem("PNLReader-settings")) || {};
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
   const saveSettings = (update) => {

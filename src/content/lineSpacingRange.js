@@ -5,13 +5,15 @@ import { useState, useEffect } from "preact/hooks";
 const html = htm.bind(h);
 
 const LineSpacingRange = ({ settings, saveSettings }) => {
-  const [lineHeight, setLineHeight] = useState(settings.lineHeight || 1.5);
+  const [lineHeight, setLineHeight] = useState(settings.lineHeight);
+  const defaultLineHeight = 1.5;
 
   useEffect(() => {
+    const $article = document.getElementById("PNLReaderArticle");
     if (!lineHeight) {
+      $article.style.setProperty("--pnl-reader-line-height", defaultLineHeight);
       return;
     }
-    const $article = document.getElementById("PNLReaderArticle");
     $article.style.setProperty("--pnl-reader-line-height", lineHeight);
     saveSettings({ lineHeight });
   }, [lineHeight]);
@@ -29,8 +31,8 @@ const LineSpacingRange = ({ settings, saveSettings }) => {
       min="1"
       max="2.5"
       step="0.1"
-      value=${lineHeight}
-      data-tooltip="Line Spacing: ${lineHeight}"
+      value=${lineHeight || defaultLineHeight}
+      data-tooltip="Line Spacing: ${lineHeight || defaultLineHeight}"
       onInput=${handleLineHeightChange}
     />
   `;

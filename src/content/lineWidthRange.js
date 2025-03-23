@@ -3,15 +3,22 @@ import htm from "htm";
 import { useState, useEffect } from "preact/hooks";
 
 const html = htm.bind(h);
+const isMobile = window.innerWidth < 768;
 
 const LineWidthRange = ({ settings, saveSettings }) => {
-  const [lineWidth, setLineWidth] = useState(settings.lineWidth || 70);
+  const [lineWidth, setLineWidth] = useState(settings.lineWidth);
+  const defaultLineWidth = isMobile ? 100 : 70;
 
   useEffect(() => {
+    const $article = document.getElementById("PNLReaderArticle");
     if (!lineWidth) {
+      $article.style.setProperty(
+        "--pnl-reader-line-width",
+        `${defaultLineWidth}%`
+      );
       return;
     }
-    const $article = document.getElementById("PNLReaderArticle");
+
     $article.style.setProperty("--pnl-reader-line-width", `${lineWidth}%`);
     saveSettings({ lineWidth });
   }, [lineWidth]);
@@ -29,8 +36,8 @@ const LineWidthRange = ({ settings, saveSettings }) => {
       min="30"
       max="100"
       step="5"
-      value=${lineWidth}
-      data-tooltip="Line Width: ${lineWidth}%"
+      value=${lineWidth || defaultLineWidth}
+      data-tooltip="Line Width: ${lineWidth || defaultLineWidth}%"
       onInput=${handleLineWidthChange}
     />
   `;

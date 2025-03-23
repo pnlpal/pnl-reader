@@ -4,7 +4,12 @@ import htm from "htm";
 const html = htm.bind(h);
 
 const ThemeSelector = ({ settings, saveSettings }) => {
-  const changeTheme = (colorAndTheme = "auto") => {
+  const defaultColorAndTheme = "auto";
+  const changeTheme = (colorAndTheme) => {
+    if (!colorAndTheme) {
+      return;
+    }
+
     const [colorScheme, theme] =
       colorAndTheme.split(" ").length === 2
         ? colorAndTheme.toLowerCase().split(" ")
@@ -36,17 +41,13 @@ const ThemeSelector = ({ settings, saveSettings }) => {
   ];
 
   return html`
-    <select id="theme" onChange=${(e) => changeTheme(e.target.value)}>
+    <select
+      id="theme"
+      onChange=${(e) => changeTheme(e.target.value)}
+      value=${settings.colorAndTheme || defaultColorAndTheme}
+    >
       ${allThemes.map(
-        (theme) =>
-          html`
-            <option
-              value=${theme.value}
-              selected=${settings.colorAndTheme === theme.value}
-            >
-              ${theme.label}
-            </option>
-          `
+        (theme) => html` <option value=${theme.value}>${theme.label}</option> `
       )}
     </select>
   `;

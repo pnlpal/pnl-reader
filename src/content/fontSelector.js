@@ -5,15 +5,19 @@ import { useEffect } from "preact/hooks";
 const html = htm.bind(h);
 
 const FontSelector = ({ settings, saveSettings }) => {
-  const fontType = settings.fontType || "system-ui";
+  const fontType = settings.fontType;
+  const defaultFontType =
+    "system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif";
   const changeFontType = (e) => {
     const newFontType = e.target.value;
     const $article = document.getElementById("PNLReaderArticle");
-    if ($article) {
-      const fontFamily_ = `${newFontType}, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif`;
-      $article.style.setProperty("--pico-font-family", fontFamily_);
-      saveSettings({ fontType: newFontType });
+    if (!newFontType) {
+      $article.style.setProperty("--pico-font-family", defaultFontType);
+      return;
     }
+    const fontFamily_ = `${newFontType}, ${defaultFontType}`;
+    $article.style.setProperty("--pico-font-family", fontFamily_);
+    saveSettings({ fontType: newFontType });
   };
 
   // init the font family

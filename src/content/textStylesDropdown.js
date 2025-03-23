@@ -10,8 +10,13 @@ import "./googleFonts/fonts.css";
 const html = htm.bind(h);
 
 const TextStylesDropdown = ({ settings, saveSettings }) => {
+  const defaultTextJustified = true;
   useEffect(() => {
-    handleTextJustified(settings.textJustified);
+    handleTextJustified(
+      settings.textJustified === undefined
+        ? defaultTextJustified
+        : settings.textJustified
+    );
   }, []);
 
   const handleTextJustified = (textJustified) => {
@@ -89,7 +94,9 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                 type="checkbox"
                 id="textJustified"
                 name="textJustified"
-                checked=${settings.textJustified}
+                checked=${settings.textJustified === undefined
+                  ? defaultTextJustified
+                  : settings.textJustified}
                 onChange=${(e) => {
                   const textJustified = e.target.checked;
                   handleTextJustified(textJustified);
