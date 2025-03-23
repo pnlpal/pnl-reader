@@ -77,3 +77,37 @@
   font-family: "Source Serif 4";
   font-style: normal;
 }
+
+/* Source Code Pro */
+@font-face {
+  src: url("./source-code-pro-v23-latin-regular.woff2") format("woff2");
+  font-family: "Source Code Pro";
+  font-style: normal;
+}
+
+/* IBM Plex Mono */
+@font-face {
+  src: url("./ibm-plex-mono-v19-latin-regular.woff2") format("woff2");
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+}
+
+@font-face {
+  src: url("./lobster-v30-latin-regular.woff2") format("woff2");
+  font-family: "Lobster";
+  font-style: normal;
+}
+
+/* Indie Flower */
+@font-face {
+  src: url("./indie-flower-v22-latin-regular.woff2") format("woff2");
+  font-family: "Indie Flower";
+  font-style: normal;
+}
+
+/* Dancing Script */
+@font-face {
+  src: url("./dancing-script-v25-latin-regular.woff2") format("woff2");
+  font-family: "Dancing Script";
+  font-style: normal;
+}
