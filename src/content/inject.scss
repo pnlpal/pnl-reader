@@ -13,8 +13,9 @@
     background: unset; // fix for reddit
 
     padding: 15px 50px;
-    @media (max-width: 768px) {
-      padding: 15px 20px;
+    @media (max-width: 1024px) {
+      padding: var(--pico-block-spacing-vertical)
+        var(--pico-block-spacing-horizontal);
     }
 
     transition: transform 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
@@ -29,11 +30,20 @@
       transform: translateY(-100%);
     }
     h1.title {
+      font-family: "'Patrick Hand', cursive";
       font-size: 2.5em;
       margin-bottom: 0;
-
-      @media (max-width: 768px) {
-        display: none;
+      img {
+        width: 42px;
+        margin-right: 10px;
+        @media (min-width: 876px) {
+          display: none;
+        }
+      }
+      span {
+        @media (max-width: 876px) {
+          display: none;
+        }
       }
     }
     .toolbar {
@@ -50,17 +60,23 @@
         align-items: center;
         > label {
           margin: 0 5px;
+          @media (max-width: 380px) {
+            display: none;
+          }
         }
         select#theme {
           margin: 0 5px;
-          width: 210px;
-          @media (max-width: 768px) {
-            width: 130px;
+          width: 160px;
+          @media (max-width: 1024px) {
+            width: 120px;
           }
         }
         input[name="fontSize"] {
           margin: 0 5px;
           width: 180px;
+          @media (max-width: 1024px) {
+            width: 120px;
+          }
           @media (max-width: 768px) {
             width: 90px;
           }
@@ -200,12 +216,12 @@
   }
 
   .show-xs {
-    @media (min-width: 768px) {
+    @media (min-width: 767px) {
       display: none !important;
     }
   }
   .hide-xs {
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       display: none !important;
     }
   }

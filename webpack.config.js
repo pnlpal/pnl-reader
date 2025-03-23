@@ -12,7 +12,7 @@ var alias = {};
 
 var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
 
-var fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf"];
+var fileExtensions = ["jpg", "jpeg", "gif", "eot", "otf", "svg", "ttf"];
 
 if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;
@@ -56,7 +56,7 @@ var options = {
         ],
       },
       {
-        test: /\.(woff|woff2)$/,
+        test: /\.(png|woff|woff2)$/,
         type: "asset/inline", // Inline the font files as Base64
       },
       {

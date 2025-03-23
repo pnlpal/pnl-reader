@@ -5,6 +5,7 @@ import Arrow from "./arrow.js";
 import ThemeSelector from "./themeSelector.js";
 import TextStylesDropdown from "./textStylesDropdown.js";
 import FontSizeRange from "./fontSizeRange.js";
+import AppLogo from "../images/logo64.png";
 import { throttle } from "lodash";
 const html = htm.bind(h);
 
@@ -56,7 +57,10 @@ export default function ReaderApp({
         class="sticky-on-top ${isHeaderHidden ? "hidden-header" : ""}"
       >
         <nav class="topbar">
-          <h1 class="title">PNL Reader</h1>
+          <h1 class="title">
+            <img src=${AppLogo} alt="PNL Reader" />
+            <span>PNL Reader</span>
+          </h1>
           <ul class="toolbar">
             <li class="hide-xs">
               <label> Font Size </label>
