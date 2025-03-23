@@ -38,6 +38,7 @@ const LineWidthRange = ({ settings, saveSettings }) => {
       step="5"
       value=${lineWidth || defaultLineWidth}
       data-tooltip="Line Width: ${lineWidth || defaultLineWidth}%"
+      title="Line Width: ${lineWidth || defaultLineWidth}%"
       onInput=${handleLineWidthChange}
     />
   `;

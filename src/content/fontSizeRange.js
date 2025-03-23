@@ -30,6 +30,7 @@ const FontSizeRange = ({ settings, saveSettings }) => {
       min="16"
       max="64"
       data-tooltip="Font Size: ${fontSize || defaultFontSize}px"
+      title="Font Size: ${fontSize || defaultFontSize}px"
       data-placement="bottom"
       value=${fontSize || defaultFontSize}
       onInput=${handleFontSizeChange}

@@ -33,6 +33,7 @@ const LineSpacingRange = ({ settings, saveSettings }) => {
       step="0.1"
       value=${lineHeight || defaultLineHeight}
       data-tooltip="Line Spacing: ${lineHeight || defaultLineHeight}"
+      title="Line Spacing: ${lineHeight || defaultLineHeight}"
       onInput=${handleLineHeightChange}
     />
   `;

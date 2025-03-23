@@ -28,6 +28,7 @@ const Arrow = ({ direction, tooltip, href, onClick }) => {
       class="arrow"
       data-direction=${direction}
       data-tooltip=${tooltip}
+      title=${tooltip}
       href=${href}
       onClick=${onClick}
       hidden=${!href}
