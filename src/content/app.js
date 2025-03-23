@@ -21,6 +21,14 @@ export default function ReaderApp({
   };
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
+  const saveGlobalSettings = async (update) => {
+    Object.assign(globalSettings, update);
+    await chrome.runtime.sendMessage({
+      type: "save settings",
+      globalSettings: globalSettings,
+    });
+  };
+
   const saveSettings = (update) => {
     const hasChanged = Object.keys(update).some((key) => {
       return settings[key] !== update[key];
@@ -37,8 +45,8 @@ export default function ReaderApp({
     if (isOnOptionsPage) {
       let _timer;
       clearTimeout(_timer);
-      Object.assign(globalSettings, settings);
-      chrome.storage.sync.set({ globalPNLReaderSettings: settings }, () => {
+
+      saveGlobalSettings(settings).then(() => {
         const $status = document.getElementById("PNLReaderStatus");
         document.querySelector("#PNLReaderStatus>span").innerText =
           "Success! Global settings are saved.";

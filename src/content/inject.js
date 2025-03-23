@@ -57,6 +57,14 @@ function getPageData() {
   return scribblehub() || royalroad() || generalTry();
 }
 
+async function getGlobalSettings() {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: "get settings" }, (response) => {
+      resolve(response || {});
+    });
+  });
+}
+
 // Function to enable read mode
 async function enableReadMode() {
   const documentClone = document.cloneNode(true);
@@ -71,8 +79,8 @@ async function enableReadMode() {
     );
 
     if (!globalSettings) {
-      const saved_ = await chrome.storage.sync.get("globalPNLReaderSettings");
-      globalSettings = saved_?.globalPNLReaderSettings || {};
+      globalSettings = await getGlobalSettings();
+      console.log("Got global settings", globalSettings);
     }
 
     document.body.innerHTML = "";

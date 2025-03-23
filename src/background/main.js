@@ -45,6 +45,16 @@ chrome.runtime.onMessage.addListener(function (...args) {
     chrome.storage.local.set({ enabledTabs });
   });
 
+  message.on("save settings", async ({ globalSettings }) => {
+    // console.log("Save settings", settings);
+    chrome.storage.sync.set({ globalPNLReaderSettings: globalSettings });
+  });
+  message.on("get settings", async () => {
+    // console.log("Get settings");
+    const data = await chrome.storage.sync.get("globalPNLReaderSettings");
+    return data?.globalPNLReaderSettings;
+  });
+
   chrome.tabs.onRemoved.addListener(async function (tid) {
     // console.log("Tab removed", tid);
     enabledTabs = enabledTabs.filter((id) => id !== tid);
