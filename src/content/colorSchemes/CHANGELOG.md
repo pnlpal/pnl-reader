@@ -1,3 +1,12 @@
+# v1.1.0 Mar 23, 2025
+- Introduced font type customization for enhanced readability.
+- Added line spacing and line width adjustment options.
+- Enabled justified text alignment for a cleaner look.
+- Expanded theme library with additional handwriting and monospace styles.
+- Implemented global settings configuration for streamlined customization.
+- Enhanced mobile support for a better user experience.
+
+
 # v1.0.2 Mar 02, 2025
 - Ensured reader mode remains active on the same tab even after a refresh.
 - Fixed an issue where the content script message couldn't wake up the service worker, preventing reader mode activation.
