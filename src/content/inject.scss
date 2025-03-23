@@ -13,7 +13,7 @@
     background: unset; // fix for reddit
 
     padding: 15px 50px;
-    @media (max-width: 1024px) {
+    @media (max-width: 850px) {
       padding: var(--pico-block-spacing-vertical)
         var(--pico-block-spacing-horizontal);
     }
@@ -36,12 +36,12 @@
       img {
         width: 42px;
         margin-right: 10px;
-        @media (min-width: 876px) {
+        @media (min-width: 1100px) {
           display: none;
         }
       }
       span {
-        @media (max-width: 876px) {
+        @media (max-width: 1100px) {
           display: none;
         }
       }
@@ -60,15 +60,15 @@
         align-items: center;
         > label {
           margin: 0 5px;
-          @media (max-width: 380px) {
+          @media (max-width: 576px) {
             display: none;
           }
         }
         select#theme {
           margin: 0 5px;
-          width: 160px;
+          width: 210px;
           @media (max-width: 1024px) {
-            width: 120px;
+            width: 160px;
           }
         }
         input[name="fontSize"] {
