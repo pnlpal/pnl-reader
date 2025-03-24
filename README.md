@@ -10,8 +10,11 @@ Edge: [PNL Reader on Edge Add-ons](https://microsoftedge.microsoft.com/addons/de
 
 1. **Dictionary Integration**: Compatible with Dictionariez, allowing you to instantly look up any word on web pages by simply clicking on it.
 2. **Privacy First**: PNL Reader respects your privacy by only using the **ActiveTab** permission to create reader mode on the webpage you clicked on, without requiring any additional host permissions.
-3. **Dark and Light Mode**: Switch between dark and light modes to suit your reading preference and reduce eye strain.
-4. **Navigation Shortcuts**: Easily navigate to the previous or next page on popular web novel websites such as Scribble and RoyalRoad with convenient keyboard shortcuts.
+3. **Multiple themes**: Includes dark and light modes to suit your reading preference and reduce eye strain.
+4. **Font Options**: Choose from dozens of fonts.
+5. **Customizable**: Set global preferences or customize settings per website.
+6. **Navigation Shortcuts**: Easily navigate to the previous or next page on popular web novel websites such as Scribble and RoyalRoad with convenient keyboard shortcuts.
+7. **Mobile Friendly**: Install [Kiwi] or [Flow] to use Dictionariez on cellphone.
 
 ## Getting Started
 
@@ -39,3 +42,6 @@ We'd love to hear your thoughts and suggestions! If you encounter any issues or 
 PNL Reader is licensed under the MIT License. Feel free to use, modify, and distribute it as per the terms of the license.
 
 Happy Reading!
+
+[kiwi]: https://kiwibrowser.com/
+[flow]: https://play.google.com/store/apps/details?id=org.flow.browser
