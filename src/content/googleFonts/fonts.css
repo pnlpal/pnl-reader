@@ -67,3 +67,27 @@
   font-family: "Dancing Script";
   font-style: normal;
 }
+
+@font-face {
+  src: url("./noto-serif-sc-v31-chinese-simplified_cyrillic_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
+  font-family: "Noto Serif SC";
+  font-style: normal;
+}
+
+@font-face {
+  src: url("./noto-sans-tc-v36-chinese-traditional_latin_latin-ext-regular.woff2") format("woff2");
+  font-family: "Noto Serif TC";
+  font-style: normal;
+}
+
+@font-face {
+  src: url("./noto-serif-jp-v30-japanese_latin-regular.woff2") format("woff2");
+  font-family: "Noto Serif JP";
+  font-style: normal;
+}
+
+@font-face {
+  src: url("./zcool-qingke-huangyou-v15-chinese-simplified_latin-regular.woff2") format("woff2");
+  font-family: "ZCOOL QingKe HuangYou";
+  font-style: normal;
+}
