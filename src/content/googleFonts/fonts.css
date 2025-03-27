@@ -1,69 +1,69 @@
 @font-face {
-  src: url("./baloo-2-v21-latin-regular.woff2") format("woff2");
+  src: url("./baloo-2-v21-devanagari_latin_latin-ext_vietnamese-regular.woff2");
   font-family: "Baloo 2";
   font-style: normal;
 }
 
 @font-face {
-  src: url("./merriweather-v31-latin-regular.woff2") format("woff2");
+  src: url("./merriweather-v31-cyrillic_cyrillic-ext_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Merriweather";
   font-style: normal;
 }
 
 @font-face {
-  src: url("./open-sans-v40-latin-regular.woff2") format("woff2");
+  src: url("./open-sans-v40-cyrillic_cyrillic-ext_greek_greek-ext_hebrew_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Open Sans";
   font-style: normal;
 }
 
 @font-face {
-  src: url("./patrick-hand-v23-latin-regular.woff2") format("woff2");
+  src: url("./patrick-hand-v23-latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Patrick Hand";
   font-style: normal;
 }
 
 @font-face {
-  src: url("./roboto-v47-latin-regular.woff2") format("woff2");
+  src: url("./roboto-v47-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Roboto";
   font-style: normal;
 }
 
 @font-face {
-  src: url("./source-serif-4-v13-latin-regular.woff2") format("woff2");
+  src: url("./source-serif-4-v13-cyrillic_cyrillic-ext_greek_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Source Serif 4";
   font-style: normal;
 }
 
 /* Source Code Pro */
 @font-face {
-  src: url("./source-code-pro-v23-latin-regular.woff2") format("woff2");
+  src: url("./source-code-pro-v23-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Source Code Pro";
   font-style: normal;
 }
 
 /* IBM Plex Mono */
 @font-face {
-  src: url("./ibm-plex-mono-v19-latin-regular.woff2") format("woff2");
+  src: url("./ibm-plex-mono-v19-cyrillic_cyrillic-ext_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "IBM Plex Mono";
   font-style: normal;
 }
 
 @font-face {
-  src: url("./lobster-v30-latin-regular.woff2") format("woff2");
+  src: url("./lobster-v30-cyrillic_cyrillic-ext_latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Lobster";
   font-style: normal;
 }
 
 /* Indie Flower */
 @font-face {
-  src: url("./indie-flower-v22-latin-regular.woff2") format("woff2");
+  src: url("./indie-flower-v22-latin_latin-ext-regular.woff2") format("woff2");
   font-family: "Indie Flower";
   font-style: normal;
 }
 
 /* Dancing Script */
 @font-face {
-  src: url("./dancing-script-v25-latin-regular.woff2") format("woff2");
+  src: url("./dancing-script-v25-latin_latin-ext_vietnamese-regular.woff2") format("woff2");
   font-family: "Dancing Script";
   font-style: normal;
 }
