@@ -92,7 +92,8 @@
           border-color: var(--pico-form-element-border-color);
         }
         .dropdown {
-          overflow: initial;
+          overflow: initial !important; // Some sites have hidden overflow
+          background: inherit; // some sites have white background
           summary {
             --pico-border-color: var(--pico-form-element-border-color);
             .icon-font::before {
