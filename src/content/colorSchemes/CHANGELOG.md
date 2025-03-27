@@ -1,3 +1,8 @@
+# v1.1.1 Mar 27, 2025 
+- Updated fonts to support extended character sets, including Latin-Ext, Cyrillic, and Vietnamese.
+- Added new Chinese and Japanese font options.
+- Introduced tooltips to clarify font type selections.
+
 # v1.1.0 Mar 23, 2025
 - Introduced font type customization for enhanced readability.
 - Added line spacing and line width adjustment options.
