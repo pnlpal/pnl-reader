@@ -61,10 +61,6 @@ const FontSelector = ({ settings, saveSettings }) => {
       label: "Open Sans",
     },
     {
-      value: "Fredoka",
-      label: "Fredoka",
-    },
-    {
       value: "'Baloo 2'",
       label: "Baloo 2",
     },
@@ -84,11 +80,6 @@ const FontSelector = ({ settings, saveSettings }) => {
       value: "'Patrick Hand'",
       label: "Patrick Hand",
     },
-
-    {
-      value: "'Gloria Hallelujah'",
-      label: "Gloria Hallelujah",
-    },
     {
       value: "Lobster, cursive",
       label: "Lobster",
@@ -100,26 +91,6 @@ const FontSelector = ({ settings, saveSettings }) => {
     {
       value: "'Dancing Script', cursive",
       label: "Dancing Script",
-    },
-    {
-      value: "Caveat, cursive",
-      label: "Caveat",
-    },
-    {
-      value: "Chewy",
-      label: "Chewy",
-    },
-    {
-      value: "'Permanent Marker'",
-      label: "Permanent Marker",
-    },
-    {
-      value: "'Luckiest Guy'",
-      label: "Luckiest Guy",
-    },
-    {
-      value: "Bangers",
-      label: "Bangers",
     },
   ];
 
