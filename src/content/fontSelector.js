@@ -53,7 +53,7 @@ const FontSelector = ({ settings, saveSettings }) => {
       label: "Times New Roman",
     },
     {
-      value: "Roboto",
+      value: "Roboto", // A modern sans-serif font with Cyrillic support.
       label: "Roboto",
     },
     {
@@ -61,7 +61,7 @@ const FontSelector = ({ settings, saveSettings }) => {
       label: "Open Sans",
     },
     {
-      value: "'Baloo 2'",
+      value: "'Baloo 2'", // Casual, fun, multilanguage like Hindi, Tamil, etc
       label: "Baloo 2",
     },
     {
@@ -72,16 +72,17 @@ const FontSelector = ({ settings, saveSettings }) => {
       value: "'IBM Plex Mono', monospace",
       label: "IBM Plex Mono",
     },
+
+    {
+      value: "'Patrick Hand'", // Handwriting
+      label: "Patrick Hand",
+    },
     {
       value: "'Comic Sans MS', cursive",
       label: "Comic Sans MS",
     },
     {
-      value: "'Patrick Hand'",
-      label: "Patrick Hand",
-    },
-    {
-      value: "Lobster, cursive",
+      value: "Lobster, cursive", // Decorative
       label: "Lobster",
     },
     {
@@ -89,7 +90,7 @@ const FontSelector = ({ settings, saveSettings }) => {
       label: "Indie Flower",
     },
     {
-      value: "'Dancing Script', cursive",
+      value: "'Dancing Script', cursive", //  Handwriting/Decorative
       label: "Dancing Script",
     },
   ];
