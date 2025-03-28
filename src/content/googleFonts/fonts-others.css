@@ -1,0 +1,17 @@
+@font-face {
+  src: url("./noto-sans-tc-v36-chinese-traditional_latin_latin-ext-regular.woff2") format("woff2");
+  font-family: "Noto Serif TC";
+  font-style: normal;
+}
+
+@font-face {
+  src: url("./noto-serif-jp-v30-japanese_latin-regular.woff2") format("woff2");
+  font-family: "Noto Serif JP";
+  font-style: normal;
+}
+
+@font-face {
+  src: url("./zcool-qingke-huangyou-v15-chinese-simplified_latin-regular.woff2") format("woff2");
+  font-family: "ZCOOL QingKe HuangYou";
+  font-style: normal;
+}
