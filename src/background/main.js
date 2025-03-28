@@ -19,7 +19,13 @@ chrome.runtime.onMessage.addListener(function (...args) {
   if (!tab.url.includes("chrome://")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ["inject.bundle.js"],
+      files: [
+        "inject.bundle.js",
+        "inject-styles.bundle.js",
+        "inject-fonts.bundle.js",
+        "inject-fonts-simplified-chinese.bundle.js",
+        "inject-fonts-others.bundle.js",
+      ],
     });
   }
 });
@@ -71,7 +77,13 @@ chrome.runtime.onMessage.addListener(function (...args) {
         // console.log("Executing script", tabId);
         await chrome.scripting.executeScript({
           target: { tabId: tabId },
-          files: ["inject.bundle.js"],
+          files: [
+            "inject.bundle.js",
+            "inject-styles.bundle.js",
+            "inject-fonts.bundle.js",
+            "inject-fonts-simplified-chinese.bundle.js",
+            "inject-fonts-others.bundle.js",
+          ],
         });
       } catch (e) {
         console.error("Exec script error", e);

@@ -6,9 +6,6 @@ import FontSizeRange from "./fontSizeRange.js";
 import FontSelector from "./fontSelector.js";
 import LineSpacingRange from "./lineSpacingRange.js";
 import LineWidthRange from "./lineWidthRange.js";
-import("./googleFonts/fonts.css");
-import("./googleFonts/fonts-simplified-chinese.css");
-import("./googleFonts/fonts-others.css");
 const html = htm.bind(h);
 
 const TextStylesDropdown = ({ settings, saveSettings }) => {

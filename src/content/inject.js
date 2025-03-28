@@ -1,5 +1,4 @@
 import { Readability } from "@mozilla/readability";
-import "./inject.scss";
 import "./colorSchemes/solarized.scss";
 import "./colorSchemes/dracula.scss";
 import "./colorSchemes/monokai.scss";
