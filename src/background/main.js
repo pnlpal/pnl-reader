@@ -23,8 +23,6 @@ chrome.runtime.onMessage.addListener(function (...args) {
         "inject.bundle.js",
         "inject-styles.bundle.js",
         "inject-fonts.bundle.js",
-        "inject-fonts-simplified-chinese.bundle.js",
-        "inject-fonts-others.bundle.js",
       ],
     });
   }
@@ -81,8 +79,6 @@ chrome.runtime.onMessage.addListener(function (...args) {
             "inject.bundle.js",
             "inject-styles.bundle.js",
             "inject-fonts.bundle.js",
-            "inject-fonts-simplified-chinese.bundle.js",
-            "inject-fonts-others.bundle.js",
           ],
         });
       } catch (e) {

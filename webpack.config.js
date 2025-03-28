@@ -30,18 +30,6 @@ var options = {
       "content",
       "googleFonts/fonts.css"
     ),
-    "inject-fonts-simplified-chinese": path.join(
-      __dirname,
-      "src",
-      "content",
-      "googleFonts/fonts-simplified-chinese.css"
-    ),
-    "inject-fonts-others": path.join(
-      __dirname,
-      "src",
-      "content",
-      "googleFonts/fonts-others.css"
-    ),
     background: path.join(__dirname, "src", "background", "main.js"),
   },
   output: {

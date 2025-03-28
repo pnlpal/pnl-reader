@@ -71,28 +71,6 @@ const FontSelector = ({ settings, saveSettings }) => {
         "A clean and versatile sans-serif font with excellent readability and multilingual support.",
     },
     {
-      value: "'Noto Serif SC', serif",
-      label: "Noto Serif SC",
-      tooltip:
-        "aka 思源宋体, a serif font with Simplified Chinese, Cyrillic and Vietnamese support.",
-    },
-    {
-      value: "'Noto Serif TC', serif",
-      label: "Noto Serif TC",
-      tooltip: "aka 思源宋体, a serif font with Traditional Chinese support.",
-    },
-    {
-      value: "'Noto Serif JP', serif",
-      label: "Noto Serif JP",
-      tooltip: "A serif font with Japanese support.",
-    },
-    {
-      value: "'ZCOOL QingKe HuangYou', sans-serif",
-      label: "ZCOOL QingKe HuangYou",
-      tooltip:
-        "aka 站酷庆科黄油体, a sans-serif font with Simplified Chinese support.",
-    },
-    {
       value: "'Baloo 2'", // Casual, fun, multilanguage like Hindi, Tamil, etc
       label: "Baloo 2",
       tooltip:
