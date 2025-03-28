@@ -121,10 +121,3 @@ if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 1000) {
   chrome.runtime.sendMessage({ type: "reader mode disabled" });
   location.reload();
 }
-
-const isOnOptionsPage =
-  window.location.href.includes("extension://") &&
-  window.location.href.includes("/options.html");
-if (isOnOptionsPage) {
-  document.body.style.display = "block";
-}
