@@ -33,22 +33,23 @@ const FontSelector = ({ settings, saveSettings }) => {
       tooltip: "Default system font, usually sans-serif.",
     },
     {
-      value: "'Source Serif 4'",
+      value: "'Source Serif 4', serif",
       label: "Source Serif 4",
       tooltip: "A serif font with Cyrillic, Greek and Vietnamese support.",
     },
     {
-      value: "Georgia",
+      value: "Georgia, serif",
       label: "Georgia",
       tooltip: "A classic serif font designed for readability on screens.",
     },
     {
-      value: "Merriweather",
+      value: "Merriweather, serif",
       label: "Merriweather",
       tooltip: "A serif font with Cyrillic and Vietnamese support.",
     },
     {
-      value: "'Times New Roman'",
+      value:
+        "'Times New Roman', 'Liberation Serif', STFangsong, FangSong, serif",
       label: "Times New Roman",
       tooltip: "A classic serif font widely used in print and digital media.",
     },
