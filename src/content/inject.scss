@@ -11,6 +11,9 @@
 #PNLReader {
   padding: 0;
   background-color: var(--pico-background-color);
+  @media print {
+    background-color: var(--pico-card-background-color);
+  }
 
   --pico-form-element-background-color: var(--pico-card-background-color);
 
@@ -198,6 +201,11 @@
       --pico-block-spacing-vertical: 1em;
     }
 
+    @media print {
+      border: none;
+      box-shadow: none;
+    }
+
     header {
       position: initial; // fix for some sites
       height: auto; // fix for some sites
@@ -206,10 +214,15 @@
       background-color: var(--pico-card-background-color);
       filter: brightness(0.9);
 
+      @media print {
+        border: none;
+        filter: none;
+      }
+
       details {
         background: unset; // fix for reddit
         summary.title {
-          font-size: var(--pico-font-size);
+          font-size: larger;
           line-height: var(--pnl-reader-line-height);
           color: var(--pico-h1-color) !important;
         }
