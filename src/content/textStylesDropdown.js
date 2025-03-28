@@ -6,6 +6,7 @@ import FontSizeRange from "./fontSizeRange.js";
 import FontSelector from "./fontSelector.js";
 import LineSpacingRange from "./lineSpacingRange.js";
 import LineWidthRange from "./lineWidthRange.js";
+
 const html = htm.bind(h);
 
 const TextStylesDropdown = ({ settings, saveSettings }) => {

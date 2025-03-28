@@ -2,6 +2,8 @@ import { Readability } from "@mozilla/readability";
 import { h, render } from "preact";
 import ReaderApp from "./app.js";
 import htm from "htm";
+import "./inject.scss";
+
 const html = htm.bind(h);
 let originalContent = document.body.cloneNode(true);
 let readerModeEnabledDate = document.documentElement.getAttribute(

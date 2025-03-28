@@ -23,13 +23,6 @@ var options = {
   entry: {
     // popup: path.join(__dirname, "src", "js", "popup.js"),
     inject: path.join(__dirname, "src", "content", "inject.js"),
-    "inject-styles": path.join(__dirname, "src", "content", "inject.scss"),
-    "inject-fonts": path.join(
-      __dirname,
-      "src",
-      "content",
-      "googleFonts/fonts.css"
-    ),
     background: path.join(__dirname, "src", "background", "main.js"),
   },
   output: {
