@@ -2,6 +2,12 @@
   $parent-selector: "#PNLReader"
 );
 
+@import "./colorSchemes/solarized.scss";
+@import "./colorSchemes/dracula.scss";
+@import "./colorSchemes/monokai.scss";
+@import "./colorSchemes/iceberg.scss";
+@import "./colorSchemes/typewriter.scss";
+
 #PNLReader {
   padding: 0;
   background-color: var(--pico-background-color);
@@ -16,6 +22,9 @@
     @media (max-width: 850px) {
       padding: var(--pico-block-spacing-vertical)
         var(--pico-block-spacing-horizontal);
+    }
+    @media print {
+      display: none;
     }
 
     transition: transform 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
@@ -86,11 +95,18 @@
           background-color: var(--pico-primary);
           border-color: var(--pico-primary);
         }
-        #toggleReadModeBtn {
+        #toggleReadModeBtn,
+        #printBtn {
           display: flex;
           margin: 0 5px;
           border-color: var(--pico-form-element-border-color);
         }
+        #printBtn {
+          @media (max-width: 850px) {
+            display: none;
+          }
+        }
+
         .dropdown {
           overflow: initial !important; // Some sites have hidden overflow
           background: inherit; // some sites have white background
@@ -224,6 +240,9 @@
     }
   }
   > footer {
+    @media print {
+      display: none;
+    }
     .arrow {
       position: fixed;
       bottom: 20px;

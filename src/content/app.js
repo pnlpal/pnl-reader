@@ -120,6 +120,31 @@ export default function ReaderApp({
             </li>
 
             <li>
+              <!-- print button -->
+              <button
+                role="button"
+                id="printBtn"
+                class="secondary outline"
+                onClick=${() => window.print()}
+                aria-label="Print"
+                data-tooltip="Print"
+                data-placement="left"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M19 8h-1V4H6v4H5c-1.1 0-2 .9-2 2v7h4v3h10v-3h4v-7c0-1.1-.9-2-2-2zm-6 9H9v-2h4v2zm3-9H8V5h8v3z"
+                  />
+                </svg>
+              </button>
+            </li>
+
+            <li>
               <button
                 role="button"
                 id="toggleReadModeBtn"
