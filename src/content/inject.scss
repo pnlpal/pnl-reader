@@ -306,4 +306,17 @@
       display: none;
     }
   }
+
+  pre {
+    text-align: center;
+  }
+  a img {
+    width: 200px !important;
+  }
+  iframe {
+    width: 80%;
+    height: 450px;
+    border-radius: 10px;
+    margin: 20px auto;
+  }
 }
