@@ -8,6 +8,10 @@
 @import "./colorSchemes/iceberg.scss";
 @import "./colorSchemes/typewriter.scss";
 
+@import "./fontello-embedded.scss";
+@import "./arrow.scss";
+@import "./googleFonts/fonts.css";
+
 #PNLReader {
   padding: 0;
   background-color: var(--pico-background-color);

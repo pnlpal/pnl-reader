@@ -37,10 +37,21 @@ var options = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          {
+            loader: "css-loader",
+            options: {
+              esModule: false, // Disable ES modules to allow CommonJS-style imports
+              exportType: "string", // Export CSS as a string
+            },
+          },
+          "sass-loader", // Compiles SCSS to CSS
+        ],
       },
+
       {
         test: /\.less$/,
         use: [

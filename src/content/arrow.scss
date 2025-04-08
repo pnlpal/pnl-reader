@@ -8,8 +8,7 @@
     }
 
     cursor: pointer;
-    transition: transform 0.1s;
-    $transition-time: 0.15s;
+    transition: transform 0.2s;
 
     &[data-direction="left"] {
       .arrow-top {
@@ -37,7 +36,7 @@
         height: 100%;
         position: absolute;
         top: 0;
-        transition: all $transition-time;
+        transition: all 0.2s;
       }
     }
 
@@ -59,14 +58,14 @@
       &:after {
         left: 0;
         right: 100%;
-        transition-delay: $transition-time;
+        transition-delay: 0.2s;
       }
     }
 
     &:hover {
       .arrow-top:after {
         left: 0;
-        transition-delay: $transition-time;
+        transition-delay: 0.2s;
       }
 
       .arrow-bottom:after {

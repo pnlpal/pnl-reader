@@ -1,7 +1,6 @@
 import { h } from "preact";
 import htm from "htm";
 import { useEffect } from "preact/hooks";
-import "./fontello-embedded.scss";
 import FontSizeRange from "./fontSizeRange.js";
 import FontSelector from "./fontSelector.js";
 import LineSpacingRange from "./lineSpacingRange.js";

@@ -2,7 +2,8 @@ import { Readability } from "@mozilla/readability";
 import { h, render } from "preact";
 import ReaderApp from "./app.js";
 import htm from "htm";
-import "./inject.scss";
+
+import styles from "./inject.scss";
 
 const html = htm.bind(h);
 let originalContent = document.body.cloneNode(true);
@@ -78,8 +79,16 @@ async function enableReadMode() {
       globalSettings = await getGlobalSettings();
       console.log("Got global settings", globalSettings);
     }
-
+    document.head.innerHTML = "";
     document.body.innerHTML = "";
+
+    function injectStyles() {
+      const style = document.createElement("style");
+      style.textContent = styles;
+      document.head.appendChild(style);
+    }
+    injectStyles();
+
     render(
       html`<${ReaderApp}
         article=${article}

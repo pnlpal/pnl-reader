@@ -1,7 +1,6 @@
 import { h } from "preact";
 import htm from "htm";
 import { useEffect } from "preact/hooks";
-import "./googleFonts/fonts.css";
 
 const html = htm.bind(h);
 

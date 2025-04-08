@@ -1,7 +1,6 @@
 import { h } from "preact";
 import { useEffect, useRef } from "preact/hooks";
 import htm from "htm";
-import "./arrow.scss";
 
 const html = htm.bind(h);
 
