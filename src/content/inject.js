@@ -92,7 +92,7 @@ async function enableReadMode() {
     render(
       html`<${ReaderApp}
         article=${article}
-        onToggle=${toggleReadMode}
+        onToggle=${exitReadMode}
         pageData=${pageData}
         globalSettings=${globalSettings}
         +
@@ -103,26 +103,16 @@ async function enableReadMode() {
     console.error("Failed to parse the article content.");
   }
 }
-function toggleReadMode() {
-  if (isReadMode) {
-    document.body = originalContent;
-    const PNLReader = document.getElementById("PNLReader");
-    if (PNLReader) {
-      PNLReader.remove();
-    }
-    document.documentElement.removeAttribute("data-theme");
-    chrome.runtime.sendMessage({ type: "reader mode disabled" });
-  } else {
-    enableReadMode();
-  }
-  isReadMode = !isReadMode;
+function exitReadMode() {
+  chrome.runtime.sendMessage({ type: "reader mode disabled" });
+  location.reload();
 }
 // console.log("Reader mode:", readerModeEnabledDate);
 if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 2000) {
   console.log("Read mode is enabled in the last 2 seconds. Ignoring.");
 } else if (!isReadMode) {
-  toggleReadMode();
+  enableReadMode();
+  isReadMode = true;
 } else {
-  chrome.runtime.sendMessage({ type: "reader mode disabled" });
-  location.reload();
+  exitReadMode();
 }
