@@ -1,3 +1,8 @@
+# v1.2.0 Apr 09, 2025
+- Cleared the webpage's head section when the reader is enabled to prevent original styles from interfering.
+- Fixed an issue where exiting reader mode failed if the background script was inactive.
+- Ensured the page always reloads upon exiting reader mode for consistent behavior.
+
 # v1.1.1 Mar 27, 2025 
 - Updated fonts to support extended character sets, including Latin-Ext, Cyrillic, and Vietnamese.
 - Introduced tooltips to provide clarity when selecting font types.
