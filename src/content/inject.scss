@@ -222,15 +222,6 @@
         border: none;
         filter: none;
       }
-
-      details {
-        background: unset; // fix for reddit
-        summary.title {
-          font-size: larger;
-          line-height: var(--pnl-reader-line-height);
-          color: var(--pico-h1-color) !important;
-        }
-      }
     }
 
     img {
@@ -242,18 +233,10 @@
         color: var(--pico-muted-color);
       }
     }
-    figure[typeof~="mw:File/Thumb"] > figcaption {
-      display: none; // hide image caption for wikipedia, temporary fix
-    }
+
     article {
       box-shadow: none;
       padding: 0;
-    }
-
-    .page p {
-      // fix for meganovel.com, override their fixed font size
-      font-size: var(--pico-font-size);
-      line-height: var(--pnl-reader-line-height);
     }
   }
   > footer {
