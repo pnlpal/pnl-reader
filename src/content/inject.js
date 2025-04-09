@@ -6,11 +6,13 @@ import htm from "htm";
 import styles from "./inject.scss";
 
 const html = htm.bind(h);
-let originalContent = document.body.cloneNode(true);
-let readerModeEnabledDate = document.documentElement.getAttribute(
+const readerModeEnabledDate = document.documentElement.getAttribute(
   "data-pnl-reader-mode-date"
 );
-let isReadMode = !!readerModeEnabledDate;
+const readerModeExitDate = localStorage.getItem(
+  "data-pnl-reader-mode-exit-date"
+);
+const isReadMode = !!readerModeEnabledDate;
 let globalSettings;
 
 function getPageData() {
@@ -104,15 +106,21 @@ async function enableReadMode() {
   }
 }
 function exitReadMode() {
+  localStorage.setItem("data-pnl-reader-mode-exit-date", Date.now());
   chrome.runtime.sendMessage({ type: "reader mode disabled" });
   location.reload();
 }
 // console.log("Reader mode:", readerModeEnabledDate);
 if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 2000) {
   console.log("Read mode is enabled in the last 2 seconds. Ignoring.");
+} else if (
+  readerModeExitDate &&
+  Date.now() - parseInt(readerModeExitDate) < 2000
+) {
+  console.log("Read mode is disabled in the last 2 seconds. Ignoring.");
+  chrome.runtime.sendMessage({ type: "reader mode disabled" });
 } else if (!isReadMode) {
   enableReadMode();
-  isReadMode = true;
 } else {
   exitReadMode();
 }
