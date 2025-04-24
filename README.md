@@ -14,7 +14,7 @@ Edge: [PNL Reader on Edge Add-ons](https://microsoftedge.microsoft.com/addons/de
 4. **Font Options**: Choose from dozens of fonts.
 5. **Customizable**: Set global preferences or customize settings per website.
 6. **Navigation Shortcuts**: Easily navigate to the previous or next page on popular web novel websites such as Scribble and RoyalRoad with convenient keyboard shortcuts.
-7. **Mobile Friendly**: Install [Kiwi] or [Flow] to use Dictionariez on cellphone.
+7. **Mobile Friendly**: Install [Kiwi] or [Flow] to use PNL Reader on cellphone.
 
 ## Getting Started
 
