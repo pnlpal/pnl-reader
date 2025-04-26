@@ -24,6 +24,7 @@ var options = {
     // popup: path.join(__dirname, "src", "js", "popup.js"),
     inject: path.join(__dirname, "src", "content", "inject.js"),
     background: path.join(__dirname, "src", "background", "main.js"),
+    "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -79,6 +80,10 @@ var options = {
         test: /\.html$/,
         loader: "html-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.mjs$/,
+        type: "javascript/auto",
       },
     ],
   },
@@ -136,6 +141,12 @@ var options = {
       template: path.join(__dirname, "src", "options.html"),
       filename: "options.html",
       cache: false,
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "pdf-viewer.html"),
+      filename: "pdf-viewer.html",
+      cache: false,
+      chunks: ["pdf-viewer"],
     }),
   ],
   infrastructureLogging: {
