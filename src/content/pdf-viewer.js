@@ -1,8 +1,4 @@
-import { h, render } from "preact";
-import ReaderApp from "./app.js";
-import htm from "htm";
-import styles from "./inject.scss";
-
+import "./pdf-viewer.less";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorker from "file-loader!pdfjs-dist/build/pdf.worker.mjs";
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
@@ -10,58 +6,52 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 const urlParams = new URLSearchParams(window.location.search);
 const pdfUrl = urlParams.get("file");
 console.log("PDF URL:", pdfUrl);
-
-async function parsePDF(url) {
+async function renderPDFWithText(url) {
   const loadingTask = pdfjsLib.getDocument(url);
   const pdf = await loadingTask.promise;
 
-  let textContent = "";
+  const container = document.createElement("div");
+  container.id = "pdf-container";
+  document.body.appendChild(container);
+
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
-    const text = await page.getTextContent();
 
-    let previousY = null;
-    text.items.forEach((item) => {
-      const currentY = item.transform[5];
+    // Create a container for the page
+    const pageContainer = document.createElement("div");
+    pageContainer.className = "pdf-page-container";
+    container.appendChild(pageContainer);
 
-      // Add a newline if the Y position changes significantly
-      if (previousY !== null && Math.abs(currentY - previousY) > 10) {
-        textContent += "\n";
-      }
+    // Create a canvas for the visual rendering
+    const canvas = document.createElement("canvas");
+    canvas.className = "pdf-page";
+    pageContainer.appendChild(canvas);
 
-      textContent += item.str;
-      previousY = currentY;
+    const context = canvas.getContext("2d");
+    const viewport = page.getViewport({ scale: 1.5 });
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    // Render the page into the canvas
+    // await page.render({ canvasContext: context, viewport }).promise;
+
+    // Extract and overlay the text
+    const textContent = await page.getTextContent();
+    const textLayerDiv = document.createElement("div");
+    textLayerDiv.className = "textLayer";
+    pageContainer.appendChild(textLayerDiv);
+
+    // Use the TextLayer class to render the text layer8
+    const textLayer = new pdfjsLib.TextLayer({
+      textContentSource: textContent,
+      container: textLayerDiv,
+      viewport,
     });
 
-    textContent += "\n\n"; // Add a page break
+    await textLayer.render();
   }
-  return `<pre>${textContent}</pre>`;
 }
 
-const html = htm.bind(h);
-let globalSettings;
-
-// Function to enable read mode
-async function enableReadMode() {
-  const documentClone = document.cloneNode(true);
-  // const article = isPDF()
-  //   ? { content: await parsePDF(location.href) }
-  //   : new Readability(documentClone).parse();
-  const pdfContent = await parsePDF(pdfUrl);
-  const article = { content: pdfContent };
-  const pageData = {};
-
-  function injectStyles() {
-    const style = document.createElement("style");
-    style.textContent = styles;
-    document.head.appendChild(style);
-  }
-  injectStyles();
-
-  render(
-    html`<${ReaderApp} article=${article} pageData=${pageData} + />`,
-    document.body
-  );
-}
-
-enableReadMode();
+// Call the function to render the PDF with text
+renderPDFWithText(pdfUrl);
