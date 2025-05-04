@@ -34,7 +34,7 @@ To see PNL Reader in action, check out our [introduction video](https://www.yout
 
 ## Feedback and Support
 
-We'd love to hear your thoughts and suggestions! If you encounter any issues or have any feedback, please reach out to us at [Programming N' Language Community](https://pnlpal.dev/category/3/feedback).
+We'd love to hear your thoughts and suggestions! If you encounter any issues or have any feedback, please reach out to us at [Programming N' Language Community](https://pnl.dev/category/3/feedback).
 
 
 ## License
