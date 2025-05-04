@@ -87,10 +87,33 @@ function cleanHtmlHead() {
   }
 }
 
+function applyCustomStyles() {
+  const customStyles = localStorage.getItem("PNLReader-custom-styles");
+  if (customStyles) {
+    const styleElement = document.createElement("style");
+    styleElement.textContent = customStyles;
+    document.head.appendChild(styleElement);
+  }
+}
+
+function getCustomArticle() {
+  const customArticleContentSelector = localStorage.getItem(
+    "PNLReader-article-content-selector"
+  );
+  if (customArticleContentSelector) {
+    const customArticle = document.querySelector(customArticleContentSelector);
+    if (customArticle) {
+      return {
+        content: customArticle.innerHTML,
+      };
+    }
+  }
+}
+
 // Function to enable read mode
 async function enableReadMode() {
   const documentClone = document.cloneNode(true);
-  const article = new Readability(documentClone).parse();
+  const article = getCustomArticle() || new Readability(documentClone).parse();
 
   if (article) {
     chrome.runtime.sendMessage({ type: "reader mode enabled" });
@@ -107,6 +130,7 @@ async function enableReadMode() {
 
     cleanHtmlHead();
     document.body.innerHTML = "";
+    applyCustomStyles();
 
     function injectStyles() {
       const style = document.createElement("style");
