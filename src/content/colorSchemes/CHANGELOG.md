@@ -1,3 +1,8 @@
+# v1.3.0 May 04, 2025
+- Added support for opening PDF files directly in PNL PDF Reader (Chrome-based browsers only).
+- Fixed an issue preventing word lookups using Dictionariez.
+- Introduced support for custom article content selectors and styles stored in local storage.
+
 # v1.2.0 Apr 09, 2025
 - Cleared the webpage's head section when the reader is enabled to prevent original styles from interfering.
 - Fixed an issue where exiting reader mode failed if the background script was inactive.
