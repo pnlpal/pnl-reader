@@ -15,8 +15,20 @@ chrome.runtime.onMessage.addListener(function (...args) {
   return true;
 });
 
-function isPDF(url) {
-  return url.endsWith(".pdf");
+function parsePDFURL(url) {
+  if (url.endsWith(".pdf")) {
+    const urlObj = new URL(url);
+    const fileParam = urlObj.searchParams.get("file");
+    if (fileParam?.endsWith(".pdf")) {
+      return fileParam;
+    }
+    if (url.startsWith("chrome-extension://")) {
+      // ie. chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/file:///C:/Users/xxx/Documents/a.pdf
+      return url.match(/(file|http|https):\/\/.*\.pdf/)?.[0];
+    }
+
+    return url;
+  }
 }
 
 (function setupPageUpdater() {
@@ -27,7 +39,7 @@ function isPDF(url) {
   });
 
   (chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
-    if (isPDF(tab.url)) {
+    if (parsePDFURL(tab.url)) {
       return;
     } else if (!tab.url.includes("chrome://")) {
       chrome.scripting.executeScript({
@@ -89,12 +101,12 @@ function isPDF(url) {
   let pdfBlobUrl = null;
 
   (chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
-    if (isPDF(tab.url)) {
+    if (parsePDFURL(tab.url)) {
       chrome.tabs.create({
         url:
           chrome.runtime.getURL("pdf-viewer.html") +
           "?file=" +
-          encodeURIComponent(tab.url),
+          encodeURIComponent(parsePDFURL(tab.url)),
       });
     }
   });
