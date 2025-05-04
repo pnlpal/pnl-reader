@@ -25,11 +25,5 @@
     "128": "images/logo128.png"
   },
 
-  "web_accessible_resources": [
-    {
-      "resources": ["*.mjs", "*.html"],
-      "matches": ["<all_urls>"]
-    }
-  ],
   "host_permissions": ["file:///*"]
 }
