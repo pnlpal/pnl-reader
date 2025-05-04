@@ -91,7 +91,10 @@ function isPDF(url) {
   (chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
     if (isPDF(tab.url)) {
       chrome.tabs.create({
-        url: chrome.runtime.getURL("pdf-viewer.html") + "?file=" + tab.url,
+        url:
+          chrome.runtime.getURL("pdf-viewer.html") +
+          "?file=" +
+          encodeURIComponent(tab.url),
       });
     }
   });
