@@ -64,6 +64,29 @@ async function getGlobalSettings() {
   });
 }
 
+function cleanHtmlHead() {
+  for (const node of document.head.childNodes) {
+    if (node.tagName === "LINK" && node.rel === "stylesheet") {
+      // console.log("Removing stylesheet:", node.href);
+      node.remove();
+    } else if (node.tagName === "SCRIPT") {
+      // console.log("Removing script:", node.src);
+      node.remove();
+    } else if (node.tagName === "STYLE") {
+      const style = node.innerHTML;
+      const dictionariezKeyWords = [
+        "dictionariez",
+        "fairydict",
+        "dictionaries-tooltip",
+      ];
+      if (!dictionariezKeyWords.some((key) => style.includes(key))) {
+        // console.log("Removing style:", style);
+        node.remove();
+      }
+    }
+  }
+}
+
 // Function to enable read mode
 async function enableReadMode() {
   const documentClone = document.cloneNode(true);
@@ -81,7 +104,8 @@ async function enableReadMode() {
       globalSettings = await getGlobalSettings();
       console.log("Got global settings", globalSettings);
     }
-    document.head.innerHTML = "";
+
+    cleanHtmlHead();
     document.body.innerHTML = "";
 
     function injectStyles() {
