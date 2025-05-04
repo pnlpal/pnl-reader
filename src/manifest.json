@@ -6,6 +6,12 @@
   "background": {
     "service_worker": "background.bundle.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["https://pnl.dev/*"],
+      "js": ["inject-pdf-reader.bundle.js"]
+    }
+  ],
   "action": {
     "default_title": "PNL Reader: simple viewer mode for novel lovers"
   },
@@ -18,6 +24,7 @@
     "64": "images/logo64.png",
     "128": "images/logo128.png"
   },
+
   "web_accessible_resources": [
     {
       "resources": ["*.mjs", "*.html"],

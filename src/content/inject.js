@@ -2,31 +2,8 @@ import { Readability } from "@mozilla/readability";
 import { h, render } from "preact";
 import ReaderApp from "./app.js";
 import htm from "htm";
-import * as pdfjsLib from "pdfjs-dist";
-import pdfjsWorker from "file-loader!pdfjs-dist/build/pdf.worker.mjs";
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
 import styles from "./inject.scss";
-
-function isPDF() {
-  return (
-    location.pathname.endsWith(".pdf") ||
-    document.contentType === "application/pdf"
-  );
-}
-async function parsePDF(url) {
-  const loadingTask = pdfjsLib.getDocument(url);
-  const pdf = await loadingTask.promise;
-
-  let textContent = "";
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const text = await page.getTextContent();
-    text.items.forEach((item) => {
-      textContent += item.str + " ";
-    });
-  }
-  return textContent;
-}
 
 const html = htm.bind(h);
 const readerModeEnabledDate = document.documentElement.getAttribute(
@@ -90,18 +67,7 @@ async function getGlobalSettings() {
 // Function to enable read mode
 async function enableReadMode() {
   const documentClone = document.cloneNode(true);
-  // const article = isPDF()
-  //   ? { content: await parsePDF(location.href) }
-  //   : new Readability(documentClone).parse();
-
-  if (isPDF()) {
-    const pdfViewerUrl = chrome.runtime.getURL("pdf-viewer.html");
-    window.open(
-      `${pdfViewerUrl}?file=${encodeURIComponent(location.href)}`,
-      "_blank"
-    );
-    return;
-  }
+  const article = new Readability(documentClone).parse();
 
   if (article) {
     chrome.runtime.sendMessage({ type: "reader mode enabled" });

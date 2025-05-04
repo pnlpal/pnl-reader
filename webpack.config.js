@@ -23,6 +23,12 @@ var options = {
   entry: {
     // popup: path.join(__dirname, "src", "js", "popup.js"),
     inject: path.join(__dirname, "src", "content", "inject.js"),
+    "inject-pdf-reader": path.join(
+      __dirname,
+      "src",
+      "content",
+      "inject-pdf-reader.js"
+    ),
     background: path.join(__dirname, "src", "background", "main.js"),
     "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
   },
@@ -113,6 +119,7 @@ var options = {
             if (env.BROWSER === "Firefox") {
               json.manifest_version = 2; // Firefox has host permission issue with manifest v3
               json.browser_action = json.action;
+              delete json.host_permissions;
               delete json.action;
               delete json.minimum_chrome_version;
               json.background = {
@@ -141,6 +148,7 @@ var options = {
       template: path.join(__dirname, "src", "options.html"),
       filename: "options.html",
       cache: false,
+      chunks: ["inject"],
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "pdf-viewer.html"),

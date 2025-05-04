@@ -15,14 +15,9 @@ chrome.runtime.onMessage.addListener(function (...args) {
   return true;
 });
 
-(chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
-  if (!tab.url.includes("chrome://")) {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ["inject.bundle.js"],
-    });
-  }
-});
+function isPDF(url) {
+  return url.endsWith(".pdf");
+}
 
 (function setupPageUpdater() {
   let enabledTabs = [];
@@ -30,7 +25,17 @@ chrome.runtime.onMessage.addListener(function (...args) {
     enabledTabs = data.enabledTabs || [];
     // console.log("Enabled tabs:", enabledTabs);
   });
-  // console.log("Setting up page updater");
+
+  (chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
+    if (isPDF(tab.url)) {
+      return;
+    } else if (!tab.url.includes("chrome://")) {
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["inject.bundle.js"],
+      });
+    }
+  });
 
   message.on("reader mode enabled", async (_, sender) => {
     // console.log("Enabled reader mode", sender.tab.id);
@@ -77,5 +82,31 @@ chrome.runtime.onMessage.addListener(function (...args) {
         console.error("Exec script error", e);
       }
     }
+  });
+})();
+
+(function setupPdfReader() {
+  let pdfBlobUrl = null;
+
+  (chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
+    if (isPDF(tab.url)) {
+      chrome.tabs.create({
+        url: chrome.runtime.getURL("pdf-viewer.html") + "?file=" + tab.url,
+      });
+    }
+  });
+
+  message.on("pdf content", async ({ blobUrl }) => {
+    pdfBlobUrl = blobUrl;
+    chrome.tabs.create({
+      url: "https://pnl.dev/pdf-reader-ii/",
+    });
+  });
+
+  message.on("get pdf blob url", async () => {
+    return { pdfBlobUrl };
+  });
+  message.on("finished reading pdf content", async () => {
+    pdfBlobUrl = null;
   });
 })();
