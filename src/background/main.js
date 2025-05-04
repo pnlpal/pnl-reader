@@ -102,7 +102,7 @@ function isPDF(url) {
   message.on("pdf content", async ({ blobUrl }) => {
     pdfBlobUrl = blobUrl;
     chrome.tabs.create({
-      url: "https://pnl.dev/pdf-reader-ii/",
+      url: "https://pnl.dev/pdf-reader/",
     });
   });
 

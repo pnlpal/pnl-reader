@@ -15,7 +15,7 @@ chrome.runtime.sendMessage({ type: "get pdf blob url" }, (response) => {
         chrome.runtime.sendMessage({
           type: "finished reading pdf content",
         });
-        window.postMessage({
+        (window.frames[0] || window).postMessage({
           type: "PDF_CONTENT",
           arrayBuffer: arrayBuffer,
         });
