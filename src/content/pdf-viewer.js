@@ -14,13 +14,30 @@ function fetchPDFContent() {
         type: "pdf content",
         blobUrl: window.blobUrl,
       });
-
-      // const readerUrl = "http://localhost:4200/pdf-reader-ii/";
-      // window.open(readerUrl, "_blank");
     })
     .catch((error) => {
       console.error("Error fetching PDF content:", error);
-      return null;
+      const $loadingMessage = document.querySelector(".loading-message");
+      $loadingMessage.style.display = "none";
+      const $errorMessage = document.querySelector(".error-message");
+      $errorMessage.style.display = "block";
+
+      // Countdown timer
+      let countdown = 5;
+      const countdownElement = document.getElementById("countdown");
+      countdownElement.textContent = countdown;
+
+      const interval = setInterval(() => {
+        countdown -= 1;
+        countdownElement.textContent = countdown;
+
+        if (countdown <= 0) {
+          clearInterval(interval);
+          chrome.runtime.sendMessage({
+            type: "redirect to pnl-reader",
+          });
+        }
+      }, 1000);
     });
 }
 

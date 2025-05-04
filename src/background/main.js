@@ -99,21 +99,28 @@ function parsePDFURL(url) {
 
 (function setupPdfReader() {
   let pdfBlobUrl = null;
+  let tempTabId = null;
 
-  (chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
+  (chrome.action || chrome.browserAction).onClicked.addListener(async (tab) => {
     if (parsePDFURL(tab.url)) {
-      chrome.tabs.create({
+      const tempTab = await chrome.tabs.create({
         url:
           chrome.runtime.getURL("pdf-viewer.html") +
           "?file=" +
           encodeURIComponent(parsePDFURL(tab.url)),
       });
+      tempTabId = tempTab.id;
     }
   });
 
   message.on("pdf content", async ({ blobUrl }) => {
     pdfBlobUrl = blobUrl;
     chrome.tabs.create({
+      url: "https://pnl.dev/pdf-reader/",
+    });
+  });
+  message.on("redirect to pnl-reader", async () => {
+    chrome.tabs.update(tempTabId, {
       url: "https://pnl.dev/pdf-reader/",
     });
   });
