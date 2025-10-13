@@ -2,7 +2,6 @@ import { Readability } from "@mozilla/readability";
 import { h, render } from "preact";
 import ReaderApp from "./app.js";
 import htm from "htm";
-import utils from "utils";
 import styles from "./inject.scss";
 
 const html = htm.bind(h);
@@ -172,31 +171,3 @@ if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 2000) {
 } else {
   exitReadMode();
 }
-
-async function speak(text) {
-  const selection = window.getSelection().toString().trim();
-  text = typeof text === "string" ? text.trim() : selection;
-  if (!text) return;
-
-  console.log("Speaking text:", text);
-  const speakResult = await utils.send("speak text", { text });
-
-  console.log("Speak result:", speakResult);
-  if (speakResult.audio) {
-    const uint8 = new Uint8Array(speakResult.audio);
-    const blob = new Blob([uint8], { type: "audio/mpeg" }); // or correct mime type
-    const url = URL.createObjectURL(blob);
-
-    // Play the audio
-    const audio = new Audio(url);
-    audio.play();
-  } else {
-    console.error(
-      "No audio URL received.",
-      speakResult.error || "Unknown error"
-    );
-  }
-}
-
-document.addEventListener("mouseup", speak);
-window.speak = speak; // For testing in console

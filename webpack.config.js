@@ -8,11 +8,14 @@ var webpack = require("webpack"),
   TerserPlugin = require("terser-webpack-plugin");
 
 // load the secrets
-var alias = {};
+var alias = {
+  react: "preact/compat",
+  "react-dom": "preact/compat",
+};
 
 var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
 
-var fileExtensions = ["jpg", "jpeg", "gif", "eot", "otf", "svg", "ttf"];
+var fileExtensions = ["jpg", "jpeg", "gif", "eot", "otf", "ttf"];
 
 if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;

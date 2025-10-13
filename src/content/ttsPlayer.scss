@@ -1,0 +1,150 @@
+.tts-player-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: var(--pico-background-color, #23272f);
+  color: var(--pico-color, #fff);
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  gap: 1.2rem;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+  font-size: 1.1em;
+  border-top: 1px solid var(--pico-muted-border-color, #222);
+
+  .tts-voice-carousel {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+
+    .tts-voice-carousel-btn {
+      background: none;
+      border: none;
+      color: var(--pico-color, #fff);
+      font-size: 1.4em;
+      padding: 0.2em 0.5em;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+
+      &:hover,
+      &:focus {
+        background: var(--pico-muted-background-color, #353a45);
+        color: var(--pico-primary, #ffd700);
+      }
+    }
+  }
+
+  .tts-voice-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2em;
+    height: 2.2em;
+    margin: 0 0.5em;
+
+    img {
+      width: 1.6em;
+      height: 1.6em;
+      object-fit: contain;
+      display: block;
+      border-radius: 50%;
+      background: #222;
+      box-shadow: 0 0 0 2px var(--pico-muted-border-color, #222);
+    }
+  }
+
+  .tts-voice-label {
+    min-width: 6em;
+    text-align: center;
+    font-size: 1em;
+    color: var(--pico-color, #fff);
+    margin-right: 1em;
+  }
+
+  .tts-voice-btn,
+  .tts-player-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.4em;
+    cursor: pointer;
+    margin: 0 0.2rem;
+    padding: 0.4em 0.8em;
+    border-radius: var(--pico-border-radius, 0.375em);
+    transition: background 0.18s, color 0.18s;
+    outline: none;
+
+    &:hover,
+    &:focus {
+      background: var(--pico-muted-background-color, #353a45);
+      color: var(--pico-primary, #ffd700);
+    }
+  }
+
+  .tts-voice-btn.active {
+    background: var(--pico-primary-background, #444);
+    color: var(--pico-primary, #ffd700);
+  }
+
+  .tts-player-select {
+    font-size: 1em;
+    background: var(--pico-form-element-background-color, #333);
+    color: var(--pico-color, #fff);
+    border-radius: var(--pico-border-radius, 0.375em);
+    padding: 0.2em 0.7em;
+    margin-left: 0.7em;
+    border: none;
+    outline: none;
+    min-width: 3.5em;
+    max-width: 6em;
+    appearance: none;
+    box-shadow: none;
+  }
+
+  .tts-exit-btn {
+    margin-left: auto;
+    font-size: 1.2em;
+    background: var(--pico-muted-background-color, #2d2d2d);
+    color: #ff6b6b;
+    padding: 0.4em 1.2em;
+    border-radius: var(--pico-border-radius, 0.375em);
+
+    &:hover,
+    &:focus {
+      background: var(--pico-primary-background, #444);
+      color: var(--pico-color, #fff);
+    }
+  }
+
+  // Audio player integration
+  .rhap_container {
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--pico-color, #fff) !important;
+    min-width: 180px;
+    flex: 1 1 220px;
+    font-family: inherit;
+  }
+
+  .rhap_controls-section {
+    filter: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .tts-player-bar {
+    flex-direction: column;
+    align-items: stretch;
+    font-size: 1em;
+    padding: 0.7rem 0.5rem;
+    gap: 0.7rem;
+
+    .tts-exit-btn {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+  }
+}
