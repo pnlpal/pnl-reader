@@ -17,6 +17,7 @@ var fileExtensions = ["jpg", "jpeg", "gif", "eot", "otf", "svg", "ttf"];
 if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;
 }
+alias.utils = path.join(__dirname, "src/utils.js");
 
 var options = {
   mode: process.env.NODE_ENV || "development",
@@ -115,6 +116,10 @@ var options = {
               version: process.env.npm_package_version,
               ...JSON.parse(content.toString()),
             };
+
+            if (env.NODE_ENV === "development") {
+              json.content_scripts[0].matches.push("http://localhost:4567/*");
+            }
 
             if (env.BROWSER === "Firefox") {
               json.manifest_version = 2; // Firefox has host permission issue with manifest v3

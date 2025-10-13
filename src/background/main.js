@@ -1,4 +1,5 @@
 import message from "./message.js";
+import "./speak.js";
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if ([chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason)) {
