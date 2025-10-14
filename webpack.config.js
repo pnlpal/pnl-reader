@@ -8,10 +8,7 @@ var webpack = require("webpack"),
   TerserPlugin = require("terser-webpack-plugin");
 
 // load the secrets
-var alias = {
-  react: "preact/compat",
-  "react-dom": "preact/compat",
-};
+var alias = {};
 
 var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
 

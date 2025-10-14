@@ -34,8 +34,7 @@
     "@picocss/pico": "^2.1.0",
     "htm": "^3.1.1",
     "lodash": "^4.17.21",
-    "preact": "^10.26.2",
-    "react-h5-audio-player": "^3.10.1"
+    "preact": "^10.26.2"
   },
   "devDependencies": {
     "adm-zip": "^0.5.16",

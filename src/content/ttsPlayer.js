@@ -1,7 +1,6 @@
 import { h } from "preact";
 import htm from "htm";
-import { useCallback } from "preact/hooks";
-import AudioPlayer from "react-h5-audio-player";
+import { useCallback, useRef, useState } from "preact/hooks";
 
 import MaleIcon from "../images/male.png";
 import FemaleIcon from "../images/female.png";
@@ -14,12 +13,37 @@ const voices = [
 ];
 
 const repeatModes = [
-  { id: "none", label: "No Repeat", title: "No Repeat" },
-  { id: "sentence", label: "Repeat Sentence", title: "Repeat Sentence" },
-  { id: "paragraph", label: "Repeat Paragraph", title: "Repeat Paragraph" },
+  { id: "none", label: "⏹️", title: "No Repeat" },
+  { id: "sentence", label: "🔁", title: "Repeat Sentence" },
+  { id: "paragraph", label: "🔂", title: "Repeat Paragraph" },
 ];
 
 const speeds = [0.5, 1, 1.2, 1.5, 2];
+
+const PlayIcon = () => html`
+  <svg
+    viewBox="0 0 48 48"
+    width="2.5em"
+    height="2.5em"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <polygon points="16,10 40,24 16,38" />
+  </svg>
+`;
+
+const PauseIcon = () => html`
+  <svg
+    viewBox="0 0 48 48"
+    width="2.5em"
+    height="2.5em"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <rect x="14" y="12" width="7" height="24" rx="2" />
+    <rect x="27" y="12" width="7" height="24" rx="2" />
+  </svg>
+`;
 
 const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
   const {
@@ -29,15 +53,9 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
     volume = 1,
   } = settings || {};
 
-  const currentIndex = voices.findIndex((v) => v.id === voice);
-  const prevVoice = () => {
-    const idx = (currentIndex - 1 + voices.length) % voices.length;
-    saveSettings && saveSettings({ voice: voices[idx].id });
-  };
-  const nextVoice = () => {
-    const idx = (currentIndex + 1) % voices.length;
-    saveSettings && saveSettings({ voice: voices[idx].id });
-  };
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showVolume, setShowVolume] = useState(false);
 
   const setVoice = useCallback(
     (v) => saveSettings && saveSettings({ voice: v }),
@@ -56,49 +74,87 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
     [saveSettings]
   );
 
+  const handlePlayPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+  };
+
+  // Sync play/pause state
+  const onPlay = () => setIsPlaying(true);
+  const onPause = () => setIsPlaying(false);
+
+  // Sync speed and volume
+  const onLoadedMetadata = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.playbackRate = speed;
+      audio.volume = volume;
+    }
+  };
+
+  // Update speed/volume on change
+  const onSpeedChange = (e) => {
+    setSpeed(Number(e.target.value));
+    if (audioRef.current)
+      audioRef.current.playbackRate = Number(e.target.value);
+  };
+  const onVolumeChange = (e) => {
+    setVolume(Number(e.target.value));
+    if (audioRef.current) audioRef.current.volume = Number(e.target.value);
+  };
+
   return html`
     <div class="tts-player-bar">
-      <div class="tts-voice-carousel">
-        <button
-          class="tts-voice-carousel-btn"
-          onClick=${prevVoice}
-          title="Previous Voice"
-          aria-label="Previous Voice"
-        >
-          ←
-        </button>
-        <span class="tts-voice-icon" title=${voices[currentIndex].title}>
-          <img
-            src=${voices[currentIndex].icon}
-            alt=${voices[currentIndex].title}
-          />
-        </span>
-        <button
-          class="tts-voice-carousel-btn"
-          onClick=${nextVoice}
-          title="Next Voice"
-          aria-label="Next Voice"
-        >
-          →
-        </button>
-      </div>
-      <span class="tts-voice-label">${voices[currentIndex].title}</span>
-      <div style="flex:1;min-width:0;">
-        <${AudioPlayer}
-          src=${src}
-          autoPlayAfterSrcChange=${true}
-          showJumpControls=${false}
-          showDownloadProgress=${false}
-          customAdditionalControls=${[]}
-          customVolumeControls=${[]}
-          style=${{ background: "transparent", boxShadow: "none" }}
-          volume=${volume}
-          playbackRate=${speed}
-          onVolumeChange=${(e) => setVolume(e.target.volume)}
+      <!-- 1. Voice/avatar selector -->
+      <div class="tts-voice-dropdown">
+        <img
+          src=${voices.find((v) => v.id === voice).icon}
+          alt=${voice}
+          class="tts-voice-avatar"
         />
+        <select
+          class="tts-player-select"
+          value=${voice}
+          onChange=${(e) => setVoice(e.target.value)}
+          title="Voice"
+        >
+          ${voices.map(
+            (v) =>
+              html`<option value=${v.id} selected=${voice === v.id}>
+                ${v.title}
+              </option>`
+          )}
+        </select>
       </div>
+      <!-- 2. Speed selector -->
       <select
-        class="tts-player-select"
+        class="tts-player-select tts-speed-select"
+        value=${speed}
+        onChange=${onSpeedChange}
+        title="Speed"
+      >
+        ${speeds.map(
+          (s) => html`<option value=${s} selected=${speed === s}>${s}x</option>`
+        )}
+      </select>
+      <!-- 3. Big play button -->
+      <button
+        class=${`tts-play-btn ${isPlaying ? "pause" : "play"}`}
+        title=${isPlaying ? "Pause" : "Play"}
+        onClick=${handlePlayPause}
+        aria-label=${isPlaying ? "Pause" : "Play"}
+        type="button"
+      >
+        ${isPlaying ? PauseIcon() : PlayIcon()}
+      </button>
+      <!-- 4. Repeat button -->
+      <select
+        class="tts-player-select tts-repeat-select"
         value=${repeat}
         onChange=${(e) => setRepeat(e.target.value)}
         title="Repeat"
@@ -110,16 +166,36 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
             </option>`
         )}
       </select>
-      <select
-        class="tts-player-select"
-        value=${speed}
-        onChange=${(e) => setSpeed(Number(e.target.value))}
-        title="Speed"
+      <!-- 5. Volume button with hover vertical bar -->
+      <div
+        class="tts-volume-container"
+        onMouseEnter=${() => setShowVolume(true)}
+        onMouseLeave=${() => setShowVolume(false)}
       >
-        ${speeds.map(
-          (s) => html`<option value=${s} selected=${speed === s}>${s}x</option>`
-        )}
-      </select>
+        <button class="tts-player-btn tts-volume-btn" title="Volume">
+          ${volume == 0 ? "🔇" : "🔊"}
+        </button>
+        ${showVolume &&
+        html`<input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value=${volume}
+          onInput=${onVolumeChange}
+          class="tts-volume-slider"
+          orient="vertical"
+          style="position:absolute;bottom:2.5em;left:50%;transform:translateX(-50%) rotate(-90deg);height:60px;width:24px;"
+        />`}
+      </div>
+      <audio
+        ref=${audioRef}
+        src=${src}
+        onPlay=${onPlay}
+        onPause=${onPause}
+        onLoadedMetadata=${onLoadedMetadata}
+        style="display:none"
+      />
       <button
         class="tts-player-btn tts-exit-btn"
         title="Exit Voice Mode"

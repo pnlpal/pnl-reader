@@ -1,0 +1,66 @@
+#PNLReader {
+  .tts-player-bar {
+    $play: #6fcf97; // soft green
+    $pause: #eb5757; // soft red
+
+    .tts-play-btn {
+      padding: 20px;
+      margin: 0 2em;
+      display: block;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px 0px;
+      transition: all 0.3s;
+      font-size: 0; // hide text if any
+
+      svg {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+        color: #fff;
+        display: block;
+        margin: 0 auto;
+        transition: transform 0.3s;
+      }
+
+      &.play {
+        background: $play;
+      }
+      &.pause {
+        background: $pause;
+        transform: rotate(90deg);
+
+        svg {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+
+    // Responsive styles
+    @media (max-width: 768px) {
+      .tts-play-btn {
+        padding: 14px;
+        margin: 0 1em;
+
+        svg {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+
+    @media (max-width: 576px) {
+      .tts-play-btn {
+        padding: 8px;
+        margin: 0 0.5em;
+
+        svg {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}

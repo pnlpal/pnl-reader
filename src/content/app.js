@@ -95,7 +95,23 @@ export default function ReaderApp({
     if (!text) return;
 
     console.log("Speaking text:", text);
-    const speakResult = await utils.send("speak text", { text });
+
+    // check the cache first
+    const cached = localStorage.getItem("PNLReader-tts");
+    const cachedObj = cached ? JSON.parse(cached) : null;
+    const speakResult =
+      cachedObj?.text === text
+        ? cachedObj
+        : await utils.send("speak text", { text });
+    if (cachedObj?.text === text) {
+      console.log("Using cached TTS audio.");
+    }
+
+    // cache the result in local storage
+    localStorage.setItem(
+      "PNLReader-tts",
+      JSON.stringify({ text, audio: speakResult.audio })
+    );
 
     console.log("Speak result:", speakResult);
     if (speakResult.audio) {
@@ -123,6 +139,9 @@ export default function ReaderApp({
 
   useEffect(() => {
     document.addEventListener("mouseup", speak);
+
+    // just for test
+    speak("I dag får flickor i årskurs fem ta vaccinet i skolan.");
     return () => {
       document.removeEventListener("mouseup", speak);
     };
