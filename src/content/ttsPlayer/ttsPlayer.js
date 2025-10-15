@@ -1,9 +1,10 @@
 import { h } from "preact";
 import htm from "htm";
-import { useCallback, useRef, useState } from "preact/hooks";
+import { useCallback, useRef, useState, useEffect } from "preact/hooks";
 
-import MaleIcon from "../images/male.png";
-import FemaleIcon from "../images/female.png";
+import MaleIcon from "../../images/male.png";
+import FemaleIcon from "../../images/female.png";
+import text2Audio from "./text2Audio.js";
 
 const html = htm.bind(h);
 
@@ -45,17 +46,38 @@ const PauseIcon = () => html`
   </svg>
 `;
 
-const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
+const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
   const {
     voice = "male",
     repeat = "none",
     speed = 1,
     volume = 1,
   } = settings || {};
-
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVolume, setShowVolume] = useState(false);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch audio URL when text changes
+  useEffect(() => {
+    let revokedUrl;
+    if (!text) {
+      setAudioUrl(null);
+      return;
+    }
+    setLoading(true);
+    text2Audio(text)
+      .then((url) => {
+        setAudioUrl(url);
+        revokedUrl = url;
+      })
+      .catch(() => setAudioUrl(null))
+      .finally(() => setLoading(false));
+    return () => {
+      if (revokedUrl) URL.revokeObjectURL(revokedUrl);
+    };
+  }, [text]);
 
   const setVoice = useCallback(
     (v) => saveSettings && saveSettings({ voice: v }),
@@ -94,6 +116,11 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
     if (audio) {
       audio.playbackRate = speed;
       audio.volume = volume;
+      // Auto play when loaded
+      audio.play().catch((error) => {
+        /* Auto-play might be blocked */
+        console.error("Auto-play was prevented:", error);
+      });
     }
   };
 
@@ -106,6 +133,17 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
   const onVolumeChange = (e) => {
     setVolume(Number(e.target.value));
     if (audioRef.current) audioRef.current.volume = Number(e.target.value);
+  };
+
+  const onExitClicked = () => {
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+    }
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+      setAudioUrl(null);
+    }
+    exitVoiceMode && exitVoiceMode();
   };
 
   return html`
@@ -149,8 +187,13 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
         onClick=${handlePlayPause}
         aria-label=${isPlaying ? "Pause" : "Play"}
         type="button"
+        disabled=${loading || !audioUrl}
       >
-        ${isPlaying ? PauseIcon() : PlayIcon()}
+        ${loading
+          ? html`<span class="tts-loading-spinner"></span>`
+          : isPlaying
+          ? PauseIcon()
+          : PlayIcon()}
       </button>
       <!-- 4. Repeat button -->
       <select
@@ -190,7 +233,7 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
       </div>
       <audio
         ref=${audioRef}
-        src=${src}
+        src=${audioUrl || ""}
         onPlay=${onPlay}
         onPause=${onPause}
         onLoadedMetadata=${onLoadedMetadata}
@@ -199,7 +242,7 @@ const TTSPlayer = ({ src, settings, saveSettings, onExit }) => {
       <button
         class="tts-player-btn tts-exit-btn"
         title="Exit Voice Mode"
-        onClick=${onExit}
+        onClick=${onExitClicked}
       >
         ❌
       </button>

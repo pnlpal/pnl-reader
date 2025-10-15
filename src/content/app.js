@@ -5,11 +5,10 @@ import Arrow from "./arrow.js";
 import ThemeSelector from "./themeSelector.js";
 import TextStylesDropdown from "./textStylesDropdown.js";
 import FontSizeRange from "./fontSizeRange.js";
-import TTSPlayer from "./ttsPlayer.js";
+import TTSPlayer from "./ttsPlayer/ttsPlayer.js";
 import AppLogo from "../images/logo64.png";
 import { throttle } from "lodash";
 const html = htm.bind(h);
-import utils from "utils";
 
 export default function ReaderApp({
   article: { title, byline, publishedTime, content, length },
@@ -23,8 +22,8 @@ export default function ReaderApp({
   };
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
   // 1. Add state for TTS
-  const [ttsAudioUrl, setTtsAudioUrl] = useState(null);
   const [isVoiceMode, setIsVoiceMode] = useState(false);
+  const [ttsText, setTtsText] = useState("");
 
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
@@ -89,64 +88,28 @@ export default function ReaderApp({
     };
   }, []);
 
-  async function speak(text) {
-    const selection = window.getSelection().toString().trim();
-    text = typeof text === "string" ? text.trim() : selection;
-    if (!text) return;
-
-    console.log("Speaking text:", text);
-
-    // check the cache first
-    const cached = localStorage.getItem("PNLReader-tts");
-    const cachedObj = cached ? JSON.parse(cached) : null;
-    const speakResult =
-      cachedObj?.text === text
-        ? cachedObj
-        : await utils.send("speak text", { text });
-    if (cachedObj?.text === text) {
-      console.log("Using cached TTS audio.");
-    }
-
-    // cache the result in local storage
-    localStorage.setItem(
-      "PNLReader-tts",
-      JSON.stringify({ text, audio: speakResult.audio })
-    );
-
-    console.log("Speak result:", speakResult);
-    if (speakResult.audio) {
-      const uint8 = new Uint8Array(speakResult.audio);
-      const blob = new Blob([uint8], { type: "audio/mpeg" }); // or correct mime type
-      const url = URL.createObjectURL(blob);
-
-      setTtsAudioUrl(url); // Set the audio URL
-      setIsVoiceMode(true); // Show the TTSPlayer
-    } else {
-      console.error(
-        "No audio URL received.",
-        speakResult.error || "Unknown error"
-      );
-    }
-  }
-
   function exitVoiceMode() {
     setIsVoiceMode(false);
-    if (ttsAudioUrl) {
-      URL.revokeObjectURL(ttsAudioUrl);
-      setTtsAudioUrl(null);
-    }
+  }
+
+  function speak() {
+    const selectedText = window.getSelection().toString().trim();
+    const text =
+      selectedText || "I dag får flickor i årskurs fem ta vaccinet i skolan."; // Just for test;
+    if (!text || text === ttsText) return;
+    setTtsText(text);
+    setIsVoiceMode(true);
   }
 
   useEffect(() => {
     document.addEventListener("mouseup", speak);
 
     // just for test
-    speak("I dag får flickor i årskurs fem ta vaccinet i skolan.");
+    speak();
     return () => {
       document.removeEventListener("mouseup", speak);
     };
   }, []);
-  window.speak = speak; // For testing in console
 
   return html`
     <div id="PNLReader">
@@ -293,12 +256,11 @@ export default function ReaderApp({
         />
       </footer>
       ${isVoiceMode &&
-      ttsAudioUrl &&
       html`<${TTSPlayer}
-        src=${ttsAudioUrl}
+        text=${ttsText}
         settings=${settings}
         saveSettings=${saveSettings}
-        onExit=${exitVoiceMode}
+        exitVoiceMode=${exitVoiceMode}
       />`}
     </div>
   `;
