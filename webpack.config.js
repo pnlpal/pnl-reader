@@ -117,10 +117,6 @@ var options = {
               ...JSON.parse(content.toString()),
             };
 
-            if (env.NODE_ENV === "development") {
-              json.content_scripts[0].matches.push("http://localhost:4567/*");
-            }
-
             if (env.BROWSER === "Firefox") {
               json.manifest_version = 2; // Firefox has host permission issue with manifest v3
               json.browser_action = json.action;
@@ -133,6 +129,20 @@ var options = {
 
               // Firefox requires host permission for all urls to inject script when it's not trigger by user activities
               json.permissions.push("<all_urls>");
+
+              // web_accessible_resources in MV2 is an array of strings for Firefox
+              json.web_accessible_resources =
+                json.web_accessible_resources[0].resources;
+            }
+
+            if (env.NODE_ENV === "development") {
+              json.content_scripts[0].matches.push("http://localhost:4567/*");
+
+              if (env.BROWSER === "Firefox") {
+                json.web_accessible_resources.push("*.js.map");
+              } else {
+                json.web_accessible_resources[0].resources.push("*.js.map");
+              }
             }
 
             return Buffer.from(JSON.stringify(json));
