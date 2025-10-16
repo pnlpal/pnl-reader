@@ -16,10 +16,10 @@ export default function ReaderApp({
   onToggle,
   globalSettings,
 }) {
-  const settings = {
+  const [settings, setSettings] = useState({
     ...globalSettings,
     ...JSON.parse(localStorage.getItem("PNLReader-settings")),
-  };
+  });
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
   // 1. Add state for TTS
   const [isVoiceMode, setIsVoiceMode] = useState(false);
@@ -41,7 +41,7 @@ export default function ReaderApp({
       return;
     }
 
-    Object.assign(settings, update);
+    setSettings((prev) => ({ ...prev, ...update }));
     const isOnOptionsPage =
       window.location.href.includes("extension://") &&
       window.location.href.includes("/options.html");
@@ -50,7 +50,7 @@ export default function ReaderApp({
       let _timer;
       clearTimeout(_timer);
 
-      saveGlobalSettings(settings).then(() => {
+      saveGlobalSettings(update).then(() => {
         const $status = document.getElementById("PNLReaderStatus");
         document.querySelector("#PNLReaderStatus>span").innerText =
           "Success! Global settings are saved.";
@@ -60,7 +60,10 @@ export default function ReaderApp({
         }, 3000);
       });
     } else {
-      localStorage.setItem("PNLReader-settings", JSON.stringify(settings));
+      localStorage.setItem(
+        "PNLReader-settings",
+        JSON.stringify({ ...settings, ...update })
+      );
     }
   };
 

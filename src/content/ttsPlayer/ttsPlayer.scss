@@ -42,7 +42,24 @@
         max-width: 10em;
       }
     }
+    .tts-player-btn {
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: 1.4em;
+      cursor: pointer;
+      margin: 0 0.2rem;
+      padding: 0.4em 0.8em;
+      border-radius: var(--pico-border-radius, 0.375em);
+      transition: background 0.18s, color 0.18s;
+      outline: none;
 
+      &:hover,
+      &:focus {
+        background: var(--pico-muted-background-color, #353a45);
+        color: var(--pico-primary, #ffd700);
+      }
+    }
     .tts-player-select {
       font-size: 1em;
       background: var(--pico-form-element-background-color, #333);
@@ -73,27 +90,49 @@
       max-width: 6em;
     }
 
-    .tts-repeat-select {
-      min-width: 5em;
-      max-width: 8em;
-    }
-
-    .tts-player-btn {
-      background: none;
+    .tts-repeat-btn,
+    .tts-volume-btn {
+      background: #23272f;
       border: none;
-      color: inherit;
-      font-size: 1.4em;
+      color: #888;
+      font-size: 1.6em;
       cursor: pointer;
-      margin: 0 0.2rem;
       padding: 0.4em 0.8em;
-      border-radius: var(--pico-border-radius, 0.375em);
-      transition: background 0.18s, color 0.18s;
+      border-radius: 0.5em;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
       outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 1.4em;
+        height: 1.4em;
+        min-width: 1.4em;
+        min-height: 1.4em;
+        display: inline-block;
+        vertical-align: middle;
+        transition: color 0.18s;
+      }
 
       &:hover,
       &:focus {
-        background: var(--pico-muted-background-color, #353a45);
-        color: var(--pico-primary, #ffd700);
+        background: #f0f0f0;
+        color: #36b37e;
+
+        svg {
+          color: #36b37e;
+        }
+      }
+    }
+
+    .tts-repeat-btn[aria-pressed="true"] {
+      background: #e6fff2;
+      color: #36b37e;
+      box-shadow: 0 0 0 2px #36b37e33;
+
+      svg {
+        color: #36b37e;
       }
     }
 
@@ -101,31 +140,77 @@
       position: relative;
       display: flex;
       align-items: center;
+      min-width: 2.5em; // ensures the button area is always clickable
 
-      .tts-volume-btn {
-        font-size: 1.5em;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.3em 0.7em;
-        border-radius: 50%;
-        &:hover,
-        &:focus {
-          background: var(--pico-muted-background-color, #353a45);
-          color: var(--pico-primary, #ffd700);
-        }
-      }
       .tts-volume-slider {
         position: absolute;
         bottom: 2.5em;
         left: 50%;
         transform: translateX(-50%) rotate(-90deg);
-        height: 60px;
-        width: 24px;
+        width: 60px; // width is the length of the slider after rotation
+        height: 24px; // height is the thickness of the slider
+        display: block;
         accent-color: var(--pico-primary, #ffd700);
-        background: var(--pico-muted-border-color, #222);
-        border-radius: 2px;
+        background: #23272f;
+        border-radius: 8px;
+        border: 1px solid #888;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         z-index: 10;
+        padding: 0;
+
+        &:focus {
+          outline: 2px solid var(--pico-primary, #ffd700);
+          outline-offset: 2px;
+        }
+
+        // Webkit browsers (Chrome, Safari)
+        &::-webkit-slider-thumb {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: var(--pico-primary, #ffd700);
+          border: 2px solid #fff;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+          cursor: pointer;
+          appearance: none;
+        }
+        &::-webkit-slider-runnable-track {
+          height: 6px;
+          border-radius: 6px;
+          background: #e6e6e6;
+        }
+
+        // Firefox
+        &::-moz-range-thumb {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: var(--pico-primary, #ffd700);
+          border: 2px solid #fff;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+          cursor: pointer;
+        }
+        &::-moz-range-track {
+          height: 6px;
+          border-radius: 6px;
+          background: #e6e6e6;
+        }
+
+        // IE
+        &::-ms-thumb {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: var(--pico-primary, #ffd700);
+          border: 2px solid #fff;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+          cursor: pointer;
+        }
+        &::-ms-fill-lower,
+        &::-ms-fill-upper {
+          background: #e6e6e6;
+          border-radius: 6px;
+        }
       }
     }
 
