@@ -35,6 +35,7 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
   const [showVolume, setShowVolume] = useState(true);
   const [audioUrl, setAudioUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
 
   // Fetch audio URL when text changes
   useEffect(() => {
@@ -142,24 +143,47 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
     <div class="tts-player-bar">
       <!-- 1. Voice/avatar selector -->
       <div class="tts-voice-dropdown">
-        <img
-          src=${voices.find((v) => v.id === voice).icon}
-          alt=${voice}
-          class="tts-voice-avatar"
-        />
-        <select
-          class="tts-player-select"
-          value=${voice}
-          onChange=${(e) => setVoice(e.target.value)}
-          title="Voice"
-        >
-          ${voices.map(
-            (v) =>
-              html`<option value=${v.id} selected=${voice === v.id}>
-                ${v.title}
-              </option>`
-          )}
-        </select>
+        <details class="dropdown" open=${showVoiceDropdown}>
+          <summary
+            role="button"
+            class="tts-voice-avatar-btn"
+            aria-label="Select voice"
+            onClick=${(e) => {
+              e.preventDefault();
+              setShowVoiceDropdown((v) => !v);
+            }}
+          >
+            <img
+              src=${voices.find((v) => v.id === voice).icon}
+              alt=${voice}
+              class="tts-voice-avatar tts-voice-avatar-round"
+            />
+          </summary>
+          <ul class="tts-voice-dropdown-list-top">
+            ${voices.map(
+              (v) => html`
+                <li>
+                  <a
+                    href="#"
+                    class="tts-voice-dropdown-item"
+                    onClick=${(e) => {
+                      e.preventDefault();
+                      setVoice(v.id);
+                      setShowVoiceDropdown(false);
+                    }}
+                  >
+                    <img
+                      src=${v.icon}
+                      alt=${v.id}
+                      class="tts-voice-avatar tts-voice-avatar-round"
+                    />
+                    <span class="tts-voice-name">${v.title}</span>
+                  </a>
+                </li>
+              `
+            )}
+          </ul>
+        </details>
       </div>
       <!-- 2. Speed selector -->
       <select

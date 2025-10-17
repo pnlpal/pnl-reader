@@ -14,7 +14,7 @@
         transform: translateX(-50%);
         bottom: 2.2em; // match slider's bottom
         width: 48px; // match or slightly wider than slider/button
-        height: 2.5em; // vertical space between button and slider
+        height: 4em; // vertical space between button and slider
         background: transparent;
         z-index: 1;
         pointer-events: auto;
@@ -27,7 +27,7 @@
       .tts-volume-slider {
         position: absolute;
         left: 50%;
-        bottom: 2.2em; // further above the volume icon
+        bottom: 3.8em; // further above the volume icon
         transform: rotate(-90deg);
         transform-origin: left center;
         width: 160px;

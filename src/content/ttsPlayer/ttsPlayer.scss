@@ -1,10 +1,12 @@
 @import "./ttsPlayerPlayBtn.scss";
 @import "./ttsVolumeBtn.scss";
+@import "./ttsVoiceSelector.scss";
 
 #PNLReader {
   .tts-player-bar {
     // some overrides to make it fit Pico.css theme
-    [type="button"] {
+    [type="button"],
+    details.dropdown {
       margin-bottom: 0;
     }
 
@@ -22,27 +24,6 @@
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
     font-size: 1.1em;
     border-top: 1px solid var(--pico-muted-border-color, #222);
-
-    .tts-voice-dropdown {
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-
-      .tts-voice-avatar {
-        width: 2em;
-        height: 2em;
-        border-radius: 50%;
-        object-fit: cover;
-        background: #222;
-        margin-right: 0.2em;
-        box-shadow: 0 0 0 2px var(--pico-muted-border-color, #222);
-      }
-      .tts-player-select {
-        margin-left: 0;
-        min-width: 6em;
-        max-width: 10em;
-      }
-    }
 
     .tts-player-select {
       font-size: 1em;
@@ -119,11 +100,6 @@
       font-size: 1em;
       padding: 0.7rem 0.5rem;
       gap: 0.7rem;
-
-      .tts-exit-btn {
-        margin-left: 0;
-        margin-top: 0.5rem;
-      }
     }
   }
 }
