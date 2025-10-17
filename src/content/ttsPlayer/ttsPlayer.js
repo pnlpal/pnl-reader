@@ -36,6 +36,7 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
   const [audioUrl, setAudioUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
+  const [showSpeedDropdown, setShowSpeedDropdown] = useState(false);
 
   // Fetch audio URL when text changes
   useEffect(() => {
@@ -186,16 +187,45 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
         </details>
       </div>
       <!-- 2. Speed selector -->
-      <select
-        class="tts-player-select tts-speed-select"
-        value=${speed}
-        onChange=${onSpeedChange}
-        title="Speed"
-      >
-        ${speeds.map(
-          (s) => html`<option value=${s} selected=${speed === s}>${s}x</option>`
-        )}
-      </select>
+      <div class="tts-speed-dropdown">
+        <details class="dropdown" open=${showSpeedDropdown}>
+          <summary
+            role="button"
+            class="tts-player-btn tts-speed-btn"
+            aria-label="Select speed"
+            onClick=${(e) => {
+              e.preventDefault();
+              setShowSpeedDropdown((v) => !v);
+            }}
+          >
+            <span class="tts-speed-label">
+              ${speed}<span class="tts-speed-x">x</span>
+            </span>
+          </summary>
+          <ul class="tts-speed-dropdown-list-top">
+            ${speeds.map(
+              (s) => html`
+                <li>
+                  <a
+                    href="#"
+                    class="tts-speed-dropdown-item${speed === s
+                      ? " selected"
+                      : ""}"
+                    onClick=${(e) => {
+                      e.preventDefault();
+                      setSpeed(s);
+                      setShowSpeedDropdown(false);
+                      if (audioRef.current) audioRef.current.playbackRate = s;
+                    }}
+                  >
+                    ${s}<span class="tts-speed-x">x</span>
+                  </a>
+                </li>
+              `
+            )}
+          </ul>
+        </details>
+      </div>
       <!-- 3. Big play button -->
       <button
         class=${`tts-play-btn ${isPlaying ? "pause" : "play"}`}
