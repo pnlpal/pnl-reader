@@ -27,7 +27,7 @@
         .tts-speed-dropdown-list-top {
           position: absolute;
           left: 50%;
-          bottom: 6em;
+          bottom: 104px;
           transform: translateX(-50%);
           background: var(--pico-background-color, #23272f);
           border-radius: 0.5em;
@@ -38,10 +38,10 @@
           list-style: none;
           margin: 0;
           @media (max-width: 768px) {
-            bottom: 5.5em;
+            bottom: 86px;
           }
           @media (max-width: 576px) {
-            bottom: 4em;
+            bottom: 70px;
           }
 
           .tts-speed-dropdown-item {

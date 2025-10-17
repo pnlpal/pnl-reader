@@ -51,7 +51,7 @@
     .tts-voice-dropdown-list-top {
       position: absolute;
       left: 0;
-      bottom: 7em; // show above the summary/avatar
+      bottom: 120px; // show above the summary/avatar
       background: var(--pico-background-color, #23272f);
       border-radius: 0.5em;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
@@ -61,11 +61,11 @@
       list-style: none;
       margin: 0;
       @media (max-width: 768px) {
-        bottom: 6em;
+        bottom: 90px;
       }
 
       @media (max-width: 576px) {
-        bottom: 4em;
+        bottom: 70px;
       }
     }
 
