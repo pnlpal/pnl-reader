@@ -70,9 +70,9 @@
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 576px) {
     .tts-player-bar {
-      flex-direction: column;
+      width: 100%;
       align-items: stretch;
       font-size: 1em;
       padding: 0.7rem 0.5rem;

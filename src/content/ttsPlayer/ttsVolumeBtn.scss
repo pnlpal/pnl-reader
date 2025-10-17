@@ -41,14 +41,14 @@
         z-index: 2; // ensure slider is above the button
         padding: 0 10px;
 
+        @media (max-width: 576px) {
+          width: 120px;
+          bottom: 2.4em;
+        }
+
         &:focus {
           outline: 2px solid var(--pico-primary, #ffd700);
           outline-offset: 2px;
-        }
-
-        @media (max-width: 600px) {
-          bottom: 6em;
-          width: 160px;
         }
 
         // Webkit browsers (Chrome, Safari)

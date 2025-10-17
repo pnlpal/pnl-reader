@@ -39,26 +39,15 @@
     // Responsive styles
     @media (max-width: 768px) {
       .tts-play-btn {
-        padding: 14px;
-        margin: 0 1em;
+        padding: 0;
+        margin: 0 0.2rem;
+        width: 48px;
+        height: 48px;
 
         svg {
           font-size: 28px;
           width: 28px;
           height: 28px;
-        }
-      }
-    }
-
-    @media (max-width: 576px) {
-      .tts-play-btn {
-        padding: 8px;
-        margin: 0 0.5em;
-
-        svg {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
         }
       }
     }
