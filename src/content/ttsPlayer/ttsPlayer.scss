@@ -12,19 +12,22 @@
     }
 
     position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    background: var(--pico-background-color, #23272f);
-    color: var(--pico-color, #fff);
+    left: 50%;
+    bottom: 2em;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
-    padding: 1rem 2rem;
-    gap: 1.2rem;
-    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
-    font-size: 1.1em;
-    border-top: 1px solid var(--pico-muted-border-color, #222);
+    justify-content: center;
+    background: var(--pico-background-color, #23272f);
+    // Refined corners to match play button's style
+    border-radius: 2em 2em 1.2em 2.2em;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+    padding: 1.2em 2.2em;
+    width: auto;
+    min-width: 320px;
+    max-width: 90vw;
+    z-index: 1000;
+    gap: 1.2em;
 
     .tts-player-btn {
       background: none;
@@ -34,7 +37,7 @@
       cursor: pointer;
       margin: 0 0.2rem;
       padding: 0.4em;
-      border-radius: 50%;
+      border-radius: 1.2em 1.2em 0.8em 1.6em;
       transition: background 0.18s, color 0.18s, box-shadow 0.18s;
       outline: none;
       display: flex;
