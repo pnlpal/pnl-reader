@@ -159,7 +159,7 @@ const NoRepeatIcon = () => html`
       <line
         x1="10"
         y1="314"
-        x2="20"
+        x2="23"
         y2="296"
         stroke="#fa9a9aff"
         stroke-width="2.5"
