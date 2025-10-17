@@ -1,0 +1,8 @@
+#PNLReader {
+  .tts-player-bar {
+    .tts-exit-btn {
+      // Overide the size of the exit button, it's a bit too large
+      font-size: 1.2em !important;
+    }
+  }
+}
