@@ -8,6 +8,7 @@ import {
   PlayIcon,
   PauseIcon,
   RepeatIcon,
+  NoRepeatIcon,
   VolumeIcon,
   MutedIcon,
 } from "./icons.js";
@@ -194,7 +195,7 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
         onClick=${() => setRepeat(!repeat)}
         type="button"
       >
-        ${RepeatIcon({ active: repeat })}
+        ${repeat ? RepeatIcon() : NoRepeatIcon()}
       </button>
       <!-- 5. Volume button with hover vertical bar -->
       <div
