@@ -1,0 +1,51 @@
+"use strict";
+export default (speak) => {
+  function injectSpeakerIcons(htmlContent) {
+    // Parse the HTML and inject the speaker icon at the start of each <p>
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, "text/html");
+    doc.querySelectorAll("p").forEach((p) => {
+      if (
+        !p.parentElement.classList.contains("tts-paragraph-wrap") &&
+        p.textContent.trim().length > 3
+      ) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "tts-paragraph-wrap";
+        p.parentNode.insertBefore(wrapper, p);
+        wrapper.appendChild(p);
+
+        const icon = document.createElement("span");
+        icon.className = "pnl-reader-paragraph-speaker tts-speaker-icon";
+        icon.textContent = "🔊";
+        wrapper.insertBefore(icon, p);
+      }
+    });
+    return doc.body.innerHTML;
+  }
+
+  // After rendering the HTML:
+  if (!document._pnlReaderParagraphListenerAdded) {
+    document.addEventListener("click", function (e) {
+      if (
+        e.target.classList.contains("pnl-reader-paragraph-speaker") ||
+        e.target.parentElement.classList.contains(
+          "pnl-reader-paragraph-speaker"
+        )
+      ) {
+        const wrapper = e.target.closest(".tts-paragraph-wrap");
+        // Remove active class from all
+        document
+          .querySelectorAll(".tts-paragraph-wrap--active")
+          .forEach((el) => el.classList.remove("tts-paragraph-wrap--active"));
+        // Add active class to this paragraph
+        wrapper.classList.add("tts-paragraph-wrap--active");
+        // Speak
+        const p = wrapper.querySelector("p");
+        speak(p.textContent);
+      }
+    });
+    document._pnlReaderParagraphListenerAdded = true;
+  }
+
+  return injectSpeakerIcons;
+};

@@ -1,0 +1,50 @@
+#PNLReader {
+  #PNLReaderArticleContent {
+    .tts-paragraph-wrap {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      padding-left: 2em; // Make room for the icon inside the container
+      margin-left: -2em; // Visually offset so layout is unchanged
+
+      .tts-speaker-icon {
+        position: absolute;
+        left: 0.5em;
+        width: 30px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.18s;
+        cursor: pointer;
+        z-index: 2;
+
+        &:hover {
+          opacity: 1 !important;
+        }
+      }
+
+      &:hover .tts-speaker-icon {
+        opacity: 0.8;
+        visibility: visible;
+      }
+
+      &--active {
+        .tts-speaker-icon {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        p {
+          text-decoration: underline dashed;
+          text-decoration-color: var(--pico-primary, #ffd700);
+          text-decoration-thickness: 1.5px;
+          text-underline-offset: 0.18em;
+          color: var(
+            --pico-primary,
+            #ffd700
+          ); // subtle text highlight using theme color
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}

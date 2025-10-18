@@ -1,6 +1,6 @@
 import { h } from "preact";
 import htm from "htm";
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect, useMemo } from "preact/hooks";
 import Arrow from "./arrow.js";
 import ThemeSelector from "./themeSelector.js";
 import TextStylesDropdown from "./textStylesDropdown.js";
@@ -8,6 +8,8 @@ import FontSizeRange from "./fontSizeRange.js";
 import TTSPlayer from "./ttsPlayer/ttsPlayer.js";
 import AppLogo from "../images/logo64.png";
 import { throttle } from "lodash";
+import injectSpeakerIcons from "./ttsPlayer/injectSpeakerOnPage.js";
+
 const html = htm.bind(h);
 
 export default function ReaderApp({
@@ -95,8 +97,8 @@ export default function ReaderApp({
     setIsVoiceMode(false);
   }
 
-  function speak() {
-    const selectedText = window.getSelection().toString().trim();
+  function speak(textContent = "") {
+    const selectedText = textContent || window.getSelection().toString().trim();
     const text =
       selectedText || "I dag får flickor i årskurs fem ta vaccinet i skolan."; // Just for test;
     if (!text || text === ttsText) return;
@@ -113,6 +115,11 @@ export default function ReaderApp({
       document.removeEventListener("mouseup", speak);
     };
   }, []);
+
+  const updatedContent = useMemo(
+    () => injectSpeakerIcons(speak)(content),
+    [content]
+  );
 
   return html`
     <div id="PNLReader">
@@ -241,8 +248,9 @@ export default function ReaderApp({
             </details>
           </header>
           <section
+            id="PNLReaderArticleContent"
             class="content"
-            dangerouslySetInnerHTML=${{ __html: content }}
+            dangerouslySetInnerHTML=${{ __html: updatedContent }}
           ></section>
         </article>
       </main>
