@@ -1,6 +1,6 @@
 "use strict";
 export default (speak) => {
-  function injectSpeakerIcons(htmlContent) {
+  function injectParagraphSpeakers(htmlContent) {
     // Parse the HTML and inject the speaker icon at the start of each <p>
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, "text/html");
@@ -23,6 +23,12 @@ export default (speak) => {
     return doc.body.innerHTML;
   }
 
+  function clearActiveParagraphSpeaking() {
+    document
+      .querySelectorAll("#PNLReaderArticleContent .tts-paragraph-wrap--active")
+      .forEach((el) => el.classList.remove("tts-paragraph-wrap--active"));
+  }
+
   // After rendering the HTML:
   if (!document._pnlReaderParagraphListenerAdded) {
     document.addEventListener("click", function (e) {
@@ -34,9 +40,7 @@ export default (speak) => {
       ) {
         const wrapper = e.target.closest(".tts-paragraph-wrap");
         // Remove active class from all
-        document
-          .querySelectorAll(".tts-paragraph-wrap--active")
-          .forEach((el) => el.classList.remove("tts-paragraph-wrap--active"));
+        clearActiveParagraphSpeaking();
         // Add active class to this paragraph
         wrapper.classList.add("tts-paragraph-wrap--active");
         // Speak
@@ -47,5 +51,8 @@ export default (speak) => {
     document._pnlReaderParagraphListenerAdded = true;
   }
 
-  return injectSpeakerIcons;
+  return {
+    injectParagraphSpeakers,
+    clearActiveParagraphSpeaking,
+  };
 };

@@ -9,7 +9,7 @@ import TTSPlayer from "./ttsPlayer/ttsPlayer.js";
 import AppLogo from "../images/logo64.png";
 import { throttle, debounce } from "lodash";
 import utils from "utils";
-import injectSpeakerIcons from "./ttsPlayer/injectSpeakerOnPage.js";
+import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
 
 const html = htm.bind(h);
 
@@ -103,14 +103,21 @@ export default function ReaderApp({
     if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
       setTtsText(text);
       setIsVoiceMode(true);
+      return true;
     }
   }
+
+  const { injectParagraphSpeakers, clearActiveParagraphSpeaking } =
+    injectSpeakerOnPage(speak);
 
   useEffect(() => {
     const handleSelectionSpeak = debounce(() => {
       const selectedText = window.getSelection().toString().trim();
       if (selectedText) {
-        speak(selectedText);
+        const spokenTextChanged = speak(selectedText);
+        if (spokenTextChanged) {
+          clearActiveParagraphSpeaking();
+        }
       }
     }, 200);
 
@@ -125,7 +132,7 @@ export default function ReaderApp({
   }, []);
 
   const updatedContent = useMemo(
-    () => injectSpeakerIcons(speak)(content),
+    () => injectParagraphSpeakers(content),
     [content]
   );
 
