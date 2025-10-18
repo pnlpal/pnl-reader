@@ -191,6 +191,34 @@ export default {
     return REGEX_KOREAN.test(str);
   },
 
+  isValidWordOrPhrase(text = "") {
+    if (!this.isSentence(text) && text) {
+      if (text.split(/\s/).length > 1) {
+        const allValid = text.split(/\s/).map((word) => this.isValidWord(word));
+        return allValid.every((v) => v);
+      }
+      // Remove up to two trailing punctuation marks
+      let w = text.trim();
+      w = w.replace(/[,:;'"-?!.]{1,2}$/, "");
+
+      // Ignore single English letters (likely not a word)
+      if (this.hasEnglish(w) && w.length === 1) {
+        return false;
+      }
+
+      // Only allow one hyphen in the middle, no other punctuation
+      // (e.g., "co-operate" is OK, "co--operate" or "co,operate" is not)
+      const hyphenSplit = w.split("-");
+      if (hyphenSplit.length > 2) return false; // More than one hyphen
+
+      // Only allow letters (any language) and at most one hyphen
+      // \p{L}: any kind of letter from any language
+      // \p{M}: any kind of combining mark (accents, diacritics, etc.)
+      if (!/^[\p{L}\p{M}]+(-[\p{L}\p{M}]+)?$/u.test(w)) return false;
+      return true;
+    }
+  },
+
   isSentence(str = "") {
     if (this.hasChinese(str) || this.hasJapanese(str) || this.hasKorean(str)) {
       return str.length > 4;

@@ -8,6 +8,7 @@ import FontSizeRange from "./fontSizeRange.js";
 import TTSPlayer from "./ttsPlayer/ttsPlayer.js";
 import AppLogo from "../images/logo64.png";
 import { throttle } from "lodash";
+import utils from "utils";
 import injectSpeakerIcons from "./ttsPlayer/injectSpeakerOnPage.js";
 
 const html = htm.bind(h);
@@ -99,8 +100,10 @@ export default function ReaderApp({
 
   function speak(text = "") {
     if (!text || text === ttsText) return;
-    setTtsText(text);
-    setIsVoiceMode(true);
+    if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
+      setTtsText(text);
+      setIsVoiceMode(true);
+    }
   }
 
   useEffect(() => {
