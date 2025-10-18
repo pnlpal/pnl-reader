@@ -111,10 +111,10 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
       audio.playbackRate = speed;
       audio.volume = volume;
       // Auto play when loaded
-      // audio.play().catch((error) => {
-      //   /* Auto-play might be blocked */
-      //   console.error("Auto-play was prevented:", error);
-      // });
+      audio.play().catch((error) => {
+        /* Auto-play might be blocked */
+        console.error("Auto-play was prevented:", error);
+      });
     }
   };
 

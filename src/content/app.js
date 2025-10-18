@@ -97,22 +97,23 @@ export default function ReaderApp({
     setIsVoiceMode(false);
   }
 
-  function speak(textContent = "") {
-    const selectedText = textContent || window.getSelection().toString().trim();
-    const text =
-      selectedText || "I dag får flickor i årskurs fem ta vaccinet i skolan."; // Just for test;
+  function speak(text = "") {
     if (!text || text === ttsText) return;
     setTtsText(text);
     setIsVoiceMode(true);
   }
 
   useEffect(() => {
-    document.addEventListener("mouseup", speak);
+    function handleSelectionSpeak() {
+      const selectedText = window.getSelection().toString().trim();
+      if (selectedText) {
+        speak(selectedText);
+      }
+    }
 
-    // just for test
-    speak();
+    document.addEventListener("mouseup", handleSelectionSpeak);
     return () => {
-      document.removeEventListener("mouseup", speak);
+      document.removeEventListener("mouseup", handleSelectionSpeak);
     };
   }, []);
 
