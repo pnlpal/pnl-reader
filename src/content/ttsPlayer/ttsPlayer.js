@@ -32,7 +32,7 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
   } = settings || {};
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showVolume, setShowVolume] = useState(true);
+  const [showVolume, setShowVolume] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
@@ -118,12 +118,6 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
     }
   };
 
-  // Update speed/volume on change
-  const onSpeedChange = (e) => {
-    setSpeed(Number(e.target.value));
-    if (audioRef.current)
-      audioRef.current.playbackRate = Number(e.target.value);
-  };
   const onVolumeChange = (e) => {
     setVolume(Number(e.target.value));
     if (audioRef.current) audioRef.current.volume = Number(e.target.value);
