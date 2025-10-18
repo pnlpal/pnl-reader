@@ -194,7 +194,9 @@ export default {
   isValidWordOrPhrase(text = "") {
     if (!this.isSentence(text) && text) {
       if (text.split(/\s/).length > 1) {
-        const allValid = text.split(/\s/).map((word) => this.isValidWord(word));
+        const allValid = text
+          .split(/\s/)
+          .map((word) => this.isValidWordOrPhrase(word));
         return allValid.every((v) => v);
       }
       // Remove up to two trailing punctuation marks

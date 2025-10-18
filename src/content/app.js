@@ -7,7 +7,7 @@ import TextStylesDropdown from "./textStylesDropdown.js";
 import FontSizeRange from "./fontSizeRange.js";
 import TTSPlayer from "./ttsPlayer/ttsPlayer.js";
 import AppLogo from "../images/logo64.png";
-import { throttle } from "lodash";
+import { throttle, debounce } from "lodash";
 import utils from "utils";
 import injectSpeakerIcons from "./ttsPlayer/injectSpeakerOnPage.js";
 
@@ -107,16 +107,20 @@ export default function ReaderApp({
   }
 
   useEffect(() => {
-    function handleSelectionSpeak() {
+    const handleSelectionSpeak = debounce(() => {
       const selectedText = window.getSelection().toString().trim();
       if (selectedText) {
         speak(selectedText);
       }
-    }
+    }, 200);
 
     document.addEventListener("mouseup", handleSelectionSpeak);
+    document.addEventListener("touchend", handleSelectionSpeak);
+
     return () => {
       document.removeEventListener("mouseup", handleSelectionSpeak);
+      document.removeEventListener("touchend", handleSelectionSpeak);
+      handleSelectionSpeak.cancel();
     };
   }, []);
 
