@@ -48,13 +48,13 @@ export default {
     return this.handleResponse(response);
   },
 
-  async ttsSpeak(text, options) {
+  async ttsSpeak({ text, lang }) {
     const response = await fetch(pnlBase + "/api/tts/speak", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text, options }),
+      body: JSON.stringify({ text, lang }),
       credentials: "include",
     });
     if (!response.ok) {

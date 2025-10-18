@@ -1657,6 +1657,11 @@ get-intrinsic@^1.1.3, get-intrinsic@^1.2.4:
     has-symbols "^1.0.3"
     hasown "^2.0.0"
 
+get-selection-more@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/get-selection-more/-/get-selection-more-1.1.0.tgz#d315f9dbc2e31c22648160867806c11e783cbebd"
+  integrity sha512-UbDYXviVZvePCcF3MoCbaislXg4jIvcMxi+VlgruYQT64Y6jezgTuwfZleWIktzodHyIh5NNRjsSYxPmaFNRMQ==
+
 get-stream@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-6.0.1.tgz#a262d8eef67aced57c2852ad6167526a43cbf7b7"
