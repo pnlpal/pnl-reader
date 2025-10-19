@@ -123,7 +123,8 @@ export default function ReaderApp({
     const handleSelectionSpeak = debounce(() => {
       const selection = window.getSelection();
       const selectedText = selection.toString().trim();
-      if (selectedText) {
+      if (selectedText && utils.isSentence(selectedText)) {
+        // Only speak if it's a sentence for now
         speak(selectedText, selection.anchorNode).then((spokenTextChanged) => {
           if (spokenTextChanged) {
             clearActiveParagraphSpeaking();
