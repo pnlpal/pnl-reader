@@ -1,5 +1,6 @@
 "use strict";
 import utils from "utils";
+import { clearHighlights } from "./highlightSelection.js";
 
 export default (speak) => {
   function injectParagraphSpeakers(htmlContent) {
@@ -44,6 +45,8 @@ export default (speak) => {
         const wrapper = e.target.closest(".tts-paragraph-wrap");
         // Remove active class from all
         clearActiveParagraphSpeaking();
+        // Clear any highlighted selection
+        clearHighlights();
         // Add active class to this paragraph
         wrapper.classList.add("tts-paragraph-wrap--active");
         // Speak

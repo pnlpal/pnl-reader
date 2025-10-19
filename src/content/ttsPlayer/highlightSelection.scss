@@ -1,0 +1,13 @@
+#PNLReaderArticleContent {
+  .tts-selected-sentence {
+    text-decoration: underline dashed;
+    text-decoration-color: var(--pico-primary, #ffd700);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.18em;
+    color: var(
+      --pico-primary,
+      #ffd700
+    ); // subtle text highlight using theme color
+    font-weight: 500;
+  }
+}

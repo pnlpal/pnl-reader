@@ -11,6 +11,7 @@ import { throttle, debounce } from "lodash";
 import utils from "utils";
 import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
 import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
+import { highlightSelection } from "./ttsPlayer/highlightSelection.js";
 
 const html = htm.bind(h);
 
@@ -125,6 +126,7 @@ export default function ReaderApp({
       const selectedText = selection.toString().trim();
       if (selectedText && utils.isSentence(selectedText)) {
         // Only speak if it's a sentence for now
+        highlightSelection(selection);
         speak(selectedText, selection.anchorNode).then((spokenTextChanged) => {
           if (spokenTextChanged) {
             clearActiveParagraphSpeaking();
