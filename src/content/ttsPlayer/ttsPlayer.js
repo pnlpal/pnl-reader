@@ -234,18 +234,16 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
       </div>
       <!-- 3. Big play button -->
       <button
-        class=${`tts-play-btn ${isPlaying ? "pause" : "play"}`}
+        class=${`tts-play-btn ${
+          loading ? "tts-loading-spinner" : isPlaying ? "pause" : "play"
+        }`}
         title=${isPlaying ? "Pause" : "Play"}
         onClick=${handlePlayPause}
         aria-label=${isPlaying ? "Pause" : "Play"}
         type="button"
         disabled=${loading || !audioUrl}
       >
-        ${loading
-          ? html`<span class="tts-loading-spinner"></span>`
-          : isPlaying
-          ? PauseIcon()
-          : PlayIcon()}
+        ${loading ? PlayIcon() : isPlaying ? PauseIcon() : PlayIcon()}
       </button>
       <!-- 4. Repeat button -->
       <button

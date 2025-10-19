@@ -51,5 +51,26 @@
         }
       }
     }
+
+    .tts-loading-spinner {
+      background: linear-gradient(
+        90deg,
+        #ffd700cc 25%,
+        #fffbe6 50%,
+        #ffd700cc 75%
+      );
+      background-size: 200% 100%;
+      animation: tts-shimmer 1.2s linear infinite;
+      box-shadow: 0 0 0 0.8em #ffd70044;
+    }
+
+    @keyframes tts-shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: 0 0;
+      }
+    }
   }
 }
