@@ -17,15 +17,15 @@ import text2Audio from "./text2Audio.js";
 const html = htm.bind(h);
 
 const voices = [
-  { id: "male", title: "Male Voice", icon: MaleIcon },
-  { id: "female", title: "Female Voice", icon: FemaleIcon },
+  { name: "Luna", title: "Female Voice", icon: FemaleIcon },
+  { name: "Owen", title: "Male Voice", icon: MaleIcon },
 ];
 
 const speeds = [0.5, 1, 1.2, 1.5, 2];
 
 const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
   const {
-    voice = "male",
+    voice = "Luna",
     repeat = false,
     speed = 1,
     volume = 1,
@@ -39,6 +39,8 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showSpeedDropdown, setShowSpeedDropdown] = useState(false);
 
+  const currentCharacter = voices.find((v) => v.name === voice) || voices[0];
+
   // Fetch audio URL when text changes, and only if volume > 0
   useEffect(() => {
     let revokedUrl;
@@ -47,7 +49,7 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
       return;
     }
     setLoading(true);
-    text2Audio(text, lang)
+    text2Audio(text, lang, voice)
       .then((url) => {
         setAudioUrl(url);
         revokedUrl = url;
@@ -57,7 +59,7 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
     return () => {
       if (revokedUrl) URL.revokeObjectURL(revokedUrl);
     };
-  }, [text]);
+  }, [text, voice]);
 
   // Repeat handler for <audio>
   useEffect(() => {
@@ -161,8 +163,8 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
             }}
           >
             <img
-              src=${voices.find((v) => v.id === voice).icon}
-              alt=${voice}
+              src=${currentCharacter.icon}
+              alt=${currentCharacter.name}
               class="tts-voice-avatar tts-voice-avatar-round"
             />
           </summary>
@@ -173,18 +175,19 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
                   <a
                     href="#"
                     class="tts-voice-dropdown-item"
+                    title="Select ${v.title}"
                     onClick=${(e) => {
                       e.preventDefault();
-                      setVoice(v.id);
+                      setVoice(v.name);
                       setShowVoiceDropdown(false);
                     }}
                   >
                     <img
                       src=${v.icon}
-                      alt=${v.id}
+                      alt=${v.name}
                       class="tts-voice-avatar tts-voice-avatar-round"
                     />
-                    <span class="tts-voice-name">${v.title}</span>
+                    <span class="tts-voice-name">${v.name}</span>
                   </a>
                 </li>
               `
