@@ -33,15 +33,16 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVolume, setShowVolume] = useState(false);
+  const [prevVolume, setPrevVolume] = useState(volume);
   const [audioUrl, setAudioUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showSpeedDropdown, setShowSpeedDropdown] = useState(false);
 
-  // Fetch audio URL when text changes
+  // Fetch audio URL when text changes, and only if volume > 0
   useEffect(() => {
     let revokedUrl;
-    if (!text) {
+    if (!text || volume === 0) {
       setAudioUrl(null);
       return;
     }
@@ -115,6 +116,17 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
         /* Auto-play might be blocked */
         console.error("Auto-play was prevented:", error);
       });
+    }
+  };
+
+  const handleVolumeBtnClick = () => {
+    if (volume === 0) {
+      setVolume(prevVolume || 1);
+      if (audioRef.current) audioRef.current.volume = prevVolume || 1;
+    } else {
+      setPrevVolume(volume);
+      setVolume(0);
+      if (audioRef.current) audioRef.current.volume = 0;
     }
   };
 
@@ -251,7 +263,12 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
         onMouseEnter=${() => setShowVolume(true)}
         onMouseLeave=${() => setShowVolume(false)}
       >
-        <button class="tts-player-btn tts-volume-btn" title="Volume">
+        <button
+          class="tts-player-btn tts-volume-btn"
+          title="Volume"
+          onClick=${handleVolumeBtnClick}
+          aria-pressed=${volume === 0}
+        >
           ${volume == 0 ? MutedIcon() : VolumeIcon()}
         </button>
         ${showVolume &&
