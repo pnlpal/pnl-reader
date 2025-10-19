@@ -1,13 +1,16 @@
 "use strict";
+import utils from "utils";
+
 export default (speak) => {
   function injectParagraphSpeakers(htmlContent) {
     // Parse the HTML and inject the speaker icon at the start of each <p>
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, "text/html");
     doc.querySelectorAll("p").forEach((p) => {
+      const pText = p.textContent.trim();
       if (
         !p.parentElement.classList.contains("tts-paragraph-wrap") &&
-        p.textContent.trim().length > 3
+        (utils.isSentence(pText) || utils.isValidWordOrPhrase(pText))
       ) {
         const wrapper = document.createElement("div");
         wrapper.className = "tts-paragraph-wrap";
@@ -45,7 +48,7 @@ export default (speak) => {
         wrapper.classList.add("tts-paragraph-wrap--active");
         // Speak
         const p = wrapper.querySelector("p");
-        speak(p.textContent);
+        speak(p.textContent, p);
       }
     });
     document._pnlReaderParagraphListenerAdded = true;

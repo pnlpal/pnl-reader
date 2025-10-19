@@ -10,6 +10,7 @@ import AppLogo from "../images/logo64.png";
 import { throttle, debounce } from "lodash";
 import utils from "utils";
 import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
+import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
 
 const html = htm.bind(h);
 
@@ -27,6 +28,7 @@ export default function ReaderApp({
   // 1. Add state for TTS
   const [isVoiceMode, setIsVoiceMode] = useState(false);
   const [ttsText, setTtsText] = useState("");
+  const [ttsLang, setTtsLang] = useState(settings.ttsLang || "");
 
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
@@ -98,10 +100,17 @@ export default function ReaderApp({
     setIsVoiceMode(false);
   }
 
-  function speak(text = "") {
+  async function speak(text = "", node) {
     if (!text || text === ttsText) return;
     if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
+      const lang = (await detectLanguage(text, node)) || ttsLang || "";
+      if (!lang) {
+        console.warn("Could not detect language for text:", text);
+        return;
+      }
+      saveSettings({ ttsLang: lang });
       setTtsText(text);
+      setTtsLang(lang);
       setIsVoiceMode(true);
       return true;
     }
@@ -112,12 +121,14 @@ export default function ReaderApp({
 
   useEffect(() => {
     const handleSelectionSpeak = debounce(() => {
-      const selectedText = window.getSelection().toString().trim();
+      const selection = window.getSelection();
+      const selectedText = selection.toString().trim();
       if (selectedText) {
-        const spokenTextChanged = speak(selectedText);
-        if (spokenTextChanged) {
-          clearActiveParagraphSpeaking();
-        }
+        speak(selectedText, selection.anchorNode).then((spokenTextChanged) => {
+          if (spokenTextChanged) {
+            clearActiveParagraphSpeaking();
+          }
+        });
       }
     }, 200);
 
@@ -284,6 +295,7 @@ export default function ReaderApp({
       ${isVoiceMode &&
       html`<${TTSPlayer}
         text=${ttsText}
+        lang=${ttsLang}
         settings=${settings}
         saveSettings=${saveSettings}
         exitVoiceMode=${exitVoiceMode}

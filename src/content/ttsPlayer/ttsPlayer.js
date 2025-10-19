@@ -23,7 +23,7 @@ const voices = [
 
 const speeds = [0.5, 1, 1.2, 1.5, 2];
 
-const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
+const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
   const {
     voice = "male",
     repeat = false,
@@ -46,7 +46,7 @@ const TTSPlayer = ({ text, settings, saveSettings, exitVoiceMode }) => {
       return;
     }
     setLoading(true);
-    text2Audio(text)
+    text2Audio(text, lang)
       .then((url) => {
         setAudioUrl(url);
         revokedUrl = url;

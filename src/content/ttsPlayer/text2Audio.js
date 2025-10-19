@@ -1,18 +1,7 @@
 "use strict";
 import utils from "utils";
-import { getSentenceOfSelection } from "../../common-text-utils.js";
 
-const detectLanguage = async (sentence) => {
-  if (!sentence) {
-    return;
-  }
-  const result = await chrome.i18n.detectLanguage(sentence);
-  if (result.isReliable) {
-    return result.languages?.[0]?.language;
-  }
-};
-
-export default async (text = "") => {
+export default async (text = "", lang = "en") => {
   let speakResult;
 
   // check the cache first
@@ -24,9 +13,6 @@ export default async (text = "") => {
     console.log("Using cached TTS audio.");
     speakResult = cachedSpeakResult;
   } else {
-    const sentence = utils.isSentence(text) ? text : getSentenceOfSelection();
-    const lang = await detectLanguage(sentence);
-
     console.log("Speaking text:", text, "lang:", lang);
     speakResult = await utils.send("speak text", {
       text,
