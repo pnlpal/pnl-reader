@@ -1,0 +1,43 @@
+#PNLReader {
+  #PNLReaderHeader {
+    #readPageBtn {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      max-width: 48px;
+      max-height: 48px;
+      border: none;
+      border-radius: 10px 0px;
+      background: linear-gradient(135deg, #6fcf97 35%, #4f8cff 100%);
+      box-shadow: 0 2px 8px 0 #4f8cff55, 0 1.5px 4px #6fcf9733;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.2s, background 0.2s, transform 0.15s;
+      cursor: pointer;
+      outline: none;
+      padding: 0;
+      position: relative;
+
+      &:hover,
+      &:focus {
+        background: linear-gradient(135deg, #4f8cff 35%, #6fcf97 100%);
+        box-shadow: 0 4px 16px 0 #4f8cff99, 0 2px 8px #6fcf9755;
+        transform: scale(1.07);
+      }
+
+      &:active {
+        background: linear-gradient(135deg, #6fcf97 35%, #4f8cff 100%);
+        box-shadow: 0 1px 4px #4f8cff77;
+        transform: scale(0.96);
+      }
+
+      svg {
+        width: 30px;
+        height: 30px;
+        display: block;
+      }
+    }
+  }
+}

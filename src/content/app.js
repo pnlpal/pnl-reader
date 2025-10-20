@@ -12,6 +12,7 @@ import utils from "utils";
 import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
 import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
 import { highlightSelection } from "./ttsPlayer/highlightSelection.js";
+import { ReadPageIcon } from "./ttsPlayer/icons.js";
 
 const html = htm.bind(h);
 
@@ -169,6 +170,19 @@ export default function ReaderApp({
             </a>
           </h1>
           <ul class="toolbar">
+            <li>
+              <button
+                role="button"
+                id="readPageBtn"
+                class="secondary outline"
+                onClick=${() => speak(content)}
+                aria-label="Read the whole page"
+                data-tooltip="Read the whole page"
+                data-placement="bottom"
+              >
+                ${ReadPageIcon()}
+              </button>
+            </li>
             <li class="hide-xs">
               <label> Font Size </label>
               <${FontSizeRange}
