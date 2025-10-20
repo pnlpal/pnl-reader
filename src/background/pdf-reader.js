@@ -2,9 +2,10 @@ import message from "./message.js";
 
 function parsePDFURL(url) {
   const arxivRegex = /https?:\/\/(?:www\.)?arxiv\.org\/pdf\/[^\/]+$/;
+  const acmRegex = /https?:\/\/dl\.acm\.org\/doi\/pdf\/\d+\.\d+\/\d+/;
   const generalPDFRegex = /https?:\/\/.*[.]pdf$/;
 
-  const generalParser = (regexMatch = generalPDFRegex) => {
+  const parse_ = (regexMatch = generalPDFRegex) => {
     if (regexMatch.test(url)) {
       const urlObj = new URL(url);
 
@@ -27,7 +28,7 @@ function parsePDFURL(url) {
       return url;
     }
   };
-  return generalParser(arxivRegex) || generalParser(generalPDFRegex);
+  return parse_(arxivRegex) || parse_(acmRegex) || parse_(generalPDFRegex);
 }
 
 function setupPdfReader() {
