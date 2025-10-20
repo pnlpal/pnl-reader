@@ -1,0 +1,69 @@
+import message from "./message.js";
+
+function parsePDFURL(url) {
+  const arxivRegex = /https?:\/\/(?:www\.)?arxiv\.org\/pdf\/[^\/]+$/;
+  const generalPDFRegex = /https?:\/\/.*[.]pdf$/;
+
+  const generalParser = (regexMatch = generalPDFRegex) => {
+    if (regexMatch.test(url)) {
+      const urlObj = new URL(url);
+
+      // get from file param first
+      const fileParam = urlObj.searchParams.get("file");
+      if (regexMatch.test(fileParam)) {
+        return fileParam;
+      }
+
+      // parse some common pdf extension
+      // ie. chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/file:///C:/Users/xxx/Documents/a.pdf
+      if (url.startsWith("chrome-extension://")) {
+        // Use regexMatch to extract the real PDF URL after the extension prefix
+        const match = url.match(
+          new RegExp(`chrome-extension://[^/]+/(${regexMatch.source})`)
+        );
+        return match?.[1];
+      }
+
+      return url;
+    }
+  };
+  return generalParser(arxivRegex) || generalParser(generalPDFRegex);
+}
+
+function setupPdfReader() {
+  let pdfBlobUrl = null;
+  let tempTabId = null;
+
+  (chrome.action || chrome.browserAction).onClicked.addListener(async (tab) => {
+    if (parsePDFURL(tab.url)) {
+      const tempTab = await chrome.tabs.create({
+        url:
+          chrome.runtime.getURL("pdf-viewer.html") +
+          "?file=" +
+          encodeURIComponent(parsePDFURL(tab.url)),
+      });
+      tempTabId = tempTab.id;
+    }
+  });
+
+  message.on("pdf content", async ({ blobUrl }) => {
+    pdfBlobUrl = blobUrl;
+    chrome.tabs.create({
+      url: "https://pnl.dev/pdf-reader/",
+    });
+  });
+  message.on("redirect to pnl-reader", async () => {
+    chrome.tabs.update(tempTabId, {
+      url: "https://pnl.dev/pdf-reader/",
+    });
+  });
+
+  message.on("get pdf blob url", async () => {
+    return { pdfBlobUrl };
+  });
+  message.on("finished reading pdf content", async () => {
+    pdfBlobUrl = null;
+  });
+}
+
+export { parsePDFURL, setupPdfReader };

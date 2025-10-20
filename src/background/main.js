@@ -1,5 +1,6 @@
 import message from "./message.js";
 import "./speak.js";
+import { parsePDFURL, setupPdfReader } from "./pdf-reader.js";
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if ([chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason)) {
@@ -15,22 +16,6 @@ chrome.runtime.onMessage.addListener(function (...args) {
   // unless you return true from the event listener to indicate you wish to send a response asynchronously
   return true;
 });
-
-function parsePDFURL(url) {
-  if (url.endsWith(".pdf")) {
-    const urlObj = new URL(url);
-    const fileParam = urlObj.searchParams.get("file");
-    if (fileParam?.endsWith(".pdf")) {
-      return fileParam;
-    }
-    if (url.startsWith("chrome-extension://")) {
-      // ie. chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/file:///C:/Users/xxx/Documents/a.pdf
-      return url.match(/(file|http|https):\/\/.*\.pdf/)?.[0];
-    }
-
-    return url;
-  }
-}
 
 (function setupPageUpdater() {
   let enabledTabs = [];
@@ -98,38 +83,4 @@ function parsePDFURL(url) {
   });
 })();
 
-(function setupPdfReader() {
-  let pdfBlobUrl = null;
-  let tempTabId = null;
-
-  (chrome.action || chrome.browserAction).onClicked.addListener(async (tab) => {
-    if (parsePDFURL(tab.url)) {
-      const tempTab = await chrome.tabs.create({
-        url:
-          chrome.runtime.getURL("pdf-viewer.html") +
-          "?file=" +
-          encodeURIComponent(parsePDFURL(tab.url)),
-      });
-      tempTabId = tempTab.id;
-    }
-  });
-
-  message.on("pdf content", async ({ blobUrl }) => {
-    pdfBlobUrl = blobUrl;
-    chrome.tabs.create({
-      url: "https://pnl.dev/pdf-reader/",
-    });
-  });
-  message.on("redirect to pnl-reader", async () => {
-    chrome.tabs.update(tempTabId, {
-      url: "https://pnl.dev/pdf-reader/",
-    });
-  });
-
-  message.on("get pdf blob url", async () => {
-    return { pdfBlobUrl };
-  });
-  message.on("finished reading pdf content", async () => {
-    pdfBlobUrl = null;
-  });
-})();
+setupPdfReader();
