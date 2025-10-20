@@ -1,6 +1,6 @@
 import { h } from "preact";
 import htm from "htm";
-import { useState, useEffect, useMemo } from "preact/hooks";
+import { useState, useEffect, useMemo, useRef } from "preact/hooks";
 import Arrow from "./arrow.js";
 import ThemeSelector from "./themeSelector.js";
 import TextStylesDropdown from "./textStylesDropdown.js";
@@ -32,6 +32,13 @@ export default function ReaderApp({
   const [ttsText, setTtsText] = useState("");
   const [ttsLang, setTtsLang] = useState(settings.ttsLang || "");
   const [ttsNextParagraphText, setTtsNextParagraphText] = useState("");
+
+  // State of reading whole page, use ref is needed to access latest value in async loops
+  const [isReadingWholePage, setIsReadingWholePage] = useState(false);
+  const isReadingWholePageRef = useRef(isReadingWholePage);
+  useEffect(() => {
+    isReadingWholePageRef.current = isReadingWholePage;
+  }, [isReadingWholePage]);
 
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
@@ -116,6 +123,7 @@ export default function ReaderApp({
       setTtsNextParagraphText("");
       setTtsLang(lang);
       setIsVoiceMode(true);
+      setIsReadingWholePage(false);
       return true;
     }
   }
@@ -142,6 +150,7 @@ export default function ReaderApp({
       return;
     }
     saveSettings({ ttsLang: lang });
+    setIsReadingWholePage(true);
 
     for (let i = 0; i < blocks.length; i++) {
       try {
@@ -187,6 +196,10 @@ export default function ReaderApp({
           window.removeEventListener("PNLReaderTTSFinished", handler);
           window.addEventListener("PNLReaderTTSFinished", handler);
         });
+
+        if (!isReadingWholePageRef.current) {
+          break;
+        }
       } catch (e) {
         console.warn("Skipping paragraph due to error:", e);
       }

@@ -64,7 +64,9 @@ const TTSPlayer = ({
       .catch(() => setAudioUrl(null))
       .finally(() => setLoading(false));
     return () => {
-      if (revokedUrl) URL.revokeObjectURL(revokedUrl);
+      if (revokedUrl) {
+        URL.revokeObjectURL(revokedUrl);
+      }
     };
   }, [text, voice]);
 
