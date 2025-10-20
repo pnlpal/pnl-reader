@@ -2,26 +2,32 @@
 import utils from "utils";
 import { clearHighlights } from "./highlightSelection.js";
 
+// Elements to support: paragraphs, headings, list items, blockquotes, etc.
+const selector =
+  "p, h1, h2, h3, h4, h5, h6, li, blockquote, figcaption, summary";
+
 export default (speak) => {
   function injectParagraphSpeakers(htmlContent) {
     // Parse the HTML and inject the speaker icon at the start of each <p>
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, "text/html");
-    doc.querySelectorAll("p").forEach((p) => {
-      const pText = p.textContent.trim();
+
+    doc.querySelectorAll(selector).forEach((el) => {
+      const elText = el.textContent.trim();
       if (
-        !p.parentElement.classList.contains("tts-paragraph-wrap") &&
-        (utils.isSentence(pText) || utils.isValidWordOrPhrase(pText))
+        !el.parentElement.classList.contains("tts-paragraph-wrap") &&
+        (utils.isSentence(elText) || utils.isValidWordOrPhrase(elText))
       ) {
         const wrapper = document.createElement("div");
         wrapper.className = "tts-paragraph-wrap";
-        p.parentNode.insertBefore(wrapper, p);
-        wrapper.appendChild(p);
+        el.classList.add("tts-paragraph");
+        el.parentNode.insertBefore(wrapper, el);
+        wrapper.appendChild(el);
 
         const icon = document.createElement("span");
         icon.className = "pnl-reader-paragraph-speaker tts-speaker-icon";
         icon.textContent = "🔊";
-        wrapper.insertBefore(icon, p);
+        wrapper.insertBefore(icon, el);
       }
     });
     return doc.body.innerHTML;
@@ -50,8 +56,8 @@ export default (speak) => {
         // Add active class to this paragraph
         wrapper.classList.add("tts-paragraph-wrap--active");
         // Speak
-        const p = wrapper.querySelector("p");
-        speak(p.textContent, p);
+        const el = wrapper.querySelector(selector);
+        speak(el.textContent, el);
       }
     });
     document._pnlReaderParagraphListenerAdded = true;
