@@ -23,7 +23,14 @@ const voices = [
 
 const speeds = [0.5, 1, 1.2, 1.5, 2];
 
-const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
+const TTSPlayer = ({
+  text,
+  nextParagraphText,
+  lang,
+  settings,
+  saveSettings,
+  exitVoiceMode,
+}) => {
   const {
     voice = "Luna",
     repeat = false,
@@ -49,7 +56,7 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
       return;
     }
     setLoading(true);
-    text2Audio(text, lang, voice)
+    text2Audio({ text, lang, voice })
       .then((url) => {
         setAudioUrl(url);
         revokedUrl = url;
@@ -61,10 +68,19 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
     };
   }, [text, voice]);
 
+  // Prefetch the audio for the next paragraph
+  useEffect(() => {
+    if (!nextParagraphText || volume === 0) {
+      return;
+    }
+    text2Audio({ text: nextParagraphText, lang, voice }, true);
+  }, [nextParagraphText]);
+
   // Repeat handler for <audio>
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+    if (nextParagraphText) return; // Disable repeat if there's next paragraph
 
     // Set the loop property based on repeat
     audio.loop = !!repeat;
@@ -118,6 +134,14 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
         /* Auto-play might be blocked */
         console.error("Auto-play was prevented:", error);
       });
+
+      function handleEnded() {
+        window.dispatchEvent(
+          new CustomEvent("PNLReaderTTSFinished", { detail: { text } })
+        );
+      }
+      audio.removeEventListener("ended", handleEnded);
+      audio.addEventListener("ended", handleEnded);
     }
   };
 
@@ -250,13 +274,14 @@ const TTSPlayer = ({ text, lang, settings, saveSettings, exitVoiceMode }) => {
       </button>
       <!-- 4. Repeat button -->
       <button
+        disabled=${!!nextParagraphText}
         class="tts-player-btn tts-repeat-btn"
         title=${repeat ? "Repeat On" : "Repeat Off"}
         aria-pressed=${repeat}
         onClick=${() => setRepeat(!repeat)}
         type="button"
       >
-        ${repeat ? RepeatIcon() : NoRepeatIcon()}
+        ${repeat && !nextParagraphText ? RepeatIcon() : NoRepeatIcon()}
       </button>
       <!-- 5. Volume button with hover vertical bar -->
       <div

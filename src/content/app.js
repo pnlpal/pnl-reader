@@ -31,6 +31,7 @@ export default function ReaderApp({
   const [isVoiceMode, setIsVoiceMode] = useState(false);
   const [ttsText, setTtsText] = useState("");
   const [ttsLang, setTtsLang] = useState(settings.ttsLang || "");
+  const [ttsNextParagraphText, setTtsNextParagraphText] = useState("");
 
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
@@ -112,14 +113,85 @@ export default function ReaderApp({
       }
       saveSettings({ ttsLang: lang });
       setTtsText(text);
+      setTtsNextParagraphText("");
       setTtsLang(lang);
       setIsVoiceMode(true);
       return true;
     }
   }
 
-  const { injectParagraphSpeakers, clearActiveParagraphSpeaking } =
-    injectSpeakerOnPage(speak);
+  const {
+    injectParagraphSpeakers,
+    clearActiveParagraphSpeaking,
+    paragraphSelector,
+    activateParagraphSpeaking,
+  } = injectSpeakerOnPage(speak);
+
+  async function readWholePage() {
+    const articleContent = document.getElementById("PNLReaderArticleContent");
+    if (!articleContent) return;
+    // Get all visible paragraphs and block elements
+    const blocks = Array.from(
+      articleContent.querySelectorAll(paragraphSelector)
+    );
+
+    const lang =
+      (await detectLanguage(articleContent.textContent)) || ttsLang || "";
+    if (!lang) {
+      console.error("Could not detect language for the page.");
+      return;
+    }
+    saveSettings({ ttsLang: lang });
+
+    for (let i = 0; i < blocks.length; i++) {
+      try {
+        // Await TTS playback for each paragraph
+        const text = blocks[i].textContent.trim();
+        if (!text) {
+          continue;
+        }
+
+        const nextParagraphText = (() => {
+          let j = i + 1;
+          while (j < blocks.length) {
+            const nextText_ = blocks[j].textContent.trim();
+            if (nextText_) {
+              return nextText_;
+            }
+            j++;
+          }
+          return "";
+        })();
+
+        console.warn(
+          "Reading paragraph:",
+          text,
+          "time:",
+          new Date().toISOString()
+        );
+
+        setTtsText(text);
+        setTtsNextParagraphText(nextParagraphText);
+        setTtsLang(lang);
+        setIsVoiceMode(true);
+        activateParagraphSpeaking(blocks[i]);
+
+        // Wait for the TTSPlayer to finish before continuing
+
+        await new Promise((resolve) => {
+          const handler = (e) => {
+            if (e.detail.text !== text) return;
+            window.removeEventListener("PNLReaderTTSFinished", handler);
+            resolve();
+          };
+          window.removeEventListener("PNLReaderTTSFinished", handler);
+          window.addEventListener("PNLReaderTTSFinished", handler);
+        });
+      } catch (e) {
+        console.warn("Skipping paragraph due to error:", e);
+      }
+    }
+  }
 
   useEffect(() => {
     const handleSelectionSpeak = debounce(() => {
@@ -175,7 +247,7 @@ export default function ReaderApp({
                 role="button"
                 id="readPageBtn"
                 class="secondary outline"
-                onClick=${() => speak(content)}
+                onClick=${readWholePage}
                 aria-label="Read the whole page"
                 data-tooltip="Read the whole page"
                 data-placement="bottom"
@@ -319,6 +391,7 @@ export default function ReaderApp({
       ${isVoiceMode &&
       html`<${TTSPlayer}
         text=${ttsText}
+        nextParagraphText=${ttsNextParagraphText}
         lang=${ttsLang}
         settings=${settings}
         saveSettings=${saveSettings}

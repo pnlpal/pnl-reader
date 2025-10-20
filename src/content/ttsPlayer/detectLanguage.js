@@ -26,7 +26,7 @@ async function detectLanguageFromNode(node, depth) {
   }
 }
 
-export async function detectLanguage(text, node) {
+export async function detectLanguage(text, node = null) {
   if (!text || text.trim().length === 0) {
     return;
   }

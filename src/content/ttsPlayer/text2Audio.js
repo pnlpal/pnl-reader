@@ -1,45 +1,72 @@
 "use strict";
 import utils from "utils";
+const CACHE_KEY = "PNLReader-tts-cache";
+const CACHE_LIMIT = 10;
 
-export default async (text = "", lang = "en", voice = "Luna") => {
+function getCache() {
+  const cached = localStorage.getItem(CACHE_KEY);
+  return cached ? JSON.parse(cached) : [];
+}
+
+function setCache(cacheArr) {
+  localStorage.setItem(CACHE_KEY, JSON.stringify(cacheArr));
+}
+
+export default async (
+  { text = "", lang = "en", voice = "Luna" },
+  prefetch = false
+) => {
   let speakResult;
 
-  // check the cache first
-  const cached = localStorage.getItem("PNLReader-tts");
-  const cachedObj = cached ? JSON.parse(cached) : null;
-  const cachedSpeakResult =
-    cachedObj?.text === text && cachedObj?.voice === voice ? cachedObj : null;
+  let cacheArr = getCache();
+
+  // Find cached result
+  const cachedSpeakResult = cacheArr.find(
+    (item) => item.text === text && item.voice === voice
+  );
+
   if (cachedSpeakResult) {
-    console.log("Speaking text:", text);
-    console.log("Using cached TTS audio.");
+    console.log(
+      `${prefetch ? "[prefetch] " : "[speak]"}[from cache] Speaking text:`,
+      text
+    );
     speakResult = cachedSpeakResult;
   } else {
-    console.log("Speaking text:", text, "lang:", lang, "voice:", voice);
     speakResult = await utils.send("speak text", {
       text,
       lang,
       voice,
     });
-    console.log("Got speak result:", speakResult);
+
+    console.log(
+      `${prefetch ? "[prefetch] " : "[speak]"}[new] Speaking text:`,
+      text,
+      "lang:",
+      lang,
+      "voice:",
+      voice,
+      "result:",
+      speakResult.audio ? "success" : "error"
+    );
+
+    // Add to cache, keep only last CACHE_LIMIT items
+    cacheArr.push({ text, voice, audio: speakResult.audio });
+    if (cacheArr.length > CACHE_LIMIT) {
+      cacheArr.shift();
+    }
+    setCache(cacheArr);
   }
 
   if (speakResult.audio) {
-    // cache the result in local storage
-    localStorage.setItem(
-      "PNLReader-tts",
-      JSON.stringify({ text, voice, audio: speakResult.audio })
-    );
-
+    if (prefetch) {
+      return;
+    }
     const uint8 = new Uint8Array(speakResult.audio);
     const blob = new Blob([uint8], { type: "audio/mpeg" });
     const url = URL.createObjectURL(blob);
-
     return url;
   } else {
-    console.error(
-      "No audio URL received.",
-      speakResult.error || "Unknown error"
-    );
+    console.error("No audio received:", speakResult.error || "Unknown error");
     throw new Error(speakResult.error || "Unknown error");
   }
 };

@@ -3,8 +3,8 @@ import utils from "utils";
 import { clearHighlights } from "./highlightSelection.js";
 
 // Elements to support: paragraphs, headings, list items, blockquotes, etc.
-const selector =
-  "p, h1, h2, h3, h4, h5, h6, li, blockquote, figcaption, summary";
+const paragraphSelector =
+  "p, h1, h2, h3, h4, h5, h6, li, blockquote, dt, dd, figcaption, summary";
 
 export default (speak) => {
   function injectParagraphSpeakers(htmlContent) {
@@ -12,7 +12,7 @@ export default (speak) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, "text/html");
 
-    doc.querySelectorAll(selector).forEach((el) => {
+    doc.querySelectorAll(paragraphSelector).forEach((el) => {
       const elText = el.textContent.trim();
       if (
         !el.parentElement.classList.contains("tts-paragraph-wrap") &&
@@ -33,6 +33,21 @@ export default (speak) => {
     return doc.body.innerHTML;
   }
 
+  function activateParagraphSpeaking(el) {
+    const wrapper = el.classList.contains("tts-paragraph-wrap")
+      ? el
+      : el.closest(".tts-paragraph-wrap");
+
+    if (!wrapper) return;
+    // Remove active class from all
+    clearActiveParagraphSpeaking();
+    // Clear any highlighted selection
+    clearHighlights();
+    // Add active class to this paragraph
+    wrapper.classList.add("tts-paragraph-wrap--active");
+    return wrapper;
+  }
+
   function clearActiveParagraphSpeaking() {
     document
       .querySelectorAll("#PNLReaderArticleContent .tts-paragraph-wrap--active")
@@ -48,23 +63,21 @@ export default (speak) => {
           "pnl-reader-paragraph-speaker"
         )
       ) {
-        const wrapper = e.target.closest(".tts-paragraph-wrap");
-        // Remove active class from all
-        clearActiveParagraphSpeaking();
-        // Clear any highlighted selection
-        clearHighlights();
-        // Add active class to this paragraph
-        wrapper.classList.add("tts-paragraph-wrap--active");
+        const wrapper = activateParagraphSpeaking(e.target);
         // Speak
-        const el = wrapper.querySelector(selector);
-        speak(el.textContent, el);
+        if (wrapper) {
+          const el = wrapper.querySelector(paragraphSelector);
+          speak(el.textContent, el);
+        }
       }
     });
     document._pnlReaderParagraphListenerAdded = true;
   }
 
   return {
+    paragraphSelector,
     injectParagraphSpeakers,
     clearActiveParagraphSpeaking,
+    activateParagraphSpeaking,
   };
 };
