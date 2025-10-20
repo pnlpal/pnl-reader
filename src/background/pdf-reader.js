@@ -17,12 +17,16 @@ function parsePDFURL(url) {
 
       // parse some common pdf extension
       // ie. chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/file:///C:/Users/xxx/Documents/a.pdf
-      if (url.startsWith("chrome-extension://")) {
+      const browserExtensionPattern =
+        /^(chrome-extension:|extension:|edge-extension:|moz-extension:)\/\//;
+      if (browserExtensionPattern.test(url)) {
         // Use regexMatch to extract the real PDF URL after the extension prefix
         const match = url.match(
-          new RegExp(`chrome-extension://[^/]+/(${regexMatch.source})`)
+          new RegExp(
+            `${browserExtensionPattern.source}[^/]+/(${regexMatch.source})`
+          )
         );
-        return match?.[1];
+        return match?.[2];
       }
 
       return url;
