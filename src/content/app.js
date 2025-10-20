@@ -158,8 +158,15 @@ export default function ReaderApp({
       >
         <nav class="topbar">
           <h1 class="title">
-            <img src=${AppLogo} alt="PNL Reader" />
-            <span>PNL Reader</span>
+            <a
+              href="https://pnl.dev/topic/950/pnl-reader-simple-elegant-and-transparent"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="text-decoration: none; color: inherit;"
+            >
+              <img src=${AppLogo} alt="PNL Reader" />
+              <span>PNL Reader</span>
+            </a>
           </h1>
           <ul class="toolbar">
             <li class="hide-xs">
