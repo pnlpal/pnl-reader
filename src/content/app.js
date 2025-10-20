@@ -34,11 +34,12 @@ export default function ReaderApp({
   const [ttsNextParagraphText, setTtsNextParagraphText] = useState("");
 
   // State of reading whole page, use ref is needed to access latest value in async loops
-  const [isReadingWholePage, setIsReadingWholePage] = useState(false);
-  const isReadingWholePageRef = useRef(isReadingWholePage);
+  const [readingWholePageTimestamp, setReadingWholePageTimestamp] =
+    useState(null);
+  const readingWholePageTimestampRef = useRef(readingWholePageTimestamp);
   useEffect(() => {
-    isReadingWholePageRef.current = isReadingWholePage;
-  }, [isReadingWholePage]);
+    readingWholePageTimestampRef.current = readingWholePageTimestamp;
+  }, [readingWholePageTimestamp]);
 
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
@@ -123,7 +124,7 @@ export default function ReaderApp({
       setTtsNextParagraphText("");
       setTtsLang(lang);
       setIsVoiceMode(true);
-      setIsReadingWholePage(false);
+      setReadingWholePageTimestamp(null);
       return true;
     }
   }
@@ -150,7 +151,7 @@ export default function ReaderApp({
       return;
     }
     saveSettings({ ttsLang: lang });
-    setIsReadingWholePage(true);
+    setReadingWholePageTimestamp(Date.now());
 
     for (let i = 0; i < blocks.length; i++) {
       try {
@@ -190,6 +191,9 @@ export default function ReaderApp({
         await new Promise((resolve) => {
           const handler = (e) => {
             if (e.detail.text !== text) return;
+            if (e.detail.startTimestamp < readingWholePageTimestampRef.current)
+              return;
+
             window.removeEventListener("PNLReaderTTSFinished", handler);
             resolve();
           };
@@ -197,7 +201,7 @@ export default function ReaderApp({
           window.addEventListener("PNLReaderTTSFinished", handler);
         });
 
-        if (!isReadingWholePageRef.current) {
+        if (!readingWholePageTimestampRef.current) {
           break;
         }
       } catch (e) {

@@ -45,6 +45,7 @@ const TTSPlayer = ({
   const [loading, setLoading] = useState(false);
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showSpeedDropdown, setShowSpeedDropdown] = useState(false);
+  const [startTimestamp, setStartTimestamp] = useState(null);
 
   const currentCharacter = voices.find((v) => v.name === voice) || voices[0];
 
@@ -56,6 +57,7 @@ const TTSPlayer = ({
       return;
     }
     setLoading(true);
+    setStartTimestamp(Date.now());
     text2Audio({ text, lang, voice })
       .then((url) => {
         setAudioUrl(url);
@@ -139,7 +141,9 @@ const TTSPlayer = ({
 
       function handleEnded() {
         window.dispatchEvent(
-          new CustomEvent("PNLReaderTTSFinished", { detail: { text } })
+          new CustomEvent("PNLReaderTTSFinished", {
+            detail: { text, startTimestamp },
+          })
         );
       }
       audio.removeEventListener("ended", handleEnded);
