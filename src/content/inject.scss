@@ -18,6 +18,7 @@
 
 #PNLReader {
   padding: 0;
+  margin-bottom: 10em;
   background-color: var(--pico-background-color);
   @media print {
     background-color: var(--pico-card-background-color);
@@ -251,11 +252,11 @@
     }
     .arrow {
       position: fixed;
-      bottom: 20px;
-      right: 30px;
+      bottom: 2em;
+      right: 1.5em;
 
       &[data-direction="left"] {
-        right: 100px;
+        right: 5em;
       }
     }
   }
