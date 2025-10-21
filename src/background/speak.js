@@ -7,6 +7,31 @@ let lastResult = null;
 let isBusy = false;
 let pending = [];
 
+async function processNext() {
+  if (pending.length === 0) {
+    isBusy = false;
+    return;
+  }
+  isBusy = true;
+  const { key, text, lang, voice, resolve, reject } = pending.shift();
+  try {
+    // Check cache
+    if (key === lastKey && lastResult) {
+      resolve(lastResult);
+      processNext();
+      return;
+    }
+    const result = await cloud.ttsSpeak({ text, lang, voice });
+    lastKey = key;
+    lastResult = result;
+    resolve(result);
+    processNext();
+  } catch (e) {
+    reject(e);
+    processNext();
+  }
+}
+
 message.on("speak text", async ({ text, lang, voice }) => {
   const key = `${text}||${lang}||${voice}`;
 
@@ -22,28 +47,19 @@ message.on("speak text", async ({ text, lang, voice }) => {
     });
   }
 
+  // Otherwise, process this request immediately
   isBusy = true;
   try {
     const result = await cloud.ttsSpeak({ text, lang, voice });
     lastKey = key;
     lastResult = result;
-    isBusy = false;
 
-    // Resolve any pending requests that match this key
-    pending = pending.filter((req) => {
-      if (req.key === key) {
-        req.resolve(result);
-        return false;
-      }
-      return true;
-    });
+    // After finishing, process the next pending request
+    processNext();
 
     return result;
   } catch (e) {
-    isBusy = false;
-    // Reject all pending requests
-    pending.forEach((req) => req.reject(e));
-    pending = [];
+    processNext();
     throw e;
   }
 });

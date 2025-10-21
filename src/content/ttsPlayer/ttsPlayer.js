@@ -81,7 +81,7 @@ const TTSPlayer = ({
       return;
     }
     text2Audio({ text: nextParagraphText, lang, voice }, true);
-  }, [nextParagraphText]);
+  }, [nextParagraphText, voice]);
 
   // Repeat handler for <audio>
   useEffect(() => {
