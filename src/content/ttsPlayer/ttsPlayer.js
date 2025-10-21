@@ -87,10 +87,9 @@ const TTSPlayer = ({
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (nextParagraphText) return; // Disable repeat if there's next paragraph
 
-    // Set the loop property based on repeat
-    audio.loop = !!repeat;
+    // Set the loop property based on repeat and nextParagraphText
+    audio.loop = !!repeat && !nextParagraphText;
 
     // // Restart playback when repeat is toggled on while paused:
     // if (repeat && audio.paused && audioUrl) {
@@ -144,6 +143,18 @@ const TTSPlayer = ({
     onAudioPlayEnded && onAudioPlayEnded({ text, voice, startTimestamp });
   }, [text, voice, startTimestamp, onAudioPlayEnded]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.removeEventListener("ended", handleAudioPlayEnded);
+    audio.addEventListener("ended", handleAudioPlayEnded);
+
+    return () => {
+      audio.removeEventListener("ended", handleAudioPlayEnded);
+    };
+  }, [audioUrl, startTimestamp, handleAudioPlayEnded]);
+
   // Sync speed and volume
   const onLoadedMetadata = () => {
     const audio = audioRef.current;
@@ -155,9 +166,6 @@ const TTSPlayer = ({
         /* Auto-play might be blocked */
         console.error("Auto-play was prevented:", error);
       });
-
-      audio.removeEventListener("ended", handleAudioPlayEnded);
-      audio.addEventListener("ended", handleAudioPlayEnded);
     }
   };
 
