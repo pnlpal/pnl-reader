@@ -163,6 +163,7 @@ export default function ReaderApp({
     }
     saveSettings({ ttsLang: lang });
     setReadingWholePageTimestamp(Date.now());
+    setTtsStartTimestamp(Date.now());
 
     for (let i = 0; i < blocks.length; i++) {
       try {
@@ -191,7 +192,6 @@ export default function ReaderApp({
           new Date().toISOString()
         );
 
-        setTtsStartTimestamp(Date.now());
         setTtsText(text);
         setTtsNextParagraphText(nextParagraphText);
         setTtsLang(lang);
