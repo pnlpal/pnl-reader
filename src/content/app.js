@@ -285,7 +285,7 @@ export default function ReaderApp({
                 ${ReadPageIcon()}
               </button>
             </li>
-            <li class="hide-xs">
+            <li class="hide-sm">
               <label> Font Size </label>
               <${FontSizeRange}
                 settings=${settings}

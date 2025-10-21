@@ -54,7 +54,7 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                 saveSettings=${saveSettings}
               />
             </div>
-            <div class="list-in-row show-xs">
+            <div class="list-in-row show-sm">
               <!-- Settings for fontsize -->
               <span class="pnl-icon icon-fontsize-1" title="Font size"></span>
               <span>Font size</span>

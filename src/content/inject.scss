@@ -57,14 +57,14 @@
       font-size: 2.5em;
       margin-bottom: 0;
       img {
-        width: 42px;
+        width: 48px;
         margin-right: 10px;
-        @media (min-width: 1100px) {
+        @media (min-width: 1280px) {
           display: none;
         }
       }
       span {
-        @media (max-width: 1100px) {
+        @media (max-width: 1280px) {
           display: none;
         }
       }
@@ -90,24 +90,25 @@
         select#theme {
           margin: 0 5px;
           width: 210px;
+          @media (max-width: 1280px) {
+            width: 180px;
+          }
           @media (max-width: 1024px) {
-            width: 160px;
+            width: 150px;
           }
         }
         input[name="fontSize"] {
           margin: 0 5px;
-          width: 180px;
+          width: 150px;
+          @media (max-width: 1280px) {
+            width: 130px;
+          }
           @media (max-width: 1024px) {
-            width: 120px;
+            width: 100px;
           }
           @media (max-width: 768px) {
             width: 90px;
           }
-        }
-        input#toggleHeaderSticky {
-          margin: 0 5px;
-          background-color: var(--pico-primary);
-          border-color: var(--pico-primary);
         }
         #toggleReadModeBtn,
         #printBtn {
@@ -116,7 +117,7 @@
           border-color: var(--pico-form-element-border-color);
         }
         #printBtn {
-          @media (max-width: 850px) {
+          @media (max-width: 650px) {
             display: none;
           }
         }
@@ -265,13 +266,13 @@
     }
   }
 
-  .show-xs {
-    @media (min-width: 767px) {
+  .show-sm {
+    @media (min-width: 960px) {
       display: none !important;
     }
   }
-  .hide-xs {
-    @media (max-width: 767px) {
+  .hide-sm {
+    @media (max-width: 960px) {
       display: none !important;
     }
   }
