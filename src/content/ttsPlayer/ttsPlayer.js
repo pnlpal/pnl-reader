@@ -30,6 +30,7 @@ const TTSPlayer = ({
   settings,
   saveSettings,
   exitVoiceMode,
+  startTimestamp,
 }) => {
   const {
     voice = "Luna",
@@ -45,7 +46,6 @@ const TTSPlayer = ({
   const [loading, setLoading] = useState(false);
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showSpeedDropdown, setShowSpeedDropdown] = useState(false);
-  const [startTimestamp, setStartTimestamp] = useState(null);
 
   const currentCharacter = voices.find((v) => v.name === voice) || voices[0];
 
@@ -57,7 +57,6 @@ const TTSPlayer = ({
       return;
     }
     setLoading(true);
-    setStartTimestamp(Date.now());
     text2Audio({ text, lang, voice })
       .then((url) => {
         setAudioUrl(url);
@@ -68,6 +67,9 @@ const TTSPlayer = ({
     return () => {
       if (revokedUrl) {
         URL.revokeObjectURL(revokedUrl);
+      }
+      if (audioRef.current) {
+        audioRef.current.removeEventListener("ended", handleAudioPlayEnded);
       }
     };
   }, [text, voice]);
@@ -95,6 +97,16 @@ const TTSPlayer = ({
     //   audio.play().catch(() => {});
     // }
   }, [repeat, audioUrl]);
+
+  // Restart the audio if startTimestamp changed, which means user re-triggered playing again
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.currentTime > 0) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    }
+  }, [startTimestamp]);
 
   const setVoice = useCallback(
     (v) => saveSettings && saveSettings({ voice: v }),
@@ -127,6 +139,14 @@ const TTSPlayer = ({
   const onPlay = () => setIsPlaying(true);
   const onPause = () => setIsPlaying(false);
 
+  const handleAudioPlayEnded = useCallback(() => {
+    window.dispatchEvent(
+      new CustomEvent("PNLReaderTTSFinished", {
+        detail: { text, startTimestamp },
+      })
+    );
+  }, [text, startTimestamp]);
+
   // Sync speed and volume
   const onLoadedMetadata = () => {
     const audio = audioRef.current;
@@ -139,15 +159,8 @@ const TTSPlayer = ({
         console.error("Auto-play was prevented:", error);
       });
 
-      function handleEnded() {
-        window.dispatchEvent(
-          new CustomEvent("PNLReaderTTSFinished", {
-            detail: { text, startTimestamp },
-          })
-        );
-      }
-      audio.removeEventListener("ended", handleEnded);
-      audio.addEventListener("ended", handleEnded);
+      audio.removeEventListener("ended", handleAudioPlayEnded);
+      audio.addEventListener("ended", handleAudioPlayEnded);
     }
   };
 

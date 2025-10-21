@@ -33,6 +33,7 @@ export default function ReaderApp({
   const [ttsLang, setTtsLang] = useState(settings.ttsLang || "");
   const [ttsNextParagraphText, setTtsNextParagraphText] = useState("");
 
+  const [ttsStartTimestamp, setTtsStartTimestamp] = useState(null);
   // State of reading whole page, use ref is needed to access latest value in async loops
   const [readingWholePageTimestamp, setReadingWholePageTimestamp] =
     useState(null);
@@ -112,13 +113,14 @@ export default function ReaderApp({
   }
 
   async function speak(text = "", node) {
-    if (!text || text === ttsText) return;
+    if (!text) return;
     if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
       const lang = (await detectLanguage(text, node)) || ttsLang || "";
       if (!lang) {
         console.warn("Could not detect language for text:", text);
         return;
       }
+      setTtsStartTimestamp(Date.now());
       saveSettings({ ttsLang: lang });
       setTtsText(text);
       setTtsNextParagraphText("");
@@ -180,6 +182,7 @@ export default function ReaderApp({
           new Date().toISOString()
         );
 
+        setTtsStartTimestamp(Date.now());
         setTtsText(text);
         setTtsNextParagraphText(nextParagraphText);
         setTtsLang(lang);
@@ -410,6 +413,7 @@ export default function ReaderApp({
         text=${ttsText}
         nextParagraphText=${ttsNextParagraphText}
         lang=${ttsLang}
+        startTimestamp=${ttsStartTimestamp}
         settings=${settings}
         saveSettings=${saveSettings}
         exitVoiceMode=${exitVoiceMode}
