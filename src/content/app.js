@@ -185,12 +185,14 @@ export default function ReaderApp({
           return "";
         })();
 
-        console.warn(
-          "Reading paragraph:",
-          text,
-          "time:",
-          new Date().toISOString()
-        );
+        // console.warn(
+        //   "Reading paragraph:",
+        //   text,
+        //   "next paragraph:",
+        //   nextParagraphText,
+        //   "time:",
+        //   new Date().toISOString()
+        // );
 
         setTtsText(text);
         setTtsNextParagraphText(nextParagraphText);
@@ -203,7 +205,7 @@ export default function ReaderApp({
         await new Promise((resolve) => {
           const handler = (args) => {
             if (args.text !== text) return;
-            if (args.voice !== settings.voice) return;
+            if (args.voice !== (settings.voice || "Luna")) return;
             if (args.startTimestamp < readingWholePageTimestampRef.current)
               return;
 

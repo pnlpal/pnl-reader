@@ -77,7 +77,7 @@ const TTSPlayer = ({
 
   // Prefetch the audio for the next paragraph
   useEffect(() => {
-    if (!nextParagraphText || volume === 0) {
+    if (!nextParagraphText || volume === 0 || nextParagraphText === text) {
       return;
     }
     text2Audio({ text: nextParagraphText, lang, voice }, true);

@@ -26,10 +26,10 @@ export default async (
   );
 
   if (cachedSpeakResult) {
-    console.log(
-      `${prefetch ? "[prefetch] " : "[speak]"}[from cache] Speaking text:`,
-      text
-    );
+    // console.log(
+    //   `${prefetch ? "[prefetch] " : "[speak]"}[from cache] Speaking text:`,
+    //   text
+    // );
     speakResult = cachedSpeakResult;
   } else {
     speakResult = await utils.send("speak text", {
@@ -38,16 +38,16 @@ export default async (
       voice,
     });
 
-    console.log(
-      `${prefetch ? "[prefetch] " : "[speak]"}[new] Speaking text:`,
-      text,
-      "lang:",
-      lang,
-      "voice:",
-      voice,
-      "result:",
-      speakResult.audio ? "success" : "error"
-    );
+    // console.log(
+    //   `${prefetch ? "[prefetch] " : "[speak]"}[new] Speaking text:`,
+    //   text,
+    //   "lang:",
+    //   lang,
+    //   "voice:",
+    //   voice,
+    //   "result:",
+    //   speakResult.audio ? "success" : "error"
+    // );
 
     // Add to cache, keep only last CACHE_LIMIT items
     cacheArr.push({ text, voice, audio: speakResult.audio });
