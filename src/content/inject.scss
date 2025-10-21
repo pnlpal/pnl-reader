@@ -204,6 +204,10 @@
     text-align: var(--pnl-reader-text-align);
     max-width: var(--pnl-reader-line-width);
 
+    border: 1px solid var(--pico-form-element-border-color, #e0e0e0);
+    background: var(--pico-card-background-color, #fff);
+    box-shadow: 0 2px 12px 0 #0001;
+
     --pico-block-spacing-horizontal: 2em;
     --pico-block-spacing-vertical: 1.5em;
 
