@@ -31,6 +31,7 @@ const TTSPlayer = ({
   saveSettings,
   exitVoiceMode,
   startTimestamp,
+  onAudioPlayEnded,
 }) => {
   const {
     voice = "Luna",
@@ -140,12 +141,8 @@ const TTSPlayer = ({
   const onPause = () => setIsPlaying(false);
 
   const handleAudioPlayEnded = useCallback(() => {
-    window.dispatchEvent(
-      new CustomEvent("PNLReaderTTSFinished", {
-        detail: { text, startTimestamp },
-      })
-    );
-  }, [text, startTimestamp]);
+    onAudioPlayEnded && onAudioPlayEnded({ text, voice, startTimestamp });
+  }, [text, voice, startTimestamp, onAudioPlayEnded]);
 
   // Sync speed and volume
   const onLoadedMetadata = () => {

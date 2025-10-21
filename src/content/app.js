@@ -41,6 +41,7 @@ export default function ReaderApp({
   useEffect(() => {
     readingWholePageTimestampRef.current = readingWholePageTimestamp;
   }, [readingWholePageTimestamp]);
+  const ttsPlayEndedResolverRef = useRef(null);
 
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
@@ -127,6 +128,7 @@ export default function ReaderApp({
       setTtsLang(lang);
       setIsVoiceMode(true);
       setReadingWholePageTimestamp(null);
+      ttsPlayEndedResolverRef.current = null;
       return true;
     }
   }
@@ -137,6 +139,13 @@ export default function ReaderApp({
     paragraphSelector,
     activateParagraphSpeaking,
   } = injectSpeakerOnPage(speak);
+
+  function handleTTSPlayEnded(args) {
+    if (ttsPlayEndedResolverRef.current) {
+      ttsPlayEndedResolverRef.current(args);
+      ttsPlayEndedResolverRef.current = null;
+    }
+  }
 
   async function readWholePage() {
     const articleContent = document.getElementById("PNLReaderArticleContent");
@@ -192,16 +201,15 @@ export default function ReaderApp({
         // Wait for the TTSPlayer to finish before continuing
 
         await new Promise((resolve) => {
-          const handler = (e) => {
-            if (e.detail.text !== text) return;
-            if (e.detail.startTimestamp < readingWholePageTimestampRef.current)
+          const handler = (args) => {
+            if (args.text !== text) return;
+            if (args.voice !== settings.voice) return;
+            if (args.startTimestamp < readingWholePageTimestampRef.current)
               return;
 
-            window.removeEventListener("PNLReaderTTSFinished", handler);
             resolve();
           };
-          window.removeEventListener("PNLReaderTTSFinished", handler);
-          window.addEventListener("PNLReaderTTSFinished", handler);
+          ttsPlayEndedResolverRef.current = handler;
         });
 
         if (!readingWholePageTimestampRef.current) {
@@ -417,6 +425,7 @@ export default function ReaderApp({
         settings=${settings}
         saveSettings=${saveSettings}
         exitVoiceMode=${exitVoiceMode}
+        onAudioPlayEnded=${handleTTSPlayEnded}
       />`}
     </div>
   `;
