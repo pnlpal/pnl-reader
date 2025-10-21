@@ -5,6 +5,39 @@
 @import "./ttsExitBtn.scss";
 
 #PNLReader {
+  $playBarBottomSpacing: 2em;
+  $playBarPaddingVertical: 1.2em;
+
+  .tts-audio-error-banner {
+    position: fixed;
+    left: 50%;
+    // $playBtnHeight: 80px; // padding: 20px + svg height 40px + padding 20px
+    bottom: calc(
+      80px + $playBarBottomSpacing + $playBarPaddingVertical * 2 + 0.5em
+    ); // above the player bar and some gap(0.5em)
+    transform: translateX(-50%);
+    background: var(--pico-code-background-color);
+    color: var(--pico-del-color);
+    border: 1px solid var(--pico-table-border-color);
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-bottom: 0;
+    max-width: 80vw;
+    z-index: 1010;
+
+    @media (max-width: 576px) {
+      min-width: 0;
+      max-width: 98vw;
+      font-size: 0.97em;
+      padding: 0.5em 0.2em;
+      border-radius: 6px;
+    }
+    a {
+      color: var(--pico-primary);
+      text-decoration: none;
+      padding: 0 5px;
+    }
+  }
   .tts-player-bar {
     // some overrides to make it fit Pico.css theme
     [type="button"],
@@ -14,7 +47,7 @@
 
     position: fixed;
     left: 50%;
-    bottom: 2em;
+    bottom: $playBarBottomSpacing;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
@@ -23,7 +56,7 @@
     // Refined corners to match play button's style
     border-radius: 2em 2em 1.2em 2.2em;
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
-    padding: 1.2em 2.2em;
+    padding: $playBarPaddingVertical 2.2em;
     width: auto;
     min-width: 560px;
     max-width: 90vw;

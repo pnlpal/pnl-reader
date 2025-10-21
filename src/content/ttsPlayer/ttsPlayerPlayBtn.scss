@@ -3,6 +3,8 @@
     $play: #6fcf97; // soft green
     $pause: #eb5757; // soft red
 
+    $playBtnHeight: 80px; // padding: 20px + svg height 40px + padding 20px
+
     .tts-play-btn {
       padding: 20px;
       margin: 0 2em;
@@ -33,6 +35,18 @@
         svg {
           transform: rotate(-90deg);
         }
+      }
+      &[data-error="true"] {
+        background: linear-gradient(
+          120deg,
+          #ff5f6d 0%,
+          #ffc371 25%,
+          #fff 30%,
+          #ff5f6d 45%,
+          #ffc371 60%,
+          #ffb199 80%,
+          #ff5f6d 100%
+        ); // broken-ish, patchy error gradient
       }
     }
 

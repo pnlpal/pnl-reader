@@ -13,6 +13,7 @@ import {
   MutedIcon,
 } from "./icons.js";
 import text2Audio from "./text2Audio.js";
+import getErrorBanner from "./ttsErrorMessages.js";
 
 const html = htm.bind(h);
 
@@ -47,6 +48,7 @@ const TTSPlayer = ({
   const [loading, setLoading] = useState(false);
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showSpeedDropdown, setShowSpeedDropdown] = useState(false);
+  const [error, setError] = useState(null);
 
   const currentCharacter = voices.find((v) => v.name === voice) || voices[0];
 
@@ -55,6 +57,7 @@ const TTSPlayer = ({
     let revokedUrl;
     if (!text || volume === 0) {
       setAudioUrl(null);
+      setError(null);
       return;
     }
     setLoading(true);
@@ -62,8 +65,12 @@ const TTSPlayer = ({
       .then((url) => {
         setAudioUrl(url);
         revokedUrl = url;
+        setError(null);
       })
-      .catch(() => setAudioUrl(null))
+      .catch((err) => {
+        setAudioUrl(null);
+        setError(err);
+      })
       .finally(() => setLoading(false));
     return () => {
       if (revokedUrl) {
@@ -197,157 +204,161 @@ const TTSPlayer = ({
   };
 
   return html`
-    <div class="tts-player-bar">
-      <!-- 1. Voice/avatar selector -->
-      <div class="tts-voice-dropdown">
-        <details class="dropdown" open=${showVoiceDropdown}>
-          <summary
-            role="button"
-            class="tts-voice-avatar-btn"
-            aria-label="Select voice"
-            onClick=${(e) => {
-              e.preventDefault();
-              setShowVoiceDropdown((v) => !v);
-            }}
-          >
-            <img
-              src=${currentCharacter.icon}
-              alt=${currentCharacter.name}
-              class="tts-voice-avatar tts-voice-avatar-round"
-            />
-          </summary>
-          <ul class="tts-voice-dropdown-list-top">
-            ${voices.map(
-              (v) => html`
-                <li>
-                  <a
-                    href="#"
-                    class="tts-voice-dropdown-item"
-                    title="Select ${v.title}"
-                    onClick=${(e) => {
-                      e.preventDefault();
-                      setVoice(v.name);
-                      setShowVoiceDropdown(false);
-                    }}
-                  >
-                    <img
-                      src=${v.icon}
-                      alt=${v.name}
-                      class="tts-voice-avatar tts-voice-avatar-round"
-                    />
-                    <span class="tts-voice-name">${v.name}</span>
-                  </a>
-                </li>
-              `
-            )}
-          </ul>
-        </details>
-      </div>
-      <!-- 2. Speed selector -->
-      <div class="tts-speed-dropdown">
-        <details class="dropdown" open=${showSpeedDropdown}>
-          <summary
-            role="button"
-            class="tts-player-btn tts-speed-btn"
-            aria-label="Select speed"
-            onClick=${(e) => {
-              e.preventDefault();
-              setShowSpeedDropdown((v) => !v);
-            }}
-          >
-            <span class="tts-speed-label">
-              ${speed}<span class="tts-speed-x">x</span>
-            </span>
-          </summary>
-          <ul class="tts-speed-dropdown-list-top">
-            ${speeds.map(
-              (s) => html`
-                <li>
-                  <a
-                    href="#"
-                    class="tts-speed-dropdown-item${speed === s
-                      ? " selected"
-                      : ""}"
-                    onClick=${(e) => {
-                      e.preventDefault();
-                      setSpeed(s);
-                      setShowSpeedDropdown(false);
-                      if (audioRef.current) audioRef.current.playbackRate = s;
-                    }}
-                  >
-                    ${s}<span class="tts-speed-x">x</span>
-                  </a>
-                </li>
-              `
-            )}
-          </ul>
-        </details>
-      </div>
-      <!-- 3. Big play button -->
-      <button
-        class=${`tts-play-btn ${
-          loading ? "tts-loading-spinner" : isPlaying ? "pause" : "play"
-        }`}
-        title=${isPlaying ? "Pause" : "Play"}
-        onClick=${handlePlayPause}
-        aria-label=${isPlaying ? "Pause" : "Play"}
-        type="button"
-        disabled=${loading || !audioUrl}
-      >
-        ${loading ? PlayIcon() : isPlaying ? PauseIcon() : PlayIcon()}
-      </button>
-      <!-- 4. Repeat button -->
-      <button
-        disabled=${!!nextParagraphText}
-        class="tts-player-btn tts-repeat-btn"
-        title=${repeat ? "Repeat On" : "Repeat Off"}
-        aria-pressed=${repeat}
-        onClick=${() => setRepeat(!repeat)}
-        type="button"
-      >
-        ${repeat && !nextParagraphText ? RepeatIcon() : NoRepeatIcon()}
-      </button>
-      <!-- 5. Volume button with hover vertical bar -->
-      <div
-        class="tts-volume-container"
-        onMouseEnter=${() => setShowVolume(true)}
-        onMouseLeave=${() => setShowVolume(false)}
-      >
+    <div>
+      ${error && getErrorBanner(error)}
+      <div class="tts-player-bar">
+        <!-- 1. Voice/avatar selector -->
+        <div class="tts-voice-dropdown">
+          <details class="dropdown" open=${showVoiceDropdown}>
+            <summary
+              role="button"
+              class="tts-voice-avatar-btn"
+              aria-label="Select voice"
+              onClick=${(e) => {
+                e.preventDefault();
+                setShowVoiceDropdown((v) => !v);
+              }}
+            >
+              <img
+                src=${currentCharacter.icon}
+                alt=${currentCharacter.name}
+                class="tts-voice-avatar tts-voice-avatar-round"
+              />
+            </summary>
+            <ul class="tts-voice-dropdown-list-top">
+              ${voices.map(
+                (v) => html`
+                  <li>
+                    <a
+                      href="#"
+                      class="tts-voice-dropdown-item"
+                      title="Select ${v.title}"
+                      onClick=${(e) => {
+                        e.preventDefault();
+                        setVoice(v.name);
+                        setShowVoiceDropdown(false);
+                      }}
+                    >
+                      <img
+                        src=${v.icon}
+                        alt=${v.name}
+                        class="tts-voice-avatar tts-voice-avatar-round"
+                      />
+                      <span class="tts-voice-name">${v.name}</span>
+                    </a>
+                  </li>
+                `
+              )}
+            </ul>
+          </details>
+        </div>
+        <!-- 2. Speed selector -->
+        <div class="tts-speed-dropdown">
+          <details class="dropdown" open=${showSpeedDropdown}>
+            <summary
+              role="button"
+              class="tts-player-btn tts-speed-btn"
+              aria-label="Select speed"
+              onClick=${(e) => {
+                e.preventDefault();
+                setShowSpeedDropdown((v) => !v);
+              }}
+            >
+              <span class="tts-speed-label">
+                ${speed}<span class="tts-speed-x">x</span>
+              </span>
+            </summary>
+            <ul class="tts-speed-dropdown-list-top">
+              ${speeds.map(
+                (s) => html`
+                  <li>
+                    <a
+                      href="#"
+                      class="tts-speed-dropdown-item${speed === s
+                        ? " selected"
+                        : ""}"
+                      onClick=${(e) => {
+                        e.preventDefault();
+                        setSpeed(s);
+                        setShowSpeedDropdown(false);
+                        if (audioRef.current) audioRef.current.playbackRate = s;
+                      }}
+                    >
+                      ${s}<span class="tts-speed-x">x</span>
+                    </a>
+                  </li>
+                `
+              )}
+            </ul>
+          </details>
+        </div>
+        <!-- 3. Big play button -->
         <button
-          class="tts-player-btn tts-volume-btn"
-          title="Volume"
-          onClick=${handleVolumeBtnClick}
-          aria-pressed=${volume === 0}
+          class=${`tts-play-btn ${
+            loading ? "tts-loading-spinner" : isPlaying ? "pause" : "play"
+          }`}
+          title=${isPlaying ? "Pause" : "Play"}
+          onClick=${handlePlayPause}
+          aria-label=${isPlaying ? "Pause" : "Play"}
+          type="button"
+          disabled=${loading || !audioUrl}
+          data-error=${error ? "true" : "false"}
         >
-          ${volume == 0 ? MutedIcon() : VolumeIcon()}
+          ${loading ? PlayIcon() : isPlaying ? PauseIcon() : PlayIcon()}
         </button>
-        ${showVolume &&
-        html`<input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value=${volume}
-          onInput=${onVolumeChange}
-          class="tts-volume-slider"
-          orient="vertical"
-        />`}
+        <!-- 4. Repeat button -->
+        <button
+          disabled=${!!nextParagraphText}
+          class="tts-player-btn tts-repeat-btn"
+          title=${repeat ? "Repeat On" : "Repeat Off"}
+          aria-pressed=${repeat}
+          onClick=${() => setRepeat(!repeat)}
+          type="button"
+        >
+          ${repeat && !nextParagraphText ? RepeatIcon() : NoRepeatIcon()}
+        </button>
+        <!-- 5. Volume button with hover vertical bar -->
+        <div
+          class="tts-volume-container"
+          onMouseEnter=${() => setShowVolume(true)}
+          onMouseLeave=${() => setShowVolume(false)}
+        >
+          <button
+            class="tts-player-btn tts-volume-btn"
+            title="Volume"
+            onClick=${handleVolumeBtnClick}
+            aria-pressed=${volume === 0}
+          >
+            ${volume == 0 ? MutedIcon() : VolumeIcon()}
+          </button>
+          ${showVolume &&
+          html`<input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value=${volume}
+            onInput=${onVolumeChange}
+            class="tts-volume-slider"
+            orient="vertical"
+          />`}
+        </div>
+        <audio
+          ref=${audioRef}
+          src=${audioUrl || ""}
+          onPlay=${onPlay}
+          onPause=${onPause}
+          onLoadedMetadata=${onLoadedMetadata}
+          style="display:none"
+        />
+        <button
+          class="tts-player-btn tts-exit-btn"
+          title="Exit Voice Mode"
+          onClick=${onExitClicked}
+        >
+          ❌
+        </button>
       </div>
-      <audio
-        ref=${audioRef}
-        src=${audioUrl || ""}
-        onPlay=${onPlay}
-        onPause=${onPause}
-        onLoadedMetadata=${onLoadedMetadata}
-        style="display:none"
-      />
-      <button
-        class="tts-player-btn tts-exit-btn"
-        title="Exit Voice Mode"
-        onClick=${onExitClicked}
-      >
-        ❌
-      </button>
     </div>
   `;
 };
