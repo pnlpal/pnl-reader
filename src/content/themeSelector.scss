@@ -1,0 +1,38 @@
+#PNLReader {
+  > #PNLReaderHeader {
+    .toolbar {
+      li {
+        .theme-dropdown {
+          margin: 0 5px;
+          width: 210px;
+          @media (max-width: 1280px) {
+            width: 180px;
+          }
+          @media (max-width: 1024px) {
+            width: 150px;
+          }
+          .theme-dropdown-item {
+            .theme-preview-circle {
+              width: 2em;
+              height: 2em;
+              border-radius: 50%;
+              border: 1px solid #ccc;
+              display: inline-block;
+              margin-right: 0.7em;
+              vertical-align: middle;
+
+              //  special handling for auto theme
+              &[data-value="auto"] {
+                background: linear-gradient(
+                  90deg,
+                  #181c25 50%,
+                  #ffffff 50%
+                ) !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

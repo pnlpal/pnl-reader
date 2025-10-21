@@ -1,3 +1,8 @@
+:root {
+  --theme-dracula-light-background-color: #ffffff;
+  --theme-dracula-dark-background-color: #44475a;
+}
+
 /* Light Mode */
 [data-color-scheme="dracula"][data-theme="light"] {
   --pico-background-color: #f8f8f2;

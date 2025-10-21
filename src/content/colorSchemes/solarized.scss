@@ -1,4 +1,7 @@
-/* Light Mode */
+:root {
+  --theme-solarized-light-background-color: #fdf6e3;
+  --theme-solarized-dark-background-color: #073642;
+}
 
 [data-color-scheme="solarized"][data-theme="light"] {
   --pico-background-color: #eee8d5;
