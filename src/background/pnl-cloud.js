@@ -72,6 +72,15 @@ export default {
     }
     const blob = await response.blob();
     const arrayBuffer = await blob.arrayBuffer();
-    return { audio: Array.from(new Uint8Array(arrayBuffer)) };
+
+    const trialsUsed = response.headers.get("Data-Trials-Used");
+    const isProUser = JSON.parse(response.headers.get("Data-Is-Pro-User"));
+    const trialsMaxAllowed = response.headers.get("Data-Trials-Max-Allowed");
+    return {
+      audio: Array.from(new Uint8Array(arrayBuffer)),
+      trialsUsed,
+      isProUser,
+      trialsMaxAllowed,
+    };
   },
 };

@@ -64,7 +64,12 @@ export default async (
     const uint8 = new Uint8Array(speakResult.audio);
     const blob = new Blob([uint8], { type: "audio/mpeg" });
     const url = URL.createObjectURL(blob);
-    return url;
+    return {
+      url,
+      trialsUsed: speakResult.trialsUsed,
+      isProUser: speakResult.isProUser,
+      trialsMaxAllowed: speakResult.trialsMaxAllowed,
+    };
   } else {
     console.error("No audio received:", speakResult.error || "Unknown error");
     throw new Error(speakResult.error || "Unknown error");

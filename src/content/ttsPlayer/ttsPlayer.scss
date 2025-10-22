@@ -37,6 +37,9 @@
       text-decoration: none;
       padding: 0 5px;
     }
+    &.in-trial {
+      color: var(--pico-code-color);
+    }
   }
   .tts-player-bar {
     // some overrides to make it fit Pico.css theme

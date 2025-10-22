@@ -65,6 +65,19 @@ export default function getErrorBanner(error) {
         .
       </div>
     `;
+  } else if (error.type === "in-trial") {
+    const { trialsUsed, trialsMaxAllowed } = error;
+    return html`
+      <div class="tts-audio-error-banner in-trial">
+        You have used ${trialsUsed}/${trialsMaxAllowed} of your trial quota. Our
+        text-to-speech service uses a proprietary API, which incurs real costs
+        for each request. To continue using text-to-speech, please
+        <a href="${pnlBase}/pro" target="_blank" class="tts-error-action-link">
+          upgrade your account
+        </a>
+        .
+      </div>
+    `;
   }
   // Add more mappings as needed
   // if (/quota/i.test(errorMsg)) { ... }

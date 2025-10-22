@@ -62,10 +62,17 @@ const TTSPlayer = ({
     }
     setLoading(true);
     text2Audio({ text, lang, voice })
-      .then((url) => {
-        setAudioUrl(url);
-        revokedUrl = url;
-        setError(null);
+      .then((audioResult) => {
+        setAudioUrl(audioResult.url);
+        revokedUrl = audioResult.url;
+        if (audioResult.isProUser === false) {
+          setError({
+            type: "in-trial",
+            ...audioResult,
+          });
+        } else {
+          setError(null);
+        }
       })
       .catch((err) => {
         setAudioUrl(null);
@@ -302,7 +309,7 @@ const TTSPlayer = ({
           aria-label=${isPlaying ? "Pause" : "Play"}
           type="button"
           disabled=${loading || !audioUrl}
-          data-error=${error ? "true" : "false"}
+          data-error=${error && error.type !== "in-trial" ? "true" : "false"}
         >
           ${loading ? PlayIcon() : isPlaying ? PauseIcon() : PlayIcon()}
         </button>
