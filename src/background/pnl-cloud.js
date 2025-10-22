@@ -3,11 +3,18 @@ const pnlBase =
     ? "http://localhost:4567"
     : "https://pnl.dev";
 
+class ErrorResponse extends Error {
+  constructor(msg, details) {
+    super(msg);
+    this.details = details;
+  }
+}
+
 export default {
   async handleResponse(response) {
     const responseData = await response.json();
     if (responseData?.error) {
-      throw new Error(responseData.error);
+      throw new ErrorResponse(responseData.error, responseData);
     }
     if (!response.ok) {
       throw new Error(`Request failed with status ${response.status}`);
@@ -61,7 +68,7 @@ export default {
       const data = await response.json();
       const errorMessage = data?.error || response.statusText;
       console.error(response.status, "TTS failed:", errorMessage);
-      throw new Error(errorMessage);
+      throw new ErrorResponse(errorMessage, data);
     }
     const blob = await response.blob();
     const arrayBuffer = await blob.arrayBuffer();

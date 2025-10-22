@@ -10,7 +10,34 @@ const pnlBase =
 // Map error messages to user-friendly messages and actions
 export default function getErrorBanner(error) {
   if (!error) return null;
-  const errorMsg = error.message || String(error);
+
+  const getPrettyMessage = (msg) => {
+    if (!msg) return "";
+
+    const lowermsg = msg.toLowerCase();
+
+    if (
+      lowermsg.includes("failed to fetch") ||
+      lowermsg.includes("networkerror") ||
+      lowermsg.includes("network error") ||
+      lowermsg.includes("fetch failed")
+    ) {
+      return "Network error or server is unreachable. Please try again later.";
+    }
+    if (lowermsg.includes("timeout")) {
+      return "The request timed out. Please check your internet connection and try again.";
+    }
+    if (lowermsg.includes("forbidden")) {
+      return "You do not have permission to access this resource.";
+    }
+
+    if (lowermsg.includes("internal server error")) {
+      return "Server encountered an error. Please try again later.";
+    }
+
+    return msg;
+  };
+  const errorMsg = getPrettyMessage(error.message || String(error));
 
   if (errorMsg === "Unauthorized") {
     return html`
@@ -26,8 +53,19 @@ export default function getErrorBanner(error) {
         at pnl.dev.
       </div>
     `;
+  } else if (error.type === "trial-limit-reached") {
+    const { trialsUsed, maxTrialsAllowed } = error;
+    return html`
+      <div class="tts-audio-error-banner">
+        Your trial limit (${trialsUsed}/${maxTrialsAllowed} used) has been
+        reached. To continue using text-to-speech, please
+        <a href="${pnlBase}/pro" target="_blank" class="tts-error-action-link">
+          upgrade your account
+        </a>
+        .
+      </div>
+    `;
   }
-
   // Add more mappings as needed
   // if (/quota/i.test(errorMsg)) { ... }
 

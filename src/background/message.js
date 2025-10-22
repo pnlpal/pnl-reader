@@ -12,7 +12,7 @@ export default {
             err,
             request
           );
-          sendResponse({ error: err.message });
+          sendResponse({ error: err.message, ...err.details });
         });
       } else {
         sendResponse(ret);

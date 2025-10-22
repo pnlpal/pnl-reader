@@ -1,3 +1,10 @@
+class ErrorWithMoreInfo extends Error {
+  constructor(msg, moreInfo) {
+    super(msg);
+    Object.assign(this, moreInfo);
+  }
+}
+
 export default {
   getRandomInt(min, max) {
     min ??= 1;
@@ -97,7 +104,9 @@ export default {
       chrome.runtime.sendMessage(data, (ret) => {
         if (ret?.error) {
           reject(
-            typeof ret.error === "string" ? new Error(ret.error) : ret.error
+            typeof ret.error === "string"
+              ? new ErrorWithMoreInfo(ret.error, ret)
+              : ret.error
           );
         } else {
           resolve(ret);
