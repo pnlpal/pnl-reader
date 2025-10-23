@@ -1,7 +1,7 @@
 {
   "name": "pnl-reader",
   "version": "2.0.0",
-  "description": "PNL Reader: read quietly or read out loud",
+  "description": "PNL Reader: read quietly or read aloud",
   "repository": {
     "type": "git",
     "url": "git@github.com:pnlpal/pnl-reader.git"

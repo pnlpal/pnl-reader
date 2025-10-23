@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "minimum_chrome_version": "100",
-  "name": "PNL Reader: read quietly or read out loud",
+  "name": "PNL Reader: read quietly or read aloud",
   "permissions": ["activeTab", "scripting", "storage"],
   "background": {
     "service_worker": "background.bundle.js"
@@ -13,7 +13,7 @@
     }
   ],
   "action": {
-    "default_title": "PNL Reader: read quietly or read out loud"
+    "default_title": "PNL Reader: read quietly or read aloud"
   },
   "options_ui": {
     "page": "options.html",
