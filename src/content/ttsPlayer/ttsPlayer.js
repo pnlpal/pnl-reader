@@ -186,7 +186,10 @@ const TTSPlayer = ({
   const onAudioError = () => {
     const audio = audioRef.current;
     if (audio?.error) {
-      if (audio.error.message.includes("Empty src attribute")) {
+      if (
+        audio.error.message.includes("Empty src attribute") ||
+        audio.error.message.includes("MediaLoadInvalidURI")
+      ) {
         // Ignore this error which happens when src is set to null
         return;
       }
