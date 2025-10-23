@@ -60,12 +60,12 @@
       img {
         width: 48px;
         margin-right: 10px;
-        @media (min-width: 1280px) {
+        @media (min-width: 1201px) {
           display: none;
         }
       }
       span {
-        @media (max-width: 1280px) {
+        @media (max-width: 1201px) {
           display: none;
         }
       }
