@@ -361,7 +361,6 @@ const TTSPlayer = ({
             value=${volume}
             onInput=${onVolumeChange}
             class="tts-volume-slider"
-            orient="vertical"
           />`}
         </div>
         <audio

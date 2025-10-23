@@ -29,6 +29,7 @@
         left: 50%;
         bottom: 63px; // further above the volume icon
         transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
         transform-origin: left center;
         width: 160px;
         height: 32px;
