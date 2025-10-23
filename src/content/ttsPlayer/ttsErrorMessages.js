@@ -37,9 +37,11 @@ export default function getErrorBanner(error) {
 
     return msg;
   };
-  const errorMsg = getPrettyMessage(error.message || String(error));
+  const errorMsg = getPrettyMessage(
+    error.message || error.status?.message || String(error)
+  );
 
-  if (errorMsg === "Unauthorized") {
+  if (errorMsg === "Unauthorized" || error.statusCode === 401) {
     return html`
       <div class="tts-audio-error-banner">
         To use text-to-speech, please

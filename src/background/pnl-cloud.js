@@ -66,8 +66,13 @@ export default {
     });
     if (!response.ok) {
       const data = await response.json();
-      const errorMessage = data?.error || response.statusText;
+      const errorMessage =
+        data?.error ||
+        data?.status?.message ||
+        response.statusText ||
+        "Unknown error";
       console.error(response.status, "TTS failed:", errorMessage);
+      data.statusCode = response.status;
       throw new ErrorResponse(errorMessage, data);
     }
     const blob = await response.blob();
