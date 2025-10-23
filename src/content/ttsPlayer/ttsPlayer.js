@@ -55,9 +55,9 @@ const TTSPlayer = ({
   // Fetch audio URL when text changes, and only if volume > 0
   useEffect(() => {
     let revokedUrl;
+    setAudioUrl(null);
+    setError(null);
     if (!text || volume === 0) {
-      setAudioUrl(null);
-      setError(null);
       return;
     }
     setLoading(true);
@@ -183,7 +183,7 @@ const TTSPlayer = ({
     }
   };
 
-  const onAudioError = (ee) => {
+  const onAudioError = () => {
     const audio = audioRef.current;
     if (audio?.error) {
       if (audio.error.message.includes("Empty src attribute")) {
