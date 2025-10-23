@@ -183,6 +183,17 @@ const TTSPlayer = ({
     }
   };
 
+  const onAudioError = (ee) => {
+    const audio = audioRef.current;
+    if (audio?.error) {
+      if (audio.error.message.includes("Empty src attribute")) {
+        // Ignore this error which happens when src is set to null
+        return;
+      }
+      setError(audio.error);
+    }
+  };
+
   const handleVolumeBtnClick = () => {
     if (volume === 0) {
       setVolume(prevVolume || 1);
@@ -356,6 +367,7 @@ const TTSPlayer = ({
           onPlay=${onPlay}
           onPause=${onPause}
           onLoadedMetadata=${onLoadedMetadata}
+          onError=${onAudioError}
           style="display:none"
         />
         <button

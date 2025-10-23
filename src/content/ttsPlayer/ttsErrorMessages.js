@@ -80,6 +80,13 @@ export default function getErrorBanner(error) {
         .
       </div>
     `;
+  } else if (errorMsg.includes("Media load rejected by URL safety check")) {
+    return html`<div class="tts-audio-error-banner">
+      The audio was blocked by the site's csp policy. This will be resolved in
+      the next version. To help us prioritize this issue, please report this
+      site at:
+      <a href="https://pnl.dev/category/3/feedback" target="_blank">pnl.dev</a>
+    </div>`;
   }
   // Add more mappings as needed
   // if (/quota/i.test(errorMsg)) { ... }
