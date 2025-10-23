@@ -1,3 +1,10 @@
+# v2.0.0 Oct 23, 2025
+- Added an audio player: users can now select any text to have it read aloud.
+- Refined the theme selector: added a color preview icon for each theme.
+- Improved the reading page appearance: enhanced background, border, and shadow for a more paper-like feel.
+- Added support for loading PDFs from arXiv and additional sites.
+
+
 # v1.3.0 May 04, 2025
 - Added support for opening PDF files directly in PNL PDF Reader (Chrome-based browsers only).
 - Fixed an issue preventing word lookups using Dictionariez.

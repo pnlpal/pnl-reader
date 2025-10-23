@@ -1,7 +1,7 @@
 {
   "name": "pnl-reader",
-  "version": "1.3.0",
-  "description": "PNL Reader: simple viewer mode for novel lovers",
+  "version": "2.0.0",
+  "description": "PNL Reader: read quietly or read out loud",
   "repository": {
     "type": "git",
     "url": "git@github.com:pnlpal/pnl-reader.git"
