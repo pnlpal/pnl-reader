@@ -15,7 +15,7 @@
         visibility: hidden;
         transition: opacity 0.18s;
         cursor: pointer;
-        z-index: 2;
+        z-index: 10;
 
         &:hover {
           opacity: 1 !important;

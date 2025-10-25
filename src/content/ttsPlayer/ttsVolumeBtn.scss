@@ -39,7 +39,7 @@
         border-radius: 16px;
         border: 1px solid #888;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        z-index: 2; // ensure slider is above the button
+        z-index: 10; // ensure slider is above the button
         padding: 0 10px;
 
         @media (max-width: 768px) {
