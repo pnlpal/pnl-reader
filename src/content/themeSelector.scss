@@ -11,15 +11,12 @@
           @media (max-width: 1024px) {
             width: 160px;
           }
+          @media (max-width: 576px) {
+            width: 150px; // couldn't go smaller, or the text will be misaligned
+          }
           ul {
             left: auto;
-            width: 210px;
-            @media (max-width: 1280px) {
-              width: 180px;
-            }
-            @media (max-width: 1024px) {
-              width: 160px;
-            }
+            width: auto; // Firefox needs this to avoid being too wide.
 
             .theme-dropdown-item {
               .theme-preview-circle {

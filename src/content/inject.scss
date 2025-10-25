@@ -60,12 +60,15 @@
       img {
         width: 48px;
         margin-right: 10px;
-        @media (min-width: 1201px) {
+        @media (min-width: 1250px) {
+          display: none;
+        }
+        @media (max-width: 415px) {
           display: none;
         }
       }
       span {
-        @media (max-width: 1201px) {
+        @media (max-width: 1250px) {
           display: none;
         }
       }
@@ -90,14 +93,11 @@
         }
         input[name="fontSize"] {
           margin: 0 5px;
-          width: 150px;
+          width: 140px;
           @media (max-width: 1280px) {
-            width: 130px;
+            width: 120px;
           }
           @media (max-width: 1024px) {
-            width: 100px;
-          }
-          @media (max-width: 768px) {
             width: 90px;
           }
         }
