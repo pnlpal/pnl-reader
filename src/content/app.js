@@ -169,7 +169,7 @@ export default function ReaderApp({
       try {
         // Await TTS playback for each paragraph
         const text = blocks[i].textContent.trim();
-        if (!text) {
+        if (!text || text.length < 3) {
           continue;
         }
 
