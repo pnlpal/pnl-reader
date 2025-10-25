@@ -57,6 +57,8 @@ const TTSPlayer = ({
     let revokedUrl;
     setAudioUrl(null);
     setError(null);
+    setShowVoiceDropdown(false);
+    setShowSpeedDropdown(false);
     if (!text || volume === 0) {
       return;
     }
@@ -114,6 +116,8 @@ const TTSPlayer = ({
 
   // Restart the audio if startTimestamp changed, which means user re-triggered playing again
   useEffect(() => {
+    setShowVoiceDropdown(false);
+    setShowSpeedDropdown(false);
     const audio = audioRef.current;
     if (!audio) return;
     if (audio.currentTime > 0) {
