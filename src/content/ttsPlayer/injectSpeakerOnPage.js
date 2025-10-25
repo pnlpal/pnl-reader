@@ -33,10 +33,16 @@ export default (speak) => {
     return doc.body.innerHTML;
   }
 
-  function activateParagraphSpeaking(el) {
+  function activateParagraphSpeaking(el, nextParagraphEl = null) {
     const wrapper = el.classList.contains("tts-paragraph-wrap")
       ? el
       : el.closest(".tts-paragraph-wrap");
+
+    const nextWrapper = nextParagraphEl
+      ? nextParagraphEl.classList.contains("tts-paragraph-wrap")
+        ? nextParagraphEl
+        : nextParagraphEl.closest(".tts-paragraph-wrap")
+      : null;
 
     if (!wrapper) return;
     // Remove active class from all
@@ -45,13 +51,20 @@ export default (speak) => {
     clearHighlights();
     // Add active class to this paragraph
     wrapper.classList.add("tts-paragraph-wrap--active");
+    if (nextWrapper) {
+      nextWrapper.classList.add("tts-paragraph-wrap--active");
+      nextWrapper.classList.add("tts-paragraph-wrap--active-next");
+    }
     return wrapper;
   }
 
   function clearActiveParagraphSpeaking() {
     document
       .querySelectorAll("#PNLReaderArticleContent .tts-paragraph-wrap--active")
-      .forEach((el) => el.classList.remove("tts-paragraph-wrap--active"));
+      .forEach((el) => {
+        el.classList.remove("tts-paragraph-wrap--active");
+        el.classList.remove("tts-paragraph-wrap--active-next");
+      });
   }
 
   // After rendering the HTML:

@@ -44,6 +44,19 @@
           ); // subtle text highlight using theme color
           font-weight: 500;
         }
+
+        &-next {
+          .tts-speaker-icon {
+            opacity: 0.3;
+            visibility: visible;
+          }
+          .tts-paragraph {
+            text-decoration: underline dashed;
+            text-decoration-color: var(--pico-secondary, #ffdc9f);
+            text-decoration-thickness: 1px;
+            color: inherit;
+          }
+        }
       }
     }
   }

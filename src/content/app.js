@@ -173,16 +173,16 @@ export default function ReaderApp({
           continue;
         }
 
-        const nextParagraphText = (() => {
+        const [nextParagraphText, nextParagraphIndex] = (() => {
           let j = i + 1;
           while (j < blocks.length) {
             const nextText_ = blocks[j].textContent.trim();
             if (nextText_) {
-              return nextText_;
+              return [nextText_, j];
             }
             j++;
           }
-          return "";
+          return ["", 0];
         })();
 
         // console.warn(
@@ -198,7 +198,10 @@ export default function ReaderApp({
         setTtsNextParagraphText(nextParagraphText);
         setTtsLang(lang);
         setIsVoiceMode(true);
-        activateParagraphSpeaking(blocks[i]);
+        activateParagraphSpeaking(
+          blocks[i],
+          nextParagraphIndex ? blocks[nextParagraphIndex] : null
+        );
 
         // Wait for the TTSPlayer to finish before continuing
 
