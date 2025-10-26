@@ -240,7 +240,6 @@ export default function ReaderApp({
         await new Promise((resolve) => {
           const handler = (args) => {
             if (args.text !== text) return;
-            if (args.voice !== (settings.voice || "Luna")) return;
             if (args.startTimestamp < readingWholePageTimestampRef.current)
               return;
 
