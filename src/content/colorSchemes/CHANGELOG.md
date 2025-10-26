@@ -1,3 +1,11 @@
+# v2.1.0 Oct 26, 2025
+- Added automatic page turning for continuous reading, works nicely on websites like Royalroad or scribble.
+- Improved "read whole page" mode: now continues reading even if a paragraph is selected.
+- Added a visual indicator for "read whole page" mode.
+- Fixed error banner overlapping dropdown selectors.
+- Fixed an issue where short text could block reading.
+- Fixed "continue reading" not working when the voice was changed.
+
 # v2.0.0 Oct 23, 2025
 - Added an audio player: users can now select any text to have it read aloud.
 - Refined the theme selector: added a color preview icon for each theme.
