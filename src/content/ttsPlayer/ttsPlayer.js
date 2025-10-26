@@ -11,6 +11,7 @@ import {
   NoRepeatIcon,
   VolumeIcon,
   MutedIcon,
+  AutoReadNextPageIcon,
 } from "./icons.js";
 import text2Audio from "./text2Audio.js";
 import getErrorBanner from "./ttsErrorMessages.js";
@@ -40,6 +41,7 @@ const TTSPlayer = ({
     repeat = false,
     speed = 1,
     volume = 1,
+    autoReadNextPage = false,
   } = settings || {};
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -141,6 +143,10 @@ const TTSPlayer = ({
   );
   const setVolume = useCallback(
     (v) => saveSettings && saveSettings({ volume: v }),
+    [saveSettings]
+  );
+  const setAutoReadNextPage = useCallback(
+    (v) => saveSettings && saveSettings({ autoReadNextPage: v }),
     [saveSettings]
   );
 
@@ -332,8 +338,23 @@ const TTSPlayer = ({
         >
           ${loading ? PlayIcon() : isPlaying ? PauseIcon() : PlayIcon()}
         </button>
-        <!-- 4. Repeat button -->
-        <button
+        <!-- 4. Repeat button or Auto Read Next Page button -->
+        ${readingWholePageTimestamp &&
+        html`<button
+          class="tts-player-btn tts-repeat-btn"
+          title=${autoReadNextPage
+            ? "Auto Turn & Read Next Page On"
+            : "Auto Turn & Read Next Page Off"}
+          aria-pressed=${autoReadNextPage}
+          onClick=${() => setAutoReadNextPage(!autoReadNextPage)}
+          type="button"
+        >
+          ${autoReadNextPage && readingWholePageTimestamp
+            ? AutoReadNextPageIcon()
+            : NoRepeatIcon()}
+        </button>`}
+        ${!readingWholePageTimestamp &&
+        html`<button
           disabled=${!!readingWholePageTimestamp}
           class="tts-player-btn tts-repeat-btn"
           title=${repeat ? "Repeat On" : "Repeat Off"}
@@ -344,7 +365,7 @@ const TTSPlayer = ({
           ${repeat && !readingWholePageTimestamp
             ? RepeatIcon()
             : NoRepeatIcon()}
-        </button>
+        </button>`}
         <!-- 5. Volume button with hover vertical bar -->
         <div
           class="tts-volume-container"

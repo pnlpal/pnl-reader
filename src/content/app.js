@@ -43,6 +43,11 @@ export default function ReaderApp({
   }, [readingWholePageTimestamp]);
   const ttsPlayEndedResolverRef = useRef(null);
 
+  const autoReadNextPageRef = useRef(settings.autoReadNextPage);
+  useEffect(() => {
+    autoReadNextPageRef.current = settings.autoReadNextPage;
+  }, [settings.autoReadNextPage]);
+
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
     await chrome.runtime.sendMessage({
@@ -256,9 +261,8 @@ export default function ReaderApp({
       }
     }
 
-    if (readingWholePageTimestampRef.current) {
+    if (readingWholePageTimestampRef.current && autoReadNextPageRef.current) {
       // Finished reading all paragraphs, go to next page if available
-
       goToNextPage();
     }
   }
