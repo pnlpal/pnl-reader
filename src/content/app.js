@@ -488,6 +488,7 @@ export default function ReaderApp({
         saveSettings=${saveSettings}
         exitVoiceMode=${exitVoiceMode}
         onAudioPlayEnded=${handleTTSPlayEnded}
+        nextPageLink=${nextPageLink}
       />`}
     </div>
   `;

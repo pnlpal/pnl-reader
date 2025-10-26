@@ -34,6 +34,7 @@ const TTSPlayer = ({
   exitVoiceMode,
   startTimestamp,
   readingWholePageTimestamp,
+  nextPageLink,
   onAudioPlayEnded,
 }) => {
   const {
@@ -341,6 +342,7 @@ const TTSPlayer = ({
         <!-- 4. Repeat button or Auto Read Next Page button -->
         ${readingWholePageTimestamp &&
         html`<button
+          disabled=${!readingWholePageTimestamp || !nextPageLink}
           class="tts-player-btn tts-repeat-btn"
           title=${autoReadNextPage
             ? "Auto Turn & Read Next Page On"
@@ -349,7 +351,7 @@ const TTSPlayer = ({
           onClick=${() => setAutoReadNextPage(!autoReadNextPage)}
           type="button"
         >
-          ${autoReadNextPage && readingWholePageTimestamp
+          ${autoReadNextPage && readingWholePageTimestamp && nextPageLink
             ? AutoReadNextPageIcon()
             : NoRepeatIcon()}
         </button>`}
