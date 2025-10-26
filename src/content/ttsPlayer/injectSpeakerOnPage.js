@@ -88,7 +88,7 @@ export default (speak) => {
         // Speak
         if (wrapper) {
           const el = wrapper.querySelector(paragraphSelector);
-          speak(el.textContent, el);
+          speak(el, el.textContent.trim());
         }
       }
     });

@@ -111,10 +111,16 @@ export default function ReaderApp({
 
   function exitVoiceMode() {
     setIsVoiceMode(false);
+    setTtsText("");
+    setTtsNextParagraphText("");
+    setReadingWholePageTimestamp(null);
+    setTtsStartTimestamp(null);
+    localStorage.removeItem("PNLReader-auto-read-next-page");
+    clearActiveParagraphSpeaking();
   }
 
-  async function speak(text = "", node) {
-    if (!text) return;
+  async function readSelectionOrParagraph(node, text = "") {
+    if (!text) text = node.textContent.trim();
     if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
       const lang = (await detectLanguage(text, node)) || ttsLang || "";
       if (!lang) {
@@ -132,13 +138,6 @@ export default function ReaderApp({
       return true;
     }
   }
-
-  const {
-    injectParagraphSpeakers,
-    clearActiveParagraphSpeaking,
-    paragraphSelector,
-    activateParagraphSpeaking,
-  } = injectSpeakerOnPage(speak);
 
   function handleTTSPlayEnded(args) {
     if (ttsPlayEndedResolverRef.current) {
@@ -173,12 +172,18 @@ export default function ReaderApp({
     }
   }, []);
 
-  async function readWholePage() {
+  async function readWholePage(startNode = null) {
     const articleContent = document.getElementById("PNLReaderArticleContent");
     if (!articleContent) return;
+
     // Get all visible paragraphs and block elements
-    const blocks = Array.from(
+    const allBlocks = Array.from(
       articleContent.querySelectorAll(paragraphSelector)
+    ).filter((el) => {
+      return el.offsetParent !== null; // Only visible elements
+    });
+    const blocks = allBlocks.slice(
+      startNode ? allBlocks.indexOf(startNode) : 0
     );
 
     const lang =
@@ -259,6 +264,19 @@ export default function ReaderApp({
     }
   }
 
+  const {
+    injectParagraphSpeakers,
+    clearActiveParagraphSpeaking,
+    paragraphSelector,
+    activateParagraphSpeaking,
+  } = injectSpeakerOnPage((node, text) => {
+    if (readingWholePageTimestampRef.current) {
+      return readWholePage(node);
+    } else {
+      return readSelectionOrParagraph(node, text);
+    }
+  });
+
   useEffect(() => {
     const handleSelectionSpeak = debounce(() => {
       const selection = window.getSelection();
@@ -266,11 +284,13 @@ export default function ReaderApp({
       if (selectedText && utils.isSentence(selectedText)) {
         // Only speak if it's a sentence for now
         highlightSelection(selection);
-        speak(selectedText, selection.anchorNode).then((spokenTextChanged) => {
-          if (spokenTextChanged) {
-            clearActiveParagraphSpeaking();
+        readSelectionOrParagraph(selection.anchorNode, selectedText).then(
+          (spokenTextChanged) => {
+            if (spokenTextChanged) {
+              clearActiveParagraphSpeaking();
+            }
           }
-        });
+        );
       }
     }, 200);
 
@@ -313,7 +333,7 @@ export default function ReaderApp({
                 role="button"
                 id="readPageBtn"
                 class="secondary outline"
-                onClick=${readWholePage}
+                onClick=${() => readWholePage()}
                 aria-label="Read the whole page"
                 data-tooltip="Read the whole page"
                 data-placement="bottom"

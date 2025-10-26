@@ -208,10 +208,11 @@ export default {
           .map((word) => this.isValidWordOrPhrase(word));
         return allValid.every((v) => v);
       }
-      // Remove up to two trailing punctuation marks
       let w = text.trim();
-      w = w.replace(/[,:;'"-?!.]{1,2}$/, "");
-
+      // Remove up to two trailing punctuation marks
+      w = w.replace(/[,:;“”'"-?!.]{1,2}$/, "");
+      // Remove up to two leading punctuation marks
+      w = w.replace(/^[,:;“”'"-?!.]{1,2}/, "");
       // Ignore single English letters (likely not a word)
       if (this.hasEnglish(w) && w.length === 1) {
         return false;
