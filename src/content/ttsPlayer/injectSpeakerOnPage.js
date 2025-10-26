@@ -33,7 +33,11 @@ export default (speak) => {
     return doc.body.innerHTML;
   }
 
-  function activateParagraphSpeaking(el, nextParagraphEl = null) {
+  function activateParagraphSpeaking(
+    el,
+    focusMode = false,
+    nextParagraphEl = null
+  ) {
     const wrapper = el.classList.contains("tts-paragraph-wrap")
       ? el
       : el.closest(".tts-paragraph-wrap");
@@ -51,6 +55,9 @@ export default (speak) => {
     clearHighlights();
     // Add active class to this paragraph
     wrapper.classList.add("tts-paragraph-wrap--active");
+    if (focusMode) {
+      wrapper.classList.add("tts-paragraph-wrap--active-focus");
+    }
     if (nextWrapper) {
       nextWrapper.classList.add("tts-paragraph-wrap--active");
       nextWrapper.classList.add("tts-paragraph-wrap--active-next");
@@ -64,6 +71,7 @@ export default (speak) => {
       .forEach((el) => {
         el.classList.remove("tts-paragraph-wrap--active");
         el.classList.remove("tts-paragraph-wrap--active-next");
+        el.classList.remove("tts-paragraph-wrap--active-focus");
       });
   }
 
@@ -76,7 +84,7 @@ export default (speak) => {
           "pnl-reader-paragraph-speaker"
         )
       ) {
-        const wrapper = activateParagraphSpeaking(e.target);
+        const wrapper = activateParagraphSpeaking(e.target, true);
         // Speak
         if (wrapper) {
           const el = wrapper.querySelector(paragraphSelector);

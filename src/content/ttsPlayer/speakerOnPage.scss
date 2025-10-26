@@ -36,12 +36,19 @@
         .tts-paragraph {
           text-decoration: underline dashed;
           text-decoration-color: var(--pico-primary, #ffd700);
-          text-decoration-thickness: 1.5px;
+          text-decoration-thickness: 1px;
           text-underline-offset: 0.18em;
           color: var(
             --pico-primary,
             #ffd700
           ); // subtle text highlight using theme color
+        }
+
+        &-focus {
+          .tts-paragraph {
+            text-decoration-thickness: 1.5px;
+            font-weight: 500;
+          }
         }
 
         &-next {

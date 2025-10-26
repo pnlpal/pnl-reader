@@ -32,6 +32,7 @@ const TTSPlayer = ({
   saveSettings,
   exitVoiceMode,
   startTimestamp,
+  readingWholePageTimestamp,
   onAudioPlayEnded,
 }) => {
   const {
@@ -104,8 +105,8 @@ const TTSPlayer = ({
     const audio = audioRef.current;
     if (!audio) return;
 
-    // Set the loop property based on repeat and nextParagraphText
-    audio.loop = !!repeat && !nextParagraphText;
+    // Set the loop property based on repeat and readingWholePageTimestamp
+    audio.loop = !!repeat && !readingWholePageTimestamp;
 
     // // Restart playback when repeat is toggled on while paused:
     // if (repeat && audio.paused && audioUrl) {
@@ -333,14 +334,16 @@ const TTSPlayer = ({
         </button>
         <!-- 4. Repeat button -->
         <button
-          disabled=${!!nextParagraphText}
+          disabled=${!!readingWholePageTimestamp}
           class="tts-player-btn tts-repeat-btn"
           title=${repeat ? "Repeat On" : "Repeat Off"}
           aria-pressed=${repeat}
           onClick=${() => setRepeat(!repeat)}
           type="button"
         >
-          ${repeat && !nextParagraphText ? RepeatIcon() : NoRepeatIcon()}
+          ${repeat && !readingWholePageTimestamp
+            ? RepeatIcon()
+            : NoRepeatIcon()}
         </button>
         <!-- 5. Volume button with hover vertical bar -->
         <div

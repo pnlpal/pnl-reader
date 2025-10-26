@@ -226,6 +226,7 @@ export default function ReaderApp({
         setIsVoiceMode(true);
         activateParagraphSpeaking(
           blocks[i],
+          false,
           nextParagraphIndex ? blocks[nextParagraphIndex] : null
         );
 
@@ -459,6 +460,7 @@ export default function ReaderApp({
         nextParagraphText=${ttsNextParagraphText}
         lang=${ttsLang}
         startTimestamp=${ttsStartTimestamp}
+        readingWholePageTimestamp=${readingWholePageTimestamp}
         settings=${settings}
         saveSettings=${saveSettings}
         exitVoiceMode=${exitVoiceMode}
