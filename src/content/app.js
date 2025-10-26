@@ -147,6 +147,32 @@ export default function ReaderApp({
     }
   }
 
+  function goToNextPage() {
+    if (nextPageLink) {
+      localStorage.setItem(
+        "PNLReader-auto-read-next-page",
+        new Date().toISOString()
+      );
+      window.location.href = nextPageLink;
+    }
+  }
+  useEffect(() => {
+    const lastPageReadTimestamp = localStorage.getItem(
+      "PNLReader-auto-read-next-page"
+    );
+
+    if (
+      lastPageReadTimestamp &&
+      Date.now() - new Date(lastPageReadTimestamp).getTime() < 2 * 60 * 1000
+    ) {
+      localStorage.removeItem("PNLReader-auto-read-next-page");
+      // Optionally, add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        readWholePage();
+      }, 300);
+    }
+  }, []);
+
   async function readWholePage() {
     const articleContent = document.getElementById("PNLReaderArticleContent");
     if (!articleContent) return;
@@ -223,6 +249,12 @@ export default function ReaderApp({
       } catch (e) {
         console.warn("Skipping paragraph due to error:", e);
       }
+    }
+
+    if (readingWholePageTimestampRef.current) {
+      // Finished reading all paragraphs, go to next page if available
+
+      goToNextPage();
     }
   }
 
