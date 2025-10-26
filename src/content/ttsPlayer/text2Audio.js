@@ -4,12 +4,40 @@ const CACHE_KEY = "PNLReader-tts-cache";
 const CACHE_LIMIT = 10;
 
 function getCache() {
-  const cached = localStorage.getItem(CACHE_KEY);
-  return cached ? JSON.parse(cached) : [];
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    return cached ? JSON.parse(cached) : [];
+  } catch (e) {
+    console.warn("Failed to read TTS cache from localStorage:", e);
+    return [];
+  }
 }
 
 function setCache(cacheArr) {
-  localStorage.setItem(CACHE_KEY, JSON.stringify(cacheArr));
+  let arr = [...cacheArr];
+  while (arr.length > 0) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(arr));
+      return;
+    } catch (e) {
+      if (
+        e instanceof DOMException &&
+        (e.name === "QuotaExceededError" ||
+          e.name === "NS_ERROR_DOM_QUOTA_REACHED")
+      ) {
+        console.warn(
+          "Storage quota exceeded when saving TTS cache, removing oldest cache item.",
+          e
+        );
+        arr.shift();
+      } else {
+        console.error("Failed to save TTS cache to localStorage:", e);
+        return;
+      }
+    }
+  }
+  // If we get here, nothing could be saved
+  console.warn("Unable to save any cache due to storage quota limits.");
 }
 
 export default async (
