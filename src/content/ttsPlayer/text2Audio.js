@@ -1,7 +1,7 @@
 "use strict";
 import utils from "utils";
 const CACHE_KEY = "PNLReader-tts-cache";
-const CACHE_LIMIT = 20;
+const CACHE_LIMIT = 10;
 
 function getCache() {
   const cached = localStorage.getItem(CACHE_KEY);
