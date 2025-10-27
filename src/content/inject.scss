@@ -116,6 +116,11 @@
         .dropdown {
           overflow: initial !important; // Some sites have hidden overflow
           background: inherit; // some sites have white background
+
+          // Fix dropdown width issue on mobile, otherwise it becomes too narrow
+          display: inline-block;
+          width: 100%;
+
           summary {
             --pico-border-color: var(--pico-form-element-border-color);
             .icon-font::before {
