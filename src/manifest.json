@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "minimum_chrome_version": "100",
   "name": "PNL Reader: read quietly or read aloud",
-  "description": "Read any webpage quietly with dark mode, artistic fonts or read it aloud with natural sounding voices.",
+  "description": "Read any webpage quietly with dark mode, artistic fonts or read it aloud with natural sounding voices 📖",
   "permissions": ["activeTab", "scripting", "storage"],
   "background": {
     "service_worker": "background.bundle.js"

@@ -1,3 +1,7 @@
+# v2.1.1 Oct 27, 2025 
+- Improved responsive design, especially for mobile devices.
+- Fixed a caching issue where large text could trigger a storage quota exceeded error.
+
 # v2.1.0 Oct 26, 2025
 - Added automatic page turning for continuous reading, works nicely on websites like Royalroad or scribble.
 - Improved "read whole page" mode: now continues reading even if a paragraph is selected.
