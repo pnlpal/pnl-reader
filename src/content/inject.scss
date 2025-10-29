@@ -19,7 +19,7 @@
 
 #PNLReader {
   padding: 0;
-  margin-bottom: 10em;
+  padding-bottom: 10em; // space for audio player, padding is better than margin because some sites more compatible, such as aftonbladet.se
   background-color: var(--pico-background-color);
   @media print {
     background-color: var(--pico-card-background-color);
