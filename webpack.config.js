@@ -138,7 +138,7 @@ var options = {
               if (env.DEVICE === "Android") {
                 json.browser_specific_settings = {
                   gecko: {
-                    id: "1bd2907d-3037-40aa-bf18-2b6096dea3aa",
+                    id: "{1bd2907d-3037-40aa-bf18-2b6096dea3aa}",
                     data_collection_permissions: {
                       required: ["authenticationInfo", "websiteActivity"],
                     },
