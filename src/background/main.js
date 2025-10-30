@@ -18,10 +18,12 @@ chrome.runtime.onMessage.addListener(function (...args) {
 });
 
 (function setupPageUpdater() {
-  let enabledTabs = [];
+  let enabledTabs = []; // [{ id: tabId, url: "https://..." }, ...]
+
   chrome.storage.local.get("enabledTabs", (data) => {
-    enabledTabs = data.enabledTabs || [];
-    // console.log("Enabled tabs:", enabledTabs);
+    if (data?.enabledTabs?.every((x) => x.id)) {
+      enabledTabs = data.enabledTabs;
+    }
   });
 
   (chrome.action || chrome.browserAction).onClicked.addListener((tab) => {
@@ -36,15 +38,17 @@ chrome.runtime.onMessage.addListener(function (...args) {
   });
 
   message.on("reader mode enabled", async (_, sender) => {
-    // console.log("Enabled reader mode", sender.tab.id);
-    if (!enabledTabs.includes(sender.tab.id)) {
-      enabledTabs.push(sender.tab.id);
-      chrome.storage.local.set({ enabledTabs });
+    // Remove any previous entry for this tab
+    if (!sender.tab.id) {
+      return;
     }
+    enabledTabs = enabledTabs.filter((t) => t.id !== sender.tab.id);
+    enabledTabs.push({ id: sender.tab.id, url: sender.tab.url });
+    chrome.storage.local.set({ enabledTabs });
   });
   message.on("reader mode disabled", async (_, sender) => {
     // console.log("Disable reader mode", sender.tab.id);
-    enabledTabs = enabledTabs.filter((id) => id !== sender.tab.id);
+    enabledTabs = enabledTabs.filter((t) => t.id !== sender.tab.id);
     chrome.storage.local.set({ enabledTabs });
   });
 
@@ -63,13 +67,33 @@ chrome.runtime.onMessage.addListener(function (...args) {
 
   chrome.tabs.onRemoved.addListener(async function (tid) {
     // console.log("Tab removed", tid);
-    enabledTabs = enabledTabs.filter((id) => id !== tid);
+    enabledTabs = enabledTabs.filter((t) => t.id !== tid);
     chrome.storage.local.set({ enabledTabs });
   });
 
-  chrome.tabs.onUpdated.addListener(async (tabId, info) => {
-    // console.log("Tab updated", tabId, info);
-    if (info.status === "complete" && enabledTabs.includes(tabId)) {
+  chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
+    // console.log("Tab updated", tabId, info, tab);
+    const previousTabInfo = enabledTabs.find((t) => t.id === tabId);
+    if (info.status === "complete" && previousTabInfo) {
+      // check if the host is changed, but it only works on Firefox as only firefox gives the url in tab.
+      if (tab?.url) {
+        const previousHost = new URL(previousTabInfo.url).host;
+        const currentHost = new URL(tab.url).host;
+        if (previousHost !== currentHost) {
+          // host changed, remove from enabledTabs
+          // console.log(
+          //   "Host changed, disable reader mode",
+          //   tabId,
+          //   previousHost,
+          //   "->",
+          //   currentHost
+          // );
+          enabledTabs = enabledTabs.filter((t) => t.id !== tabId);
+          chrome.storage.local.set({ enabledTabs });
+          return;
+        }
+      }
+
       try {
         // console.log("Executing script", tabId);
         await chrome.scripting.executeScript({
