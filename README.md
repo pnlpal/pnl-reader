@@ -31,11 +31,28 @@ To see PNL Reader in action, check out our [introduction video](https://www.yout
 
 ## Build
 
-1. use `yarn` or `npm install` to install requirements.
-2. `npm start` to start a webpack dev-server, add the `build/` directory in your browser's extension page to load the extension.
-3. To build for Firefox, please use the environment variable `BROWSER=Firefox`. So `BROWSER=Firefox npm start` will build a development version of this add-on for Firefox.
-4. `npm run build` to build the release version. The dest path is `build/`. And `BROWSER=Firefox npm run build` to build the Firefox release version.  
-5. `./pack.sh` to pack the extension to zip file. For Firefox, use `BROWSER=Firefox ./pack.sh`.
+## Build Instructions
+
+1. **Install dependencies:**  
+    Use `yarn` or `npm install` to install all required packages.
+
+2. **Start development server:**  
+    Run `npm start` to launch the webpack dev-server.  
+    - By default, this builds for Chrome.  
+    - To build for Firefox or Edge, set the `BROWSER` environment variable:  
+      - Firefox: `BROWSER=Firefox npm start`  
+      - Edge: `BROWSER=Edge npm start`  
+    - Load the `build/` directory as an unpacked extension in your browser's extension page.
+
+3. **Build release version:**  
+    Run `npm run build` to create a production build in the `build/` directory.  
+    - For Firefox: `BROWSER=Firefox npm run build`  
+    - For Edge: `BROWSER=Edge npm run build`
+
+4. **Package the extension:**  
+    Use `./pack.sh` to package the extension into a zip file.  
+    - For Firefox: `BROWSER=Firefox ./pack.sh`  
+    - For Edge: `BROWSER=Edge ./pack.sh`
 
 ## Feedback and Support
 
