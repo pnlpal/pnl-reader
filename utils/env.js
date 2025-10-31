@@ -4,5 +4,4 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT || 3355,
   BROWSER: process.env.BROWSER || "Chrome",
-  DEVICE: process.env.DEVICE || "Desktop",
 };
