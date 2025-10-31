@@ -14,6 +14,11 @@ const readerModeExitDate = localStorage.getItem(
 const isReadMode = !!readerModeEnabledDate;
 let globalSettings;
 
+function makePageVisible() {
+  // Make body visible as we have hidden the unstyled page during loading.
+  document.body.style.setProperty("visibility", "visible", "important");
+}
+
 function getPageData() {
   const scribblehub = () => {
     if (location.host === "www.scribblehub.com") {
@@ -148,8 +153,10 @@ async function enableReadMode() {
       />`,
       document.body
     );
+    makePageVisible();
   } else {
     console.error("Failed to parse the article content.");
+    makePageVisible();
   }
 }
 function exitReadMode() {
@@ -157,14 +164,17 @@ function exitReadMode() {
   chrome.runtime.sendMessage({ type: "reader mode disabled" });
   location.reload();
 }
+
 // console.log("Reader mode:", readerModeEnabledDate);
 if (readerModeEnabledDate && Date.now() - readerModeEnabledDate < 2000) {
   console.log("Read mode is enabled in the last 2 seconds. Ignoring.");
+  makePageVisible();
 } else if (
   readerModeExitDate &&
   Date.now() - parseInt(readerModeExitDate) < 2000
 ) {
   console.log("Read mode is disabled in the last 2 seconds. Ignoring.");
+  makePageVisible();
   chrome.runtime.sendMessage({ type: "reader mode disabled" });
 } else if (!isReadMode) {
   enableReadMode();

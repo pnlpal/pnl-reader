@@ -74,26 +74,39 @@ chrome.runtime.onMessage.addListener(function (...args) {
   chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
     // console.log("Tab updated", tabId, info, tab);
     const previousTabInfo = enabledTabs.find((t) => t.id === tabId);
-    if (info.status === "complete" && previousTabInfo) {
-      // check if the host is changed, but it only works on Firefox as only firefox gives the url in tab.
-      if (tab?.url) {
-        const previousHost = new URL(previousTabInfo.url).host;
-        const currentHost = new URL(tab.url).host;
-        if (previousHost !== currentHost) {
-          // host changed, remove from enabledTabs
-          // console.log(
-          //   "Host changed, disable reader mode",
-          //   tabId,
-          //   previousHost,
-          //   "->",
-          //   currentHost
-          // );
-          enabledTabs = enabledTabs.filter((t) => t.id !== tabId);
-          chrome.storage.local.set({ enabledTabs });
-          return;
-        }
-      }
 
+    // check if the host is changed, but it only works on Firefox as only firefox gives the url in tab.
+    if (tab?.url) {
+      const previousHost = new URL(previousTabInfo.url).host;
+      const currentHost = new URL(tab.url).host;
+      if (previousHost !== currentHost) {
+        // host changed, remove from enabledTabs
+        // console.log(
+        //   "Host changed, disable reader mode",
+        //   tabId,
+        //   previousHost,
+        //   "->",
+        //   currentHost
+        // );
+        enabledTabs = enabledTabs.filter((t) => t.id !== tabId);
+        chrome.storage.local.set({ enabledTabs });
+        return;
+      }
+    }
+
+    // Step 1: Hide the page as soon as navigation starts to avoid flash of unstyled page.
+    if (info.status === "loading" && previousTabInfo) {
+      try {
+        await chrome.scripting.insertCSS({
+          target: { tabId: tabId },
+          css: "body { visibility: hidden !important; }",
+        });
+      } catch (e) {
+        console.error("Insert CSS error", e);
+      }
+    }
+    // Step 2: Inject the script when the page is fully loaded
+    if (info.status === "complete" && previousTabInfo) {
       try {
         // console.log("Executing script", tabId);
         await chrome.scripting.executeScript({
@@ -102,6 +115,12 @@ chrome.runtime.onMessage.addListener(function (...args) {
         });
       } catch (e) {
         console.error("Exec script error", e);
+
+        // recover page
+        chrome.scripting.insertCSS({
+          target: { tabId: tabId },
+          css: "body { visibility: visible !important; }",
+        });
       }
     }
   });
