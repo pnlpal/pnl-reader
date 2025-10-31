@@ -8,13 +8,18 @@
   $playBarBottomSpacing: 2em;
   $playBarPaddingVertical: 1.2em;
 
+  $playBarBottomSpacingOnMobile: 0px;
+  $playBarPaddingVerticalOnMobile: 0.7rem;
+
   .tts-audio-error-banner {
     position: fixed;
     left: 50%;
+
     // $playBtnHeight: 80px; // padding: 20px + svg height 40px + padding 20px
     bottom: calc(
       80px + $playBarBottomSpacing + $playBarPaddingVertical * 2 + 0.5em
     ); // above the player bar and some gap(0.5em)
+
     transform: translateX(-50%);
     background: var(--pico-code-background-color);
     color: var(--pico-del-color);
@@ -25,12 +30,18 @@
     max-width: 80vw;
     z-index: 2;
 
-    @media (max-width: 576px) {
-      min-width: 0;
+    @media (max-width: 890px) {
+      width: 100%;
       max-width: 98vw;
       font-size: 0.97em;
-      padding: 0.5em 0.2em;
+      padding: 0.5em 1.2em;
       border-radius: 6px;
+
+      // $playBtnHeight: 48px;
+      bottom: calc(
+        48px + $playBarBottomSpacingOnMobile + $playBarPaddingVerticalOnMobile *
+          2 + 0.5em
+      ); // above the player bar and some gap(0.5em)
     }
     a {
       color: var(--pico-primary);
@@ -105,16 +116,15 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       width: 90%;
     }
-    @media (max-width: 576px) {
+    @media (max-width: 890px) {
       width: 100%;
-      align-items: stretch;
       font-size: 1em;
-      padding: 0.7rem 0.5rem;
+      padding: $playBarPaddingVerticalOnMobile 0.5rem;
       gap: 0.7rem;
-      bottom: 0;
+      bottom: $playBarBottomSpacingOnMobile;
 
       .tts-player-btn {
         margin: 0;
