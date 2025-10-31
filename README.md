@@ -31,8 +31,6 @@ To see PNL Reader in action, check out our [introduction video](https://www.yout
 
 ## Build
 
-## Build Instructions
-
 1. **Install dependencies:**  
     Use `yarn` or `npm install` to install all required packages.
 
