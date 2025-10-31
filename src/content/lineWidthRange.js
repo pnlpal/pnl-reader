@@ -3,7 +3,8 @@ import htm from "htm";
 import { useState, useEffect } from "preact/hooks";
 
 const html = htm.bind(h);
-const isMobile = window.innerWidth < 768;
+const isMobile =
+  /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 890;
 
 const LineWidthRange = ({ settings, saveSettings }) => {
   const [lineWidth, setLineWidth] = useState(settings.lineWidth);
