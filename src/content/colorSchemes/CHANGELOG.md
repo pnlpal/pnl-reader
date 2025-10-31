@@ -1,3 +1,10 @@
+# v2.2.0 Oct 31, 2025
+- Added support for Firefox on Android!
+- Improved responsive UI for Android devices.
+- Prevented page flash when auto-enabling reader mode by hiding the unstyled original page.
+- Reader mode no longer auto-enables when the page host changes.
+- Increased player z-index to prevent overlap from Google ads.
+
 # v2.1.1 Oct 27, 2025 
 - Improved responsive design, especially for mobile devices.
 - Fixed a caching issue where large text could trigger a storage quota exceeded error.
