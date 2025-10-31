@@ -137,7 +137,7 @@ var options = {
               // Firefox Android requires data_collection_permissions and id
               json.browser_specific_settings = {
                 gecko: {
-                  id: "{1bd2907d-3037-40aa-bf18-2b6096dea3aa}",
+                  id: "{8a1b9de7-0601-4ccb-93b8-3f60fa7a5772}",
                   data_collection_permissions: {
                     required: ["authenticationInfo", "websiteActivity"],
                   },
