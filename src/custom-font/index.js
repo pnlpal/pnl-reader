@@ -12,6 +12,9 @@ const systemFontGroup = document.getElementById("system-font-group");
 const browseFontsBtn = document.getElementById("browse-fonts-btn");
 const browseFontsCard = document.getElementById("browse-fonts-card");
 
+// Make body visible as we have hidden the unstyled page during loading.
+document.body.style.setProperty("visibility", "visible", "important");
+
 (async () => {
   // global settings
   const globalSettings = await utils.send("get settings");
