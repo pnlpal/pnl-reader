@@ -1,6 +1,7 @@
 import { h } from "preact";
 import htm from "htm";
 import { useEffect } from "preact/hooks";
+import utils from "utils";
 
 const html = htm.bind(h);
 
@@ -16,6 +17,7 @@ const FontSelector = ({ settings, saveSettings }) => {
       $article.style.setProperty("--pico-font-family", defaultFontType);
       return;
     }
+
     const fontFamily_ = `${newFontType}, ${defaultFontType}`;
     $article.style.setProperty("--pico-font-family", fontFamily_);
     saveSettings({ fontType: newFontType });
@@ -123,28 +125,52 @@ const FontSelector = ({ settings, saveSettings }) => {
   ];
 
   return html`
-    <select
+    <div
       id="fontType"
-      name="fontType"
-      aria-label="Select Font"
-      onChange=${changeFontType}
-      value=${fontType}
+      style="display: flex; flex-direction: column; align-items: flex-start;"
     >
-      ${allFonts.map(
-        (font) =>
-          html`
-            <option
-              value=${font.value}
-              style="font-family: ${font.value};"
-              data-tooltip="${font.tooltip}"
-              data-placement="right"
-              title="${font.tooltip}"
-            >
-              ${font.label}
-            </option>
-          `
-      )}
-    </select>
+      <select
+        name="fontType"
+        aria-label="Select Font"
+        onChange=${changeFontType}
+        value=${fontType}
+      >
+        ${allFonts.map(
+          (font) =>
+            html`
+              <option
+                value=${font.value}
+                style="font-family: ${font.value};"
+                data-tooltip="${font.tooltip}"
+                data-placement="right"
+                title="${font.tooltip}"
+              >
+                ${font.label}
+              </option>
+            `
+        )}
+      </select>
+      <button
+        type="button"
+        onClick=${() => {
+          utils.send("open custom font page");
+        }}
+        style="
+        margin-top: 0.5em;
+        padding: 0.3em 0.6em;
+        font-size: 0.8em;
+        background: transparent;
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: 0.25rem;
+        color: var(--pico-color);
+        cursor: pointer;
+        width: 100%;
+      "
+        title="Add or manage custom fonts"
+      >
+        ⚙️ Manage Custom Fonts
+      </button>
+    </div>
   `;
 };
 

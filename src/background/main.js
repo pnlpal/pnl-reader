@@ -65,6 +65,12 @@ chrome.runtime.onMessage.addListener(function (...args) {
     });
   });
 
+  message.on("open custom font page", async () => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("custom-font.html"),
+    });
+  });
+
   chrome.tabs.onRemoved.addListener(async function (tid) {
     // console.log("Tab removed", tid);
     enabledTabs = enabledTabs.filter((t) => t.id !== tid);
