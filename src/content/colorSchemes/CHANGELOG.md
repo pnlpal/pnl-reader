@@ -1,3 +1,6 @@
+# v2.3.1 Nov 01, 2025
+- Fix when globalSettings is null for new user.
+
 # v2.3.0 Nov 01, 2025
 - Added a custom font page, allowing users to add and manage local fonts.
 - Improved responsive UI for the options page on Firefox for Android.
