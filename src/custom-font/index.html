@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Custom Font Setup – PNL Reader</title>
+    <link rel="stylesheet" href="styles.less" />
+  </head>
+  <body>
+    <main class="container">
+      <!-- Section 1: Set Custom Font -->
+      <section class="section">
+        <h2>Set a Custom Font in PNL Reader</h2>
+        <article>
+          <form id="font-form">
+            <fieldset role="group" id="manual-input-group">
+              <input
+                type="text"
+                id="font-name-input"
+                name="font_name"
+                placeholder="e.g. Noto Sans SC, Source Han Sans, Arial"
+                autocomplete="off"
+              />
+              <input
+                type="submit"
+                id="apply-font-btn"
+                value="Apply Font to PNL Reader"
+              />
+            </fieldset>
+
+            <fieldset role="group" id="system-font-group" style="display: none">
+              <select id="system-fonts-list">
+                <option value="">-- Select a font --</option>
+              </select>
+              <input
+                type="submit"
+                id="apply-system-font-btn"
+                value="Apply Font to PNL Reader"
+              />
+            </fieldset>
+
+            <span
+              id="apply-status"
+              style="margin-left: 1em; color: #36b37e; display: none"
+              >Font applied!</span
+            >
+          </form>
+
+          <footer>
+            <div id="font-preview" class="font-preview">
+              The quick brown fox jumps over the lazy dog.<br />
+              你好，世界。こんにちは世界。안녕하세요 세계.
+            </div>
+          </footer>
+        </article>
+
+        <article id="browse-fonts-card">
+          <header>Browse System Fonts (Chrome/Edge only)</header>
+          <button id="browse-fonts-btn" type="button">
+            Browse System Fonts
+          </button>
+          <p>
+            <small>Click to see all fonts installed on your computer</small>
+          </p>
+        </article>
+      </section>
+
+      <!-- Section 2: How to Install a Web Font Locally -->
+      <section class="section">
+        <h2>How to Install a Web Font on Your Computer</h2>
+        <ol>
+          <li>
+            Download a font from a trusted source:
+            <ul>
+              <li>
+                <a
+                  href="https://fonts.google.com/"
+                  target="_blank"
+                  rel="noopener"
+                  >Google Fonts</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.1001freefonts.com/"
+                  target="_blank"
+                  rel="noopener"
+                  >1001 Free Fonts</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/adobe-fonts/source-han-sans"
+                  target="_blank"
+                  rel="noopener"
+                  >Source Han Sans (CJK)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.google.com/get/noto/"
+                  target="_blank"
+                  rel="noopener"
+                  >Noto Sans CJK</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li>
+            Install the font on your system:
+            <ul>
+              <li>
+                Windows: Double-click the font file and click <b>Install</b>.
+              </li>
+              <li>
+                Mac: Double-click the font file and click <b>Install Font</b> in
+                Font Book.
+              </li>
+            </ul>
+          </li>
+          <li><b>Restart your browser</b> to make the new font available.</li>
+          <li>
+            Return to this page and enter the font name above to use it in PNL
+            Reader.
+          </li>
+        </ol>
+        <article>
+          <b>Note:</b> If your font doesn't appear, double-check the spelling
+          and make sure it's installed for all users. Some fonts may require a
+          browser restart to show up.
+        </article>
+      </section>
+    </main>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>

@@ -32,6 +32,7 @@ var options = {
     ),
     background: path.join(__dirname, "src", "background", "main.js"),
     "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
+    "custom-font": path.join(__dirname, "src", "custom-font", "index.js"),
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -180,6 +181,12 @@ var options = {
       filename: "pdf-viewer.html",
       cache: false,
       chunks: ["pdf-viewer"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "custom-font", "index.html"),
+      filename: "custom-font.html",
+      cache: false,
+      chunks: ["custom-font"],
     }),
   ],
   infrastructureLogging: {
