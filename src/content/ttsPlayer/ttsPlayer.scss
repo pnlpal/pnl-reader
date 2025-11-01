@@ -30,7 +30,7 @@
     max-width: 80vw;
     z-index: 2;
 
-    @media (max-width: 890px) {
+    @media (max-width: 768px) {
       width: 100%;
       max-width: 98vw;
       font-size: 0.97em;
@@ -119,7 +119,7 @@
     @media (max-width: 1024px) {
       width: 90%;
     }
-    @media (max-width: 890px) {
+    @media (max-width: 768px) {
       width: 100%;
       font-size: 1em;
       padding: $playBarPaddingVerticalOnMobile 0.5rem;
