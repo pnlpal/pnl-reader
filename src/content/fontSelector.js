@@ -26,12 +26,21 @@ const FontSelector = ({ settings, saveSettings }) => {
     changeFontType({ target: { value: fontType } });
   }, []);
 
+  const localFonts =
+    settings.customLocalFonts?.map((f) => ({
+      value: f,
+      label: `${f} ⚡`, // lightning bolt to indicate local font
+      tooltip: `Custom local font: ${f}`,
+      isCustom: true,
+    })) || [];
+
   const allFonts = [
     {
       value: "system-ui",
       label: "System UI",
       tooltip: "Default system font, usually sans-serif.",
     },
+    ...localFonts,
     {
       value: "'Source Serif 4', serif",
       label: "Source Serif 4",

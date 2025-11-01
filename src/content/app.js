@@ -57,6 +57,8 @@ export default function ReaderApp({
   };
 
   const saveSettings = (update) => {
+    delete update.customLocalFonts; // prevent saving customLocalFonts here
+
     const hasChanged = Object.keys(update).some((key) => {
       return settings[key] !== update[key];
     });
