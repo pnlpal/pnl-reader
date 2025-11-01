@@ -18,7 +18,7 @@ document.body.style.setProperty("visibility", "visible", "important");
 (async () => {
   // global settings
   const globalSettings = await utils.send("get settings");
-  let existingCustomFonts = globalSettings.customLocalFonts || [];
+  let existingCustomFonts = globalSettings?.customLocalFonts || [];
 
   // Hide browse fonts button if not supported
   if (!("queryLocalFonts" in window)) {
