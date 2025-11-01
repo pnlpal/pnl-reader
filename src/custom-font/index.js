@@ -25,6 +25,27 @@ document.body.style.setProperty("visibility", "visible", "important");
     browseFontsCard.style.display = "none";
   }
 
+  const formatFontValue = (fontName) => {
+    if (!fontName) return "";
+    return fontName
+      .split(",")
+      .map((part) => {
+        // wrap each part in quotes if it contains spaces and is not already quoted
+        const trimmed = part.trim();
+        if (
+          trimmed.includes(" ") &&
+          !(
+            (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+            (trimmed.startsWith("'") && trimmed.endsWith("'"))
+          )
+        ) {
+          return `'${trimmed}'`;
+        }
+        return trimmed;
+      })
+      .join(", ");
+  };
+
   // Browse system fonts button handler
   if (browseFontsBtn) {
     browseFontsBtn.onclick = async () => {
@@ -37,17 +58,130 @@ document.body.style.setProperty("visibility", "visible", "important");
         browseFontsCard.style.display = "none";
         systemFontGroup.style.display = "flex";
 
-        // Populate font list
-        systemFontsList.innerHTML =
-          '<option value="">-- Select a font --</option>';
-        availableFonts.forEach((font) => {
-          const name = font.fullName || font.postscriptName || font.family;
-          const opt = document.createElement("option");
-          opt.value = name;
-          opt.textContent = name;
-          opt.style.fontFamily = name;
-          systemFontsList.appendChild(opt);
+        // Get search elements
+        const searchInput = document.getElementById("font-search-input");
+        const dropdown = document.getElementById("font-dropdown");
+        let selectedFont = "";
+        let allFonts = [];
+
+        // Prepare font list
+        allFonts = availableFonts.map((font) => ({
+          name: font.fullName || font.postscriptName || font.family,
+          displayName: font.fullName || font.postscriptName || font.family,
+        }));
+
+        // Sort fonts alphabetically
+        allFonts.sort((a, b) => a.name.localeCompare(b.name));
+
+        function renderDropdown(fonts = allFonts) {
+          dropdown.innerHTML = "";
+
+          if (fonts.length === 0) {
+            const noResults = document.createElement("div");
+            noResults.style.cssText =
+              "padding: 0.5rem; color: var(--pico-muted-color); font-style: italic;";
+            noResults.textContent = "No fonts found";
+            dropdown.appendChild(noResults);
+            return;
+          }
+
+          fonts.forEach((font) => {
+            const item = document.createElement("div");
+            item.style.cssText = `
+            padding: 0.5rem;
+            cursor: pointer;
+            font-family: '${font.name}', sans-serif;
+            border-bottom: 1px solid var(--pico-muted-border-color);
+          `;
+            item.textContent = font.displayName;
+
+            // Hover effect
+            item.addEventListener("mouseenter", () => {
+              item.style.backgroundColor = "var(--pico-primary-background)";
+            });
+            item.addEventListener("mouseleave", () => {
+              item.style.backgroundColor = "transparent";
+            });
+
+            // Click to select
+            item.addEventListener("click", () => {
+              selectedFont = font.name;
+              searchInput.value = font.name;
+              dropdown.style.display = "none";
+
+              // Update preview
+              if (preview) {
+                const formattedFont = formatFontValue(font.name);
+                preview.style.fontFamily = formattedFont;
+              }
+              // Focus the input and place cursor at the end for editing
+              searchInput.focus();
+            });
+
+            dropdown.appendChild(item);
+          });
+        }
+
+        // Search functionality
+        searchInput.addEventListener("input", (e) => {
+          const searchTerm = e.target.value.toLowerCase().trim();
+
+          // Update selected font to current input value (for manual editing)
+          selectedFont = e.target.value.trim();
+          // Update preview with current input
+          if (preview) {
+            const formattedFont = selectedFont
+              ? formatFontValue(selectedFont)
+              : "inherit";
+            preview.style.fontFamily = formattedFont;
+          }
+
+          // Filter fonts
+          const filteredFonts = allFonts.filter((font) =>
+            font.name.toLowerCase().includes(searchTerm)
+          );
+
+          renderDropdown(filteredFonts);
+          dropdown.style.display = "block";
         });
+
+        // Show all fonts when input is focused
+        searchInput.addEventListener("focus", () => {
+          const searchTerm = searchInput.value.toLowerCase().trim();
+          const filteredFonts = allFonts.filter((font) =>
+            font.name.toLowerCase().includes(searchTerm)
+          );
+          renderDropdown(filteredFonts);
+          dropdown.style.display = "block";
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", (e) => {
+          if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.style.display = "none";
+          }
+        });
+
+        // Keyboard navigation
+        searchInput.addEventListener("keydown", (e) => {
+          const items = dropdown.querySelectorAll("div");
+          if (items.length === 0) return;
+
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            const first = items[0];
+            first.style.backgroundColor = "var(--pico-primary-background)";
+            first.focus();
+          } else if (e.key === "Enter") {
+            e.preventDefault();
+            if (selectedFont) {
+              applyFont(selectedFont);
+            }
+          }
+        });
+
+        // Update the system font selector reference to use our selected font
+        window.getSelectedSystemFont = () => selectedFont;
       } catch (e) {
         alert(
           "Could not access local fonts. This feature requires permission."
@@ -61,7 +195,7 @@ document.body.style.setProperty("visibility", "visible", "important");
   if (fontInput && preview) {
     fontInput.addEventListener("input", () => {
       const val = fontInput.value.trim();
-      preview.style.fontFamily = val ? `'${val}', sans-serif` : "inherit";
+      preview.style.fontFamily = formatFontValue(val) || "inherit";
     });
   }
 
@@ -69,7 +203,7 @@ document.body.style.setProperty("visibility", "visible", "important");
   if (systemFontsList && preview) {
     systemFontsList.addEventListener("change", () => {
       const val = systemFontsList.value;
-      preview.style.fontFamily = val ? `'${val}', sans-serif` : "inherit";
+      preview.style.fontFamily = formatFontValue(val) || "inherit";
     });
   }
 
@@ -80,10 +214,13 @@ document.body.style.setProperty("visibility", "visible", "important");
       return;
     }
 
+    // Format the font name before saving
+    const formattedFontName = formatFontValue(fontName);
+
     try {
       const updatedFonts = [
-        ...existingCustomFonts.filter((f) => f !== fontName),
-        fontName,
+        ...existingCustomFonts.filter((f) => f !== formattedFontName),
+        formattedFontName,
       ];
       await utils.send("save settings", {
         globalSettings: {
@@ -96,7 +233,7 @@ document.body.style.setProperty("visibility", "visible", "important");
       renderExistingFonts();
       // Show success message with instructions
       applyStatus.innerHTML = `
-      Font "${fontName}" added to PNL Reader! 
+      Font "${formattedFontName}" added to PNL Reader! 
       <br><small>Refresh any page where PNL Reader is active to see this font in the toolbar.</small>
     `;
       applyStatus.style.color = "#36b37e";
@@ -120,10 +257,21 @@ document.body.style.setProperty("visibility", "visible", "important");
     };
   }
 
-  if (applySystemBtn && systemFontsList) {
+  // Update the apply system font handler
+  if (applySystemBtn) {
     applySystemBtn.onclick = (e) => {
       e.preventDefault();
-      applyFont(systemFontsList.value);
+      const selectedFont = window.getSelectedSystemFont
+        ? window.getSelectedSystemFont()
+        : "";
+      if (selectedFont) {
+        applyFont(selectedFont);
+      } else {
+        applyStatus.innerHTML = "Please select a font first.";
+        applyStatus.style.color = "#fd7e14";
+        applyStatus.style.display = "inline-block";
+        setTimeout(() => (applyStatus.style.display = "none"), 3000);
+      }
     };
   }
 
@@ -151,7 +299,7 @@ document.body.style.setProperty("visibility", "visible", "important");
     `;
 
       const fontSpan = document.createElement("span");
-      fontSpan.style.cssText = `font-family: '${fontName}', sans-serif; flex: 1;`;
+      fontSpan.style.cssText = `font-family: ${fontName}; flex: 1;`;
       fontSpan.textContent = fontName;
 
       const removeBtn = document.createElement("button");

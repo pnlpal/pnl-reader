@@ -28,9 +28,31 @@
             </fieldset>
 
             <fieldset role="group" id="system-font-group" style="display: none">
-              <select id="system-fonts-list">
-                <option value="">-- Select a font --</option>
-              </select>
+              <div id="font-search-container">
+                <input
+                  type="text"
+                  id="font-search-input"
+                  placeholder="🔍 Search and select a font..."
+                  autocomplete="off"
+                  style="width: 100%"
+                />
+                <div
+                  id="font-dropdown"
+                  style="
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    max-height: 600px;
+                    overflow-y: auto;
+                    background: var(--pico-background-color);
+                    border: 1px solid var(--pico-muted-border-color);
+                    border-radius: 0.25rem;
+                    z-index: 1000;
+                    display: none;
+                  "
+                ></div>
+              </div>
               <input
                 type="submit"
                 id="apply-system-font-btn"

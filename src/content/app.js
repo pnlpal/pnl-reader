@@ -25,6 +25,7 @@ export default function ReaderApp({
   const [settings, setSettings] = useState({
     ...globalSettings,
     ...JSON.parse(localStorage.getItem("PNLReader-settings")),
+    customLocalFonts: globalSettings.customLocalFonts || [], // ensure it's from globalSettings as it should.
   });
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
   // 1. Add state for TTS
@@ -57,8 +58,6 @@ export default function ReaderApp({
   };
 
   const saveSettings = (update) => {
-    delete update.customLocalFonts; // prevent saving customLocalFonts here
-
     const hasChanged = Object.keys(update).some((key) => {
       return settings[key] !== update[key];
     });
