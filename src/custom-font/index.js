@@ -77,18 +77,34 @@ const browseFontsCard = document.getElementById("browse-fonts-card");
       return;
     }
 
-    await utils.send("save settings", {
-      globalSettings: {
-        ...globalSettings,
-        customLocalFonts: [
-          ...existingCustomFonts.filter((f) => f !== fontName),
-          fontName,
-        ],
-      },
-    });
-    // Here you would save to extension settings, e.g. via messaging or storage
-    applyStatus.style.display = "inline";
-    setTimeout(() => (applyStatus.style.display = "none"), 2000);
+    try {
+      await utils.send("save settings", {
+        globalSettings: {
+          ...globalSettings,
+          customLocalFonts: [
+            ...existingCustomFonts.filter((f) => f !== fontName),
+            fontName,
+          ],
+        },
+      });
+
+      // Show success message with instructions
+      applyStatus.innerHTML = `
+      Font "${fontName}" added to PNL Reader! 
+      <br><small>Refresh any page where PNL Reader is active to see this font in the toolbar.</small>
+    `;
+      applyStatus.style.color = "#36b37e";
+      applyStatus.style.display = "inline-block";
+
+      setTimeout(() => (applyStatus.style.display = "none"), 8000); // Show for 8 seconds
+    } catch (error) {
+      // Show error message
+      applyStatus.innerHTML = `Failed to save font. Please try again or report the issue at https://pnl.dev`;
+      applyStatus.style.color = "#d63384";
+      applyStatus.style.display = "inline-block";
+
+      setTimeout(() => (applyStatus.style.display = "none"), 8000);
+    }
   }
 
   if (applyBtn && fontInput) {
