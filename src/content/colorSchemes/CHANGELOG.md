@@ -1,3 +1,7 @@
+# v2.3.0 Nov 01, 2025
+- Added a custom font page, allowing users to add and manage local fonts.
+- Improved responsive UI for the options page on Firefox for Android.
+
 # v2.2.0 Oct 31, 2025
 - Added support for Firefox on Android!
 - Improved responsive UI for Android devices.
