@@ -27,6 +27,7 @@ document.body.style.setProperty("visibility", "visible", "important");
 
   const formatFontValue = (fontName) => {
     if (!fontName) return "";
+    if (!fontName.includes(",")) return fontName.trim();
     return fontName
       .split(",")
       .map((part) => {
