@@ -162,7 +162,7 @@ const FontSelector = ({ settings, saveSettings }) => {
         background: transparent;
         border: 1px solid var(--pico-muted-border-color);
         border-radius: 0.25rem;
-        color: var(--pico-color);
+        color: var(--pico-dropdown-color);
         cursor: pointer;
         width: 100%;
       "
