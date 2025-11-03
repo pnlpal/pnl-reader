@@ -88,4 +88,27 @@ export default {
       trialsMaxAllowed,
     };
   },
+
+  async translate({ text, fromLang, targetLang }) {
+    const response = await fetch(pnlBase + "/api/translate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text, fromLang, targetLang }),
+      credentials: "include",
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      const errorMessage =
+        data?.error ||
+        data?.status?.message ||
+        response.statusText ||
+        "Unknown error";
+      console.error(response.status, "Translation failed:", errorMessage);
+      data.statusCode = response.status;
+      throw new ErrorResponse(errorMessage, data);
+    }
+    return response.json();
+  },
 };

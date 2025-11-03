@@ -1,6 +1,6 @@
 "use strict";
 import utils from "utils";
-import { clearHighlights } from "./ttsPlayer/highlightSelection.js";
+import { clearHighlights } from "../ttsPlayer/highlightSelection.js";
 
 export default (translate, paragraphSelector) => {
   function injectTranslator(htmlContent) {
@@ -106,7 +106,7 @@ export default (translate, paragraphSelector) => {
           showTranslationLoading(wrapper);
 
           // Call translate function
-          translate(el, text, wrapper)
+          translate(el, text)
             .then(() => {
               hideTranslationLoading(wrapper, true);
             })

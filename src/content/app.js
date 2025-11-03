@@ -10,11 +10,13 @@ import AppLogo from "../images/logo64.png";
 import { throttle, debounce } from "lodash";
 import utils from "utils";
 import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
-import injectTranslatorOnPage from "./injectTranslatorOnPage.js";
+import injectTranslatorOnPage from "./translation/injectTranslatorOnPage.js";
 
 import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
 import { highlightSelection } from "./ttsPlayer/highlightSelection.js";
 import { ReadPageIcon } from "./ttsPlayer/icons.js";
+
+import text2Translation from "./translation/text2Translation.js";
 
 const html = htm.bind(h);
 
@@ -310,14 +312,31 @@ export default function ReaderApp({
     };
   }, []);
 
+  async function translateSelectionOrParagraph(node, text = "") {
+    if (!text) text = node.textContent.trim();
+    if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
+      const lang = (await detectLanguage(text, node)) || ttsLang || "";
+      if (!lang) {
+        console.warn("Could not detect language for text:", text);
+        return;
+      }
+      saveSettings({ ttsLang: lang });
+      const result = await text2Translation({
+        text,
+        fromLang: lang,
+        targetLang: "sv",
+      });
+      console.info("Translation result: ", result);
+      return true;
+    }
+  }
+
   const {
     injectTranslator,
     activateParagraphTranslation,
     showTranslationLoading,
     hideTranslationLoading,
-  } = injectTranslatorOnPage(() => {
-    return utils.promisifiedTimeout(3000);
-  }, paragraphSelector);
+  } = injectTranslatorOnPage(translateSelectionOrParagraph, paragraphSelector);
 
   const updatedContent = useMemo(() => {
     const injectedParagraphSpeakers = injectParagraphSpeakers(content);

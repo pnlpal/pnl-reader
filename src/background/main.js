@@ -1,5 +1,6 @@
 import message from "./message.js";
 import "./speak.js";
+import "./translate.js";
 import { parsePDFURL, setupPdfReader } from "./pdf-reader.js";
 
 chrome.runtime.onInstalled.addListener(function (details) {
