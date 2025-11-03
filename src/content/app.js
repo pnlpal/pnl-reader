@@ -10,6 +10,8 @@ import AppLogo from "../images/logo64.png";
 import { throttle, debounce } from "lodash";
 import utils from "utils";
 import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
+import injectTranslatorOnPage from "./injectTranslatorOnPage.js";
+
 import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
 import { highlightSelection } from "./ttsPlayer/highlightSelection.js";
 import { ReadPageIcon } from "./ttsPlayer/icons.js";
@@ -308,10 +310,20 @@ export default function ReaderApp({
     };
   }, []);
 
-  const updatedContent = useMemo(
-    () => injectParagraphSpeakers(content),
-    [content]
-  );
+  const {
+    injectTranslator,
+    activateParagraphTranslation,
+    showTranslationLoading,
+    hideTranslationLoading,
+  } = injectTranslatorOnPage(() => {
+    return utils.promisifiedTimeout(3000);
+  }, paragraphSelector);
+
+  const updatedContent = useMemo(() => {
+    const injectedParagraphSpeakers = injectParagraphSpeakers(content);
+    const injectedTranslator = injectTranslator(injectedParagraphSpeakers);
+    return injectedTranslator;
+  }, [content]);
 
   return html`
     <div id="PNLReader">

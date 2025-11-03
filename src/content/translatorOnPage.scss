@@ -1,0 +1,91 @@
+#PNLReader {
+  #PNLReaderArticleContent {
+    .tts-paragraph-wrap {
+      .pnl-reader-translate-icon {
+        opacity: 0;
+        visibility: hidden;
+        cursor: pointer;
+        margin-left: 0.25em;
+        font-size: 0.9em;
+        z-index: 10;
+        background: transparent;
+        display: inline-block;
+        transition: all 0.2s ease;
+
+        &--loading {
+          pointer-events: none;
+          cursor: progress;
+          opacity: 1;
+          visibility: visible;
+          animation: translating-pulse 1.2s infinite ease-in-out;
+          cursor: wait;
+        }
+
+        &--success {
+          opacity: 1;
+          animation: success-bounce 0.6s ease;
+        }
+        &--error {
+          opacity: 0.3;
+          animation: error-shake 0.5s ease;
+        }
+      }
+
+      &:hover .pnl-reader-translate-icon {
+        opacity: 0.6;
+        visibility: visible;
+        &:hover {
+          opacity: 1;
+        }
+      }
+
+      &--translation {
+        .tts-paragraph {
+          text-decoration: underline;
+          text-decoration-color: var(--pico-primary, #ffd700);
+          text-decoration-thickness: 1px;
+          text-underline-offset: 0.18em;
+        }
+      }
+    }
+  }
+}
+// Subtle pulsing animation for loading
+@keyframes translating-pulse {
+  0%,
+  100% {
+    opacity: 0.4 !important;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1 !important;
+    transform: scale(1.05);
+  }
+}
+
+// Success bounce effect
+@keyframes success-bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Error shake effect
+@keyframes error-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
