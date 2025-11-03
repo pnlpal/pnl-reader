@@ -78,11 +78,13 @@ export default async (
     // );
 
     // Add to cache, keep only last CACHE_LIMIT items
-    cacheArr.push({ text, voice, audio: speakResult.audio });
-    if (cacheArr.length > CACHE_LIMIT) {
-      cacheArr.shift();
+    if (speakResult.audio) {
+      cacheArr.push({ text, voice, audio: speakResult.audio });
+      if (cacheArr.length > CACHE_LIMIT) {
+        cacheArr.shift();
+      }
+      setCache(cacheArr);
     }
-    setCache(cacheArr);
   }
 
   if (speakResult.audio) {
