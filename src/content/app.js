@@ -336,7 +336,9 @@ export default function ReaderApp({
           settings=${settingsRef.current}
           saveSettings=${saveSettings}
           onClose=${() => {
-            clearActiveParagraphTranslation();
+            container.classList.remove(
+              "paragraph-translator-container--active"
+            );
           }}
         />
       `;
@@ -347,8 +349,10 @@ export default function ReaderApp({
     }
   }
 
-  const { injectTranslator, clearActiveParagraphTranslation } =
-    injectTranslatorOnPage(translateSelectionOrParagraph, paragraphSelector);
+  const { injectTranslator } = injectTranslatorOnPage(
+    translateSelectionOrParagraph,
+    paragraphSelector
+  );
 
   const updatedContent = useMemo(() => {
     const injectedParagraphSpeakers = injectParagraphSpeakers(content);
