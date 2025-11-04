@@ -22,10 +22,6 @@
   background-color: var(--pico-card-background-color);
 }
 
-[data-color-scheme="solarized"][data-theme="light"] article footer {
-  border-top: 0.1rem dashed var(--pico-secondary);
-}
-
 /* Dark Mode */
 [data-color-scheme="solarized"][data-theme="dark"] {
   --pico-background-color: #002b36;
@@ -44,8 +40,4 @@
 [data-color-scheme="solarized"][data-theme="dark"]
   pre:has(> code.language-mermaid) {
   background-color: var(--pico-code-color);
-}
-
-[data-color-scheme="solarized"][data-theme="dark"] article footer {
-  border-top: 0.1rem dashed var(--pico-secondary);
 }

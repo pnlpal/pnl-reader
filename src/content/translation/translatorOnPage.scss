@@ -81,6 +81,7 @@
         max-width: none; // Allow full width within paragraph
         margin-bottom: 0;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: var(--pico-code-background-color);
         padding: 1em 18px;
         position: relative;
 
@@ -111,14 +112,9 @@
               font-size: 0.9rem;
 
               .translator-from-label,
+              .translator-from-lang,
               .translator-to-label {
                 color: var(--pico-muted-color);
-              }
-
-              .translator-from-lang {
-                color: var(--pico-color);
-                overflow: hidden;
-                text-overflow: ellipsis;
               }
 
               .translator-arrow {
@@ -130,6 +126,7 @@
               min-width: 150px;
               max-width: 320px;
               flex-shrink: 0;
+              font-weight: bolder;
 
               // Minimal bottom-border style
               border: none;
@@ -138,7 +135,6 @@
               padding: 0.25rem 1rem 0.25rem 0.25rem;
               margin-bottom: 0;
               font-size: 0.9rem;
-              line-height: 1;
               height: auto;
               min-height: unset;
 
