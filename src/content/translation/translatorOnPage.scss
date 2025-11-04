@@ -243,30 +243,27 @@
             text-align: right;
             margin-top: 1rem;
             position: relative;
+          }
+        }
+        button {
+          background: none;
+          border: none;
+          color: var(--pico-muted-color);
+          padding: 0.25rem;
+          border-radius: 0.25rem;
+          cursor: pointer;
+          opacity: 0.7;
+          transition: all 0.2s ease;
+          margin-bottom: 0;
 
-            .pnl-reader-paragraph-speaker,
-            .translator-copy-btn {
-              background: none;
-              border: none;
-              color: var(--pico-muted-color);
-              padding: 0.25rem;
-              border-radius: 0.25rem;
-              cursor: pointer;
-              opacity: 0.7;
-              transition: all 0.2s ease;
-              margin-bottom: 0;
+          &:hover {
+            opacity: 1;
+            background: var(--pico-muted-background-color);
+          }
 
-              &:hover {
-                opacity: 1;
-                background: var(--pico-muted-background-color);
-                color: var(--pico-color);
-              }
-
-              &:focus {
-                outline: none;
-                opacity: 1;
-              }
-            }
+          &:focus {
+            outline: none;
+            opacity: 1;
           }
         }
       }
