@@ -53,6 +53,12 @@ export default function ReaderApp({
     autoReadNextPageRef.current = settings.autoReadNextPage;
   }, [settings.autoReadNextPage]);
 
+  // Add a ref to always get the latest settings
+  const settingsRef = useRef(settings);
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
+
   const saveGlobalSettings = async (update) => {
     Object.assign(globalSettings, update);
     await chrome.runtime.sendMessage({
@@ -327,7 +333,7 @@ export default function ReaderApp({
         <${TranslatorPanel}
           text=${text}
           lang=${lang}
-          settings=${settings}
+          settings=${settingsRef.current}
           saveSettings=${saveSettings}
           onClose=${() => {
             container.classList.remove(
