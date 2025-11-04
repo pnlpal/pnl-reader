@@ -222,6 +222,23 @@
         }
 
         .translator-content {
+          &.tts-paragraph-wrap {
+            display: block;
+            padding-left: 0;
+            margin-left: 0;
+            .tts-paragraph {
+              text-decoration: none !important;
+              color: var(--pico-color);
+            }
+            &--active {
+              .tts-paragraph {
+                color: var(
+                  --pico-primary,
+                  #ffd700
+                ); // subtle text highlight using theme color
+              }
+            }
+          }
           .translator-footer {
             text-align: right;
             margin-top: 1rem;

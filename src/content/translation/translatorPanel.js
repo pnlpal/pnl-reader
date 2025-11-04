@@ -232,14 +232,14 @@ const Translator = ({
       !error &&
       translatedText &&
       html`
-        <div class="translator-content">
-          <p class="translator-result-text">${translatedText}</p>
+        <div class="translator-content tts-paragraph-wrap">
+          <p class="translator-result-text tts-paragraph">${translatedText}</p>
 
           <footer class="translator-footer">
             <button
               type="button"
               class="pnl-reader-paragraph-speaker"
-              data-tooltip="Speak aloud translation"
+              data-tooltip="Read translation"
               data-placement="top"
             >
               🔊
