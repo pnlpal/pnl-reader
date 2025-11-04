@@ -47,6 +47,16 @@ export default (translate, paragraphSelector) => {
     return doc.body.innerHTML;
   }
 
+  function closeActiveParagraphTranslation(translatorContainer) {
+    const wrapper = translatorContainer.closest(".tts-paragraph-wrap");
+    if (wrapper) {
+      wrapper.classList.remove("tts-paragraph-wrap--translation");
+    }
+    translatorContainer.classList.remove(
+      "paragraph-translator-container--active"
+    );
+  }
+
   function activateParagraphTranslation(el) {
     const wrapper = el.classList.contains("tts-paragraph-wrap")
       ? el
@@ -144,5 +154,6 @@ export default (translate, paragraphSelector) => {
   return {
     injectTranslator,
     activateParagraphTranslation,
+    closeActiveParagraphTranslation,
   };
 };
