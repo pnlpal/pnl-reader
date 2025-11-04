@@ -326,7 +326,7 @@ export default function ReaderApp({
       const translatorElement = html`
         <${TranslatorPanel}
           text=${text}
-          fromLang=${lang}
+          lang=${lang}
           settings=${settings}
           saveSettings=${saveSettings}
           onClose=${() => {

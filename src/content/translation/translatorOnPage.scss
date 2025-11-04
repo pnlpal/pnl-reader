@@ -98,7 +98,6 @@
           .translator-lang-selector {
             display: flex;
             align-items: center;
-            gap: 0.5rem; // Reduce gap
             flex: 1;
             min-width: 0; // Allow shrinking
 
@@ -109,6 +108,7 @@
               white-space: nowrap;
               flex-shrink: 1; // Allow this to shrink first
               padding: 18px 24px;
+              font-size: 0.9rem;
 
               .translator-from-label,
               .translator-to-label {
@@ -117,13 +117,11 @@
 
               .translator-from-lang {
                 color: var(--pico-color);
-                max-width: 80px; // Limit width
                 overflow: hidden;
                 text-overflow: ellipsis;
               }
 
               .translator-arrow {
-                color: var(--pico-primary);
                 font-size: 1rem; // Smaller arrow
               }
             }

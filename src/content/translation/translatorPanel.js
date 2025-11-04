@@ -31,9 +31,14 @@ const languages = [
   { code: "tr", name: "Turkish" },
 ];
 
+const getLanguageName = (code) => {
+  const lang = languages.find((l) => l.code === code);
+  return lang ? lang.name : code;
+};
+
 const Translator = ({
   text,
-  lang = "en",
+  lang,
   settings,
   saveSettings,
   onTranslationComplete,
@@ -129,7 +134,9 @@ const Translator = ({
         <div class="translator-lang-selector">
           <div class="translator-lang-info">
             <span class="translator-from-label">From:</span>
-            <strong class="translator-from-lang">${lang}</strong>
+            <strong class="translator-from-lang"
+              >${getLanguageName(lang)}</strong
+            >
             <span class="translator-arrow">→</span>
             <span class="translator-to-label">To:</span>
           </div>
