@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { h, render } from "preact";
 import htm from "htm";
 import { useState, useEffect, useMemo, useRef } from "preact/hooks";
 import Arrow from "./arrow.js";
@@ -16,7 +16,7 @@ import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
 import { highlightSelection } from "./ttsPlayer/highlightSelection.js";
 import { ReadPageIcon } from "./ttsPlayer/icons.js";
 
-import text2Translation from "./translation/text2Translation.js";
+import TranslatorPanel from "./translation/translatorPanel.js";
 
 const html = htm.bind(h);
 
@@ -312,7 +312,7 @@ export default function ReaderApp({
     };
   }, []);
 
-  async function translateSelectionOrParagraph(node, text = "") {
+  async function translateSelectionOrParagraph(node, text = "", container) {
     if (!text) text = node.textContent.trim();
     if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
       const lang = (await detectLanguage(text, node)) || ttsLang || "";
@@ -321,22 +321,32 @@ export default function ReaderApp({
         return;
       }
       saveSettings({ ttsLang: lang });
-      const result = await text2Translation({
-        text,
-        fromLang: lang,
-        targetLang: "sv",
-      });
-      console.info("Translation result: ", result);
+
+      // Render translator directly into the container
+      const translatorElement = html`
+        <${TranslatorPanel}
+          text=${text}
+          fromLang=${lang}
+          settings=${settings}
+          saveSettings=${saveSettings}
+          onClose=${() => {
+            container.classList.remove(
+              "paragraph-translator-container--active"
+            );
+          }}
+        />
+      `;
+
+      render(translatorElement, container);
+
       return true;
     }
   }
 
-  const {
-    injectTranslator,
-    activateParagraphTranslation,
-    showTranslationLoading,
-    hideTranslationLoading,
-  } = injectTranslatorOnPage(translateSelectionOrParagraph, paragraphSelector);
+  const { injectTranslator } = injectTranslatorOnPage(
+    translateSelectionOrParagraph,
+    paragraphSelector
+  );
 
   const updatedContent = useMemo(() => {
     const injectedParagraphSpeakers = injectParagraphSpeakers(content);

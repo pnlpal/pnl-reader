@@ -1,6 +1,8 @@
 #PNLReader {
   #PNLReaderArticleContent {
     .tts-paragraph-wrap {
+      flex-wrap: wrap;
+
       .pnl-reader-translate-icon {
         opacity: 0;
         visibility: hidden;
@@ -45,6 +47,202 @@
           text-decoration-color: var(--pico-primary, #ffd700);
           text-decoration-thickness: 1px;
           text-underline-offset: 0.18em;
+        }
+      }
+    }
+
+    .paragraph-translator-container {
+      display: none;
+      margin-bottom: 0.5rem;
+      flex-basis: 100%;
+
+      &--active {
+        display: block;
+      }
+
+      article {
+        padding: var(--pico-block-spacing-vertical)
+          var(--pico-block-spacing-horizontal); // the outer side has override padding for somewebsite compatibility
+      }
+
+      .translator-panel {
+        max-width: none; // Allow full width within paragraph
+        margin-bottom: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 1em 18px;
+
+        .translator-header {
+          margin-left: -18px;
+          margin-right: -18px;
+          margin-bottom: 10px;
+          padding: 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.5rem; // Reduce gap
+          flex-wrap: nowrap; // Prevent wrapping
+          overflow: hidden; // Prevent overflow
+
+          .translator-lang-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; // Reduce gap
+            flex: 1;
+            min-width: 0; // Allow shrinking
+
+            .translator-lang-info {
+              display: flex;
+              align-items: center;
+              gap: 0.25rem; // Reduce gap
+              white-space: nowrap;
+              flex-shrink: 1; // Allow this to shrink first
+              padding: 18px 24px;
+
+              .translator-from-label,
+              .translator-to-label {
+                color: var(--pico-muted-color);
+              }
+
+              .translator-from-lang {
+                color: var(--pico-color);
+                max-width: 80px; // Limit width
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+
+              .translator-arrow {
+                color: var(--pico-primary);
+                font-size: 1rem; // Smaller arrow
+              }
+            }
+
+            .translator-target-select {
+              min-width: 150px;
+              max-width: 320px;
+              flex-shrink: 0;
+
+              // Minimal bottom-border style
+              border: none;
+              border-bottom: 1px solid var(--pico-muted-border-color);
+              border-radius: 0;
+              padding: 0.25rem 1rem 0.25rem 0.25rem;
+              margin-bottom: 0;
+              font-size: 0.9rem;
+              line-height: 1;
+              height: auto;
+              min-height: unset;
+
+              // Style the dropdown arrow
+              background-image: url("data:image/svg+xml;charset=utf-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23495057' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+              background-position: right 0 center;
+              background-size: 16px 12px;
+              background-repeat: no-repeat;
+
+              &:focus {
+                outline: none;
+                box-shadow: none;
+                border-bottom-color: var(--pico-primary);
+              }
+
+              &:hover {
+                border-bottom-color: var(--pico-primary);
+              }
+            }
+          }
+
+          .translator-close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--pico-muted-color);
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            line-height: 32px;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            margin-right: 8px;
+
+            &:hover {
+              filter: brightness(1.5);
+            }
+          }
+        }
+
+        .translator-prompt,
+        .translator-warning {
+          text-align: center;
+          padding: 1.5rem;
+
+          .translator-prompt-text,
+          .translator-warning-text {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+          }
+        }
+
+        .translator-prompt {
+          .translator-prompt-text {
+            color: var(--pico-muted-color);
+            font-style: italic;
+          }
+
+          .translator-prompt-icon {
+            font-size: 1.1rem;
+          }
+        }
+
+        .translator-warning {
+          background: rgba(255, 193, 7, 0.1);
+          border: 1px solid rgba(255, 193, 7, 0.3);
+          border-radius: 0.25rem;
+          margin: 1rem;
+
+          .translator-warning-text {
+            color: var(--pico-warning, #856404);
+          }
+
+          .translator-warning-icon {
+            color: var(--pico-warning, #ffc107);
+          }
+        }
+
+        .translator-footer {
+          text-align: right;
+          margin-top: 1rem;
+          position: relative;
+
+          .translator-copy-btn {
+            background: none;
+            border: none;
+            color: var(--pico-muted-color);
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            transition: all 0.2s ease;
+            margin-bottom: 0;
+
+            &:hover {
+              opacity: 0.8;
+              background: var(--pico-muted-background-color);
+              color: var(--pico-color);
+            }
+
+            &:focus {
+              outline: none;
+              opacity: 1;
+            }
+          }
         }
       }
     }

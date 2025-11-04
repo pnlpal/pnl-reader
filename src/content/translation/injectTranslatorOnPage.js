@@ -30,14 +30,17 @@ export default (translate, paragraphSelector) => {
         const translateIcon = document.createElement("span");
         translateIcon.className =
           "pnl-reader-paragraph-translate pnl-reader-translate-icon";
-        translateIcon.innerHTML = "🌐"; // Add space before icon for separation
+        translateIcon.innerHTML = "🌐";
 
-        // translateIcon.setAttribute("data-tooltip", "Translate this paragraph");
-        // translateIcon.setAttribute("data-placement", "top");
         translateIcon.title = "Translate this paragraph";
 
         // Append inside the paragraph element, at the end
         el.appendChild(translateIcon);
+
+        // Create container for translator panel
+        const translatorContainer = document.createElement("div");
+        translatorContainer.className = "paragraph-translator-container";
+        wrapper.appendChild(translatorContainer);
       }
     });
 
@@ -53,6 +56,11 @@ export default (translate, paragraphSelector) => {
 
     // Add visual feedback for translation
     wrapper.classList.add("tts-paragraph-wrap--translation");
+
+    const translatorContainer = wrapper.querySelector(
+      ".paragraph-translator-container"
+    );
+    translatorContainer.classList.add("paragraph-translator-container--active");
     return wrapper;
   }
 
@@ -106,7 +114,11 @@ export default (translate, paragraphSelector) => {
           showTranslationLoading(wrapper);
 
           // Call translate function
-          translate(el, text)
+          translate(
+            el,
+            text,
+            wrapper.querySelector(".paragraph-translator-container")
+          )
             .then(() => {
               hideTranslationLoading(wrapper, true);
             })
@@ -123,7 +135,5 @@ export default (translate, paragraphSelector) => {
   return {
     injectTranslator,
     activateParagraphTranslation,
-    showTranslationLoading,
-    hideTranslationLoading,
   };
 };
