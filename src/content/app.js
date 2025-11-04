@@ -225,7 +225,17 @@ export default function ReaderApp({
     for (let i = 0; i < blocks.length; i++) {
       try {
         // Await TTS playback for each paragraph
-        const text = blocks[i].textContent.trim();
+        const text = Array.from(blocks[i].childNodes)
+          .filter(
+            (node) =>
+              node.nodeType === Node.TEXT_NODE ||
+              (node.nodeType === Node.ELEMENT_NODE &&
+                !node.classList.contains("pnl-reader-translate-icon"))
+          )
+          .map((node) => node.textContent)
+          .join("")
+          .trim();
+
         if (!text || text.length < 3) {
           continue;
         }

@@ -88,7 +88,17 @@ export default (speak) => {
         // Speak
         if (wrapper) {
           const el = wrapper.querySelector(paragraphSelector);
-          speak(el, el.textContent.trim());
+          const text = Array.from(el.childNodes)
+            .filter(
+              (node) =>
+                node.nodeType === Node.TEXT_NODE ||
+                (node.nodeType === Node.ELEMENT_NODE &&
+                  !node.classList.contains("pnl-reader-translate-icon"))
+            )
+            .map((node) => node.textContent)
+            .join("")
+            .trim();
+          speak(el, text);
         }
       }
     });
