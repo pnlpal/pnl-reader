@@ -85,8 +85,16 @@
         padding: 1em 18px;
         position: relative;
 
+        @media (max-width: 768px) {
+          padding: 0.2em 6px;
+        }
+
         .translator-header {
           margin: -1em -18px;
+          @media (max-width: 768px) {
+            margin: -0.2em -6px;
+            margin-bottom: 0.5em;
+          }
           margin-bottom: 1em;
           padding: 0;
           display: flex;
@@ -101,6 +109,9 @@
             align-items: center;
             flex: 1;
             min-width: 0; // Allow shrinking
+            @media (max-width: 768px) {
+              flex: none;
+            }
 
             .translator-lang-info {
               display: flex;
@@ -110,6 +121,10 @@
               flex-shrink: 1; // Allow this to shrink first
               padding: 18px 24px;
               font-size: 0.9rem;
+
+              @media (max-width: 768px) {
+                padding: 5px; // Remove padding on small screens
+              }
 
               .translator-from-label,
               .translator-from-lang,
@@ -172,6 +187,10 @@
             padding: 0;
             margin: 0;
             margin-right: 18px;
+
+            @media (max-width: 768px) {
+              margin-right: 0;
+            }
 
             &:hover {
               filter: brightness(1.5);

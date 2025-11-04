@@ -144,10 +144,12 @@ const Translator = ({
       <header class="translator-header">
         <div class="translator-lang-selector">
           <div class="translator-lang-info">
-            <span class="translator-from-label">From:</span>
-            <span class="translator-from-lang">${getLanguageName(lang)}</span>
+            <span class="translator-from-label hide-sm">From:</span>
+            <span class="translator-from-lang hide-sm"
+              >${getLanguageName(lang)}</span
+            >
             <span class="translator-arrow">→</span>
-            <span class="translator-to-label">To:</span>
+            <span class="translator-to-label hide-sm">To:</span>
           </div>
 
           <select
