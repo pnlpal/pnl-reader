@@ -227,6 +227,7 @@
             margin-top: 1rem;
             position: relative;
 
+            .pnl-reader-paragraph-speaker,
             .translator-copy-btn {
               background: none;
               border: none;
@@ -234,13 +235,12 @@
               padding: 0.25rem;
               border-radius: 0.25rem;
               cursor: pointer;
-              font-size: 0.8rem;
-              opacity: 0.5;
+              opacity: 0.7;
               transition: all 0.2s ease;
               margin-bottom: 0;
 
               &:hover {
-                opacity: 0.8;
+                opacity: 1;
                 background: var(--pico-muted-background-color);
                 color: var(--pico-color);
               }

@@ -237,6 +237,14 @@ const Translator = ({
 
           <footer class="translator-footer">
             <button
+              type="button"
+              class="pnl-reader-paragraph-speaker"
+              data-tooltip="Speak aloud translation"
+              data-placement="top"
+            >
+              🔊
+            </button>
+            <button
               onClick=${copyTranslation}
               type="button"
               class="translator-copy-btn"
