@@ -13,7 +13,10 @@ import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
 import injectTranslatorOnPage from "./translation/injectTranslatorOnPage.js";
 
 import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
-import { highlightSelection } from "./ttsPlayer/highlightSelection.js";
+import {
+  clearHighlights,
+  highlightSelection,
+} from "./ttsPlayer/highlightSelection.js";
 import { ReadPageIcon } from "./ttsPlayer/icons.js";
 
 import TranslatorPanel from "./translation/translatorPanel.js";
@@ -133,6 +136,7 @@ export default function ReaderApp({
     setTtsStartTimestamp(null);
     localStorage.removeItem("PNLReader-auto-read-next-page");
     clearActiveParagraphSpeaking();
+    clearHighlights();
   }
 
   async function readSelectionOrParagraph(node, text = "") {
@@ -148,8 +152,8 @@ export default function ReaderApp({
         console.warn("Could not detect language for text:", text);
         return;
       }
+      setTtsLang(lang);
       if (!translatedLang) {
-        setTtsLang(lang);
         saveSettings({ ttsLang: lang });
       }
 
@@ -314,7 +318,7 @@ export default function ReaderApp({
     const handleSelectionSpeak = debounce(() => {
       const selection = window.getSelection();
       const selectedText = selection.toString().trim();
-      if (selectedText && utils.isSentence(selectedText)) {
+      if (isVoiceMode && selectedText && utils.isSentence(selectedText)) {
         // Only speak if it's a sentence for now
         highlightSelection(selection);
         readSelectionOrParagraph(selection.anchorNode, selectedText).then(
@@ -327,6 +331,8 @@ export default function ReaderApp({
       }
     }, 200);
 
+    document.removeEventListener("mouseup", handleSelectionSpeak);
+    document.removeEventListener("touchend", handleSelectionSpeak);
     document.addEventListener("mouseup", handleSelectionSpeak);
     document.addEventListener("touchend", handleSelectionSpeak);
 
@@ -335,7 +341,7 @@ export default function ReaderApp({
       document.removeEventListener("touchend", handleSelectionSpeak);
       handleSelectionSpeak.cancel();
     };
-  }, []);
+  }, [isVoiceMode]);
 
   async function translateSelectionOrParagraph(node, text = "", container) {
     if (!text) text = node.textContent.trim();
