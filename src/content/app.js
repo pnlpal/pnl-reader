@@ -138,16 +138,25 @@ export default function ReaderApp({
   async function readSelectionOrParagraph(node, text = "") {
     if (!text) text = node.textContent.trim();
     if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
-      const lang = (await detectLanguage(text, node)) || ttsLang || "";
+      const translatedLang = node.getAttribute?.("data-tts-lang");
+      let lang = translatedLang;
+      if (!lang) {
+        lang = (await detectLanguage(text, node)) || ttsLang || "";
+      }
+
       if (!lang) {
         console.warn("Could not detect language for text:", text);
         return;
       }
+      if (!translatedLang) {
+        setTtsLang(lang);
+        saveSettings({ ttsLang: lang });
+      }
+
       setTtsStartTimestamp(Date.now());
-      saveSettings({ ttsLang: lang });
       setTtsText(text);
       setTtsNextParagraphText("");
-      setTtsLang(lang);
+
       setIsVoiceMode(true);
       setReadingWholePageTimestamp(null);
       ttsPlayEndedResolverRef.current = null;
@@ -208,6 +217,7 @@ export default function ReaderApp({
       console.error("Could not detect language for the page.");
       return;
     }
+    setTtsLang(lang);
     saveSettings({ ttsLang: lang });
     setReadingWholePageTimestamp(Date.now());
     setTtsStartTimestamp(Date.now());
@@ -243,7 +253,6 @@ export default function ReaderApp({
 
         setTtsText(text);
         setTtsNextParagraphText(nextParagraphText);
-        setTtsLang(lang);
         setIsVoiceMode(true);
         activateParagraphSpeaking(
           blocks[i],
@@ -326,6 +335,7 @@ export default function ReaderApp({
         console.warn("Could not detect language for text:", text);
         return;
       }
+      setTtsLang(lang);
       saveSettings({ ttsLang: lang });
 
       // Render translator directly into the container

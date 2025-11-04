@@ -233,7 +233,12 @@ const Translator = ({
       translatedText &&
       html`
         <div class="translator-content tts-paragraph-wrap">
-          <p class="translator-result-text tts-paragraph">${translatedText}</p>
+          <p
+            class="translator-result-text tts-paragraph"
+            data-tts-lang=${targetLang}
+          >
+            ${translatedText}
+          </p>
 
           <footer class="translator-footer">
             <button
