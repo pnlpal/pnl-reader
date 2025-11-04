@@ -2,6 +2,7 @@ import { h } from "preact";
 import htm from "htm";
 import { useCallback, useState, useEffect } from "preact/hooks";
 import text2Translation from "./text2Translation.js";
+import getErrorBanner from "../errorMessages.js";
 
 const html = htm.bind(h);
 
@@ -89,7 +90,7 @@ const Translator = ({
       }
     } catch (err) {
       console.error("Translation error:", err);
-      setError(err.message || "Translation failed");
+      setError(err);
       setTranslatedText("");
 
       if (onError) {
@@ -187,10 +188,8 @@ const Translator = ({
       ${error &&
       html`
         <div class="translator-error">
-          <p class="translator-error-message">
-            <span class="translator-error-icon">⚠️</span>
-            ${error}
-          </p>
+          ${getErrorBanner(error, "translation")}
+
           <button
             onClick=${performTranslation}
             type="button"

@@ -8,9 +8,10 @@ const pnlBase =
     : "https://pnl.dev";
 
 // Map error messages to user-friendly messages and actions
-export default function getErrorBanner(error) {
+export default function getErrorBanner(error, classType = "audio") {
   if (!error) return null;
-
+  const errorClassName = `pnl-reader-error-banner pnl-reader-error-banner--${classType}`;
+  const serviceName = classType === "audio" ? "text-to-speech" : "translation";
   const getPrettyMessage = (msg) => {
     if (!msg) return "";
 
@@ -43,8 +44,8 @@ export default function getErrorBanner(error) {
 
   if (errorMsg === "Unauthorized" || error.statusCode === 401) {
     return html`
-      <div class="tts-audio-error-banner">
-        To use text-to-speech, please
+      <div class="${errorClassName}">
+        To use ${serviceName}, please
         <a
           href="${pnlBase}/login"
           target="_blank"
@@ -58,9 +59,9 @@ export default function getErrorBanner(error) {
   } else if (error.type === "trial-limit-reached") {
     const { trialsUsed, maxTrialsAllowed } = error;
     return html`
-      <div class="tts-audio-error-banner">
+      <div class="${errorClassName}">
         Your trial limit (${trialsUsed}/${maxTrialsAllowed} used) has been
-        reached. To continue using text-to-speech, please
+        reached. To continue using ${serviceName}, please
         <a href="${pnlBase}/pro" target="_blank" class="tts-error-action-link">
           upgrade your account
         </a>
@@ -70,10 +71,10 @@ export default function getErrorBanner(error) {
   } else if (error.type === "in-trial") {
     const { trialsUsed, trialsMaxAllowed } = error;
     return html`
-      <div class="tts-audio-error-banner in-trial">
+      <div class="${errorClassName} in-trial">
         You have used ${trialsUsed}/${trialsMaxAllowed} of your trial quota. Our
-        text-to-speech service uses a proprietary API, which incurs real costs
-        for each request. To continue using text-to-speech, please
+        ${serviceName} service uses a proprietary API, which incurs real costs
+        for each request. To continue using ${serviceName}, please
         <a href="${pnlBase}/pro" target="_blank" class="tts-error-action-link">
           upgrade your account
         </a>
@@ -81,10 +82,9 @@ export default function getErrorBanner(error) {
       </div>
     `;
   } else if (errorMsg.includes("Media load rejected by URL safety check")) {
-    return html`<div class="tts-audio-error-banner">
-      The audio is blocked by the site's csp policy. This will be resolved in
-      the next version. To help us prioritize this issue, please report this
-      site at:
+    return html`<div class="${errorClassName}">
+      The audio is blocked by the site's csp policy. To help us prioritize this
+      issue, please report this site at:
       <a href="https://pnl.dev/category/3/feedback" target="_blank">pnl.dev</a>
     </div>`;
   }
@@ -92,5 +92,5 @@ export default function getErrorBanner(error) {
   // if (/quota/i.test(errorMsg)) { ... }
 
   // Default: show the error message
-  return html`<div class="tts-audio-error-banner">${errorMsg}</div>`;
+  return html`<div class="${errorClassName}">${errorMsg}</div>`;
 }

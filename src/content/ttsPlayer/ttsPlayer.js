@@ -14,7 +14,7 @@ import {
   AutoReadNextPageIcon,
 } from "./icons.js";
 import text2Audio from "./text2Audio.js";
-import getErrorBanner from "./ttsErrorMessages.js";
+import getErrorBanner from "../errorMessages.js";
 
 const html = htm.bind(h);
 

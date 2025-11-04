@@ -11,38 +11,9 @@
   $playBarBottomSpacingOnMobile: 0px;
   $playBarPaddingVerticalOnMobile: 0.7rem;
 
-  .tts-audio-error-banner {
-    position: fixed;
-    left: 50%;
-
-    // $playBtnHeight: 80px; // padding: 20px + svg height 40px + padding 20px
-    bottom: calc(
-      80px + $playBarBottomSpacing + $playBarPaddingVertical * 2 + 0.5em
-    ); // above the player bar and some gap(0.5em)
-
-    transform: translateX(-50%);
-    background: var(--pico-code-background-color);
+  .pnl-reader-error-banner {
     color: var(--pico-del-color);
-    border: 1px solid var(--pico-table-border-color);
-    border-radius: 8px;
-    padding: 10px 20px;
-    margin-bottom: 0;
-    max-width: 80vw;
-    z-index: 2;
 
-    @media (max-width: 768px) {
-      width: 100%;
-      max-width: 98vw;
-      font-size: 0.97em;
-      padding: 0.5em 1.2em;
-      border-radius: 6px;
-
-      // $playBtnHeight: 48px;
-      bottom: calc(
-        48px + $playBarBottomSpacingOnMobile + $playBarPaddingVerticalOnMobile *
-          2 + 0.5em
-      ); // above the player bar and some gap(0.5em)
-    }
     a {
       color: var(--pico-primary);
       text-decoration: none;
@@ -50,6 +21,40 @@
     }
     &.in-trial {
       color: var(--pico-code-color);
+    }
+
+    &--audio {
+      position: fixed;
+      left: 50%;
+
+      // $playBtnHeight: 80px; // padding: 20px + svg height 40px + padding 20px
+      bottom: calc(
+        80px + $playBarBottomSpacing + $playBarPaddingVertical * 2 + 0.5em
+      ); // above the player bar and some gap(0.5em)
+
+      transform: translateX(-50%);
+      background: var(--pico-code-background-color);
+
+      border: 1px solid var(--pico-table-border-color);
+      border-radius: 8px;
+      padding: 10px 20px;
+      margin-bottom: 0;
+      max-width: 80vw;
+      z-index: 2;
+
+      @media (max-width: 768px) {
+        width: 100%;
+        max-width: 98vw;
+        font-size: 0.97em;
+        padding: 0.5em 1.2em;
+        border-radius: 6px;
+
+        // $playBtnHeight: 48px;
+        bottom: calc(
+          48px + $playBarBottomSpacingOnMobile + $playBarPaddingVerticalOnMobile *
+            2 + 0.5em
+        ); // above the player bar and some gap(0.5em)
+      }
     }
   }
   .tts-player-bar {
