@@ -46,6 +46,22 @@ export default (translate, paragraphSelector) => {
 
     return doc.body.innerHTML;
   }
+  function clearActiveParagraphTranslation() {
+    document
+      .querySelectorAll(
+        "#PNLReaderArticleContent .paragraph-translator-container--active"
+      )
+      .forEach((el) => {
+        el.classList.remove("paragraph-translator-container--active");
+      });
+    document
+      .querySelectorAll(
+        "#PNLReaderArticleContent .tts-paragraph-wrap--translation"
+      )
+      .forEach((el) => {
+        el.classList.remove("tts-paragraph-wrap--translation");
+      });
+  }
 
   function activateParagraphTranslation(el) {
     const wrapper = el.classList.contains("tts-paragraph-wrap")
@@ -105,6 +121,9 @@ export default (translate, paragraphSelector) => {
         e.preventDefault();
         e.stopPropagation();
 
+        // Close any other active translations
+        clearActiveParagraphTranslation();
+
         const wrapper = activateParagraphTranslation(e.target);
         if (wrapper && translate) {
           const el = wrapper.querySelector(paragraphSelector);
@@ -144,5 +163,6 @@ export default (translate, paragraphSelector) => {
   return {
     injectTranslator,
     activateParagraphTranslation,
+    clearActiveParagraphTranslation,
   };
 };
