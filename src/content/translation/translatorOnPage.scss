@@ -255,6 +255,9 @@
           opacity: 0.7;
           transition: all 0.2s ease;
           margin-bottom: 0;
+          &[hidden="true"] {
+            display: none;
+          }
 
           &:hover {
             opacity: 1;

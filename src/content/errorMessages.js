@@ -70,11 +70,12 @@ export default function getErrorBanner(error, classType = "audio") {
     `;
   } else if (error.type === "in-trial") {
     const { trialsUsed, trialsMaxAllowed } = error;
+    const usedStr = `${trialsUsed}/${trialsMaxAllowed}`;
     return html`
       <div class="${errorClassName} in-trial">
-        You have used ${trialsUsed}/${trialsMaxAllowed} of your trial quota. Our
-        ${serviceName} service uses a proprietary API, which incurs real costs
-        for each request. To continue using ${serviceName}, please
+        You've used ${usedStr} of your trial quota. Our ${serviceName} service
+        uses a proprietary API, which incurs real costs for each request. To
+        continue using ${serviceName}, please
         <a href="${pnlBase}/pro" target="_blank" class="tts-error-action-link">
           upgrade your account
         </a>

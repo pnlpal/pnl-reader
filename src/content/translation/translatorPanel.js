@@ -52,6 +52,7 @@ const Translator = ({
   const [translatedText, setTranslatedText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasError, setHasError] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
   // Translate when text or target language changes
@@ -59,6 +60,7 @@ const Translator = ({
     if (!text || !lang || !targetLang || targetLang === lang) {
       setTranslatedText("");
       setError(null);
+      setHasError(false);
       return;
     }
 
@@ -70,6 +72,7 @@ const Translator = ({
 
     setLoading(true);
     setError(null);
+    setHasError(false);
 
     try {
       const data = await text2Translation({
@@ -79,6 +82,12 @@ const Translator = ({
       });
 
       setTranslatedText(data.translation || "");
+      if (data.isProUser === false) {
+        setError({
+          type: "in-trial",
+          ...data,
+        });
+      }
 
       if (onTranslationComplete) {
         onTranslationComplete({
@@ -91,6 +100,7 @@ const Translator = ({
     } catch (err) {
       console.error("Translation error:", err);
       setError(err);
+      setHasError(true);
       setTranslatedText("");
 
       if (onError) {
@@ -184,24 +194,9 @@ const Translator = ({
         </div>
       `}
 
-      <!-- Error State -->
-      ${error &&
-      html`
-        <div class="translator-error">
-          ${getErrorBanner(error, "translation")}
-
-          <button
-            onClick=${performTranslation}
-            type="button"
-            class="translator-retry-btn secondary"
-          >
-            🔄 Retry
-          </button>
-        </div>
-      `}
       <!-- No Target Language Selected -->
       ${!loading &&
-      !error &&
+      !hasError &&
       !targetLang &&
       html`
         <div class="translator-prompt">
@@ -213,7 +208,7 @@ const Translator = ({
       `}
       <!-- Same Language Warning -->
       ${!loading &&
-      !error &&
+      !hasError &&
       targetLang &&
       lang === targetLang &&
       html`
@@ -228,7 +223,7 @@ const Translator = ({
 
       <!-- Success State -->
       ${!loading &&
-      !error &&
+      !hasError &&
       translatedText &&
       html`
         <div class="translator-content tts-paragraph-wrap">
@@ -261,9 +256,26 @@ const Translator = ({
         </div>
       `}
 
+      <!-- Error State -->
+      ${error &&
+      html`
+        <div class="translator-error">
+          ${getErrorBanner(error, "translation")}
+
+          <button
+            onClick=${performTranslation}
+            type="button"
+            hidden=${error.type === "in-trial" ? true : false}
+            class="translator-retry-btn secondary"
+          >
+            🔄 Retry
+          </button>
+        </div>
+      `}
+
       <!-- Empty State -->
       ${!loading &&
-      !error &&
+      !hasError &&
       !translatedText &&
       targetLang &&
       lang !== targetLang &&
