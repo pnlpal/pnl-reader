@@ -108,7 +108,16 @@ export default (translate, paragraphSelector) => {
         const wrapper = activateParagraphTranslation(e.target);
         if (wrapper && translate) {
           const el = wrapper.querySelector(paragraphSelector);
-          const text = el.textContent.trim();
+          const text = Array.from(el.childNodes)
+            .filter(
+              (node) =>
+                node.nodeType === Node.TEXT_NODE ||
+                (node.nodeType === Node.ELEMENT_NODE &&
+                  !node.classList.contains("pnl-reader-translate-icon"))
+            )
+            .map((node) => node.textContent)
+            .join("")
+            .trim();
 
           // Show loading state
           showTranslationLoading(wrapper);
