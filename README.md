@@ -58,7 +58,7 @@ We'd love to hear your thoughts and suggestions! If you encounter any issues or 
 
 ## License
 
-PNL Reader is licensed under the MIT License. Feel free to use, modify, and distribute it as per the terms of the license.
+PNL Reader is licensed under the GNU GPLv3 license.
 
 Happy Reading!
 
