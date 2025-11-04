@@ -1,3 +1,19 @@
+function getTextFromNode(node) {
+  if (!node) return "";
+  const text = Array.from(node.childNodes)
+    .filter(
+      (node) =>
+        node.nodeType === Node.TEXT_NODE ||
+        (node.nodeType === Node.ELEMENT_NODE &&
+          !node.classList.contains("paragraph-translator-container") &&
+          node.offsetParent !== null) // Only visible elements
+    )
+    .map((node) => node.textContent)
+    .join("")
+    .trim();
+  return text;
+}
+
 /**
  * A fallback function that attempts to detect language from a DOM node.
  * It recursively checks parent nodes if detection is not reliable.
@@ -10,7 +26,7 @@ async function detectLanguageFromNode(node, depth) {
     return null;
   }
 
-  const text = node.textContent?.trim();
+  const text = getTextFromNode(node);
   if (!text || (text.length < 20 && depth > 1)) {
     // Require more text from nodes for reliability
     return detectLanguageFromNode(node.parentNode, depth - 1);
