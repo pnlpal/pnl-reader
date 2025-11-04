@@ -1,3 +1,18 @@
+# v2.4.1 Nov 04, 2025
+- **NEW**: Added translation feature - translate any paragraph with a simple click
+  - Inline translation panels appear directly under each paragraph
+  - Support for 20+ languages with auto-detection
+  - Copy and speak translated text functionality
+  - Persistent language preference settings
+- **NEW**: Added 3 new display options in the style dropdown:
+  - Sticky header: Keep the reader header pinned to the top while scrolling
+  - Hide audio icons: Clean up the interface by hiding speaker icons
+  - Hide translate icons: Minimize visual clutter by hiding translation icons
+- **IMPROVED**: Enhanced paragraph interaction with subtle visual effects
+  - Loading animations for translation requests
+  - Success/error feedback for translation actions
+  - Improved hover states and visual indicators
+
 # v2.3.1 Nov 01, 2025
 - Fix when globalSettings is null for new user.
 
