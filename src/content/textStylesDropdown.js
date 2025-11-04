@@ -36,6 +36,28 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
     }
   };
 
+  const handleHideAudioIcons = (hideAudioIcons) => {
+    const $article = document.getElementById("PNLReaderArticle");
+    if (!$article) return;
+
+    if (hideAudioIcons) {
+      $article.classList.add("hide-audio-icons");
+    } else {
+      $article.classList.remove("hide-audio-icons");
+    }
+  };
+
+  const handleHideTranslateIcons = (hideTranslateIcons) => {
+    const $article = document.getElementById("PNLReaderArticle");
+    if (!$article) return;
+
+    if (hideTranslateIcons) {
+      $article.classList.add("hide-translate-icons");
+    } else {
+      $article.classList.remove("hide-translate-icons");
+    }
+  };
+
   return html`
     <details class="dropdown">
       <summary role="button" class="outline secondary">
@@ -102,6 +124,60 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                   const textJustified = e.target.checked;
                   handleTextJustified(textJustified);
                   saveSettings({ textJustified: textJustified });
+                }}
+              />
+            </div>
+            <div class="list-in-row">
+              <span class="pnl-icon icon-pin" title="Sticky Header">📌</span>
+              <span>Sticky Header</span>
+              <input
+                type="checkbox"
+                id="stickyHeader"
+                name="stickyHeader"
+                data-tooltip="Keep the header visible when scrolling"
+                data-placement="left"
+                checked=${settings.stickyHeader ?? false}
+                onChange=${(e) => {
+                  const stickyHeader = e.target.checked;
+                  saveSettings({ stickyHeader });
+                }}
+              />
+            </div>
+            <div class="list-in-row">
+              <span class="pnl-icon icon-volume-off" title="Hide Audio Icons"
+                >🔊</span
+              >
+              <span>Hide Audio Icons</span>
+              <input
+                type="checkbox"
+                id="hideAudioIcons"
+                name="hideAudioIcons"
+                data-tooltip="Hide text-to-speech speaker icons in front of paragraphs"
+                data-placement="left"
+                checked=${settings.hideAudioIcons ?? false}
+                onChange=${(e) => {
+                  const hideAudioIcons = e.target.checked;
+                  handleHideAudioIcons(hideAudioIcons);
+                  saveSettings({ hideAudioIcons });
+                }}
+              />
+            </div>
+            <div class="list-in-row">
+              <span class="pnl-icon icon-translate" title="Hide Translate Icons"
+                >🌐</span
+              >
+              <span>Hide Translate Icons</span>
+              <input
+                type="checkbox"
+                id="hideTranslateIcons"
+                name="hideTranslateIcons"
+                data-tooltip="Hide translation icons in the end of paragraphs"
+                data-placement="left"
+                checked=${settings.hideTranslateIcons ?? false}
+                onChange=${(e) => {
+                  const hideTranslateIcons = e.target.checked;
+                  handleHideTranslateIcons(hideTranslateIcons);
+                  saveSettings({ hideTranslateIcons });
                 }}
               />
             </div>

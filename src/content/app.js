@@ -105,6 +105,39 @@ export default function ReaderApp({
   };
 
   useEffect(() => {
+    // Apply sticky header setting
+    const $header = document.getElementById("PNLReaderHeader");
+    if ($header && settings.stickyHeader !== undefined) {
+      if (settings.stickyHeader) {
+        $header.classList.add("sticky-on-top");
+      } else {
+        $header.classList.remove("sticky-on-top");
+      }
+    }
+
+    // Apply hide audio icons setting
+    const $article = document.getElementById("PNLReaderArticle");
+    if ($article) {
+      if (settings.hideAudioIcons) {
+        $article.classList.add("hide-audio-icons");
+      } else {
+        $article.classList.remove("hide-audio-icons");
+      }
+
+      // Apply hide translate icons setting
+      if (settings.hideTranslateIcons) {
+        $article.classList.add("hide-translate-icons");
+      } else {
+        $article.classList.remove("hide-translate-icons");
+      }
+    }
+  }, [
+    settings.stickyHeader,
+    settings.hideAudioIcons,
+    settings.hideTranslateIcons,
+  ]);
+
+  useEffect(() => {
     let lastScrollY = window.scrollY;
 
     const handleScroll = () => {
@@ -386,7 +419,9 @@ export default function ReaderApp({
     <div id="PNLReader">
       <header
         id="PNLReaderHeader"
-        class="sticky-on-top ${isHeaderHidden ? "hidden-header" : ""}"
+        class="sticky-on-top ${isHeaderHidden && !settings.stickyHeader
+          ? "hidden-header"
+          : ""}"
       >
         <nav class="topbar">
           <h1 class="title">

@@ -1,4 +1,9 @@
 #PNLReader {
+  #PNLReaderArticle.hide-translate-icons {
+    .pnl-reader-translate-icon {
+      display: none !important;
+    }
+  }
   #PNLReaderArticleContent {
     .tts-paragraph-wrap {
       flex-wrap: wrap;

@@ -1,4 +1,9 @@
 #PNLReader {
+  #PNLReaderArticle.hide-audio-icons {
+    .pnl-reader-paragraph-speaker {
+      display: none !important;
+    }
+  }
   #PNLReaderArticleContent {
     .tts-paragraph-wrap {
       position: relative;
