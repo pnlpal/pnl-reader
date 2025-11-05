@@ -1,6 +1,7 @@
 "use strict";
 import utils from "utils";
 import { clearHighlights } from "./highlightSelection.js";
+import getTextFromNode from "../getTextFromNode.js";
 
 // Elements to support: paragraphs, headings, list items, blockquotes, etc.
 const paragraphSelector =
@@ -88,16 +89,7 @@ export default (speak) => {
         // Speak
         if (wrapper) {
           const el = wrapper.querySelector(paragraphSelector);
-          const text = Array.from(el.childNodes)
-            .filter(
-              (node) =>
-                node.nodeType === Node.TEXT_NODE ||
-                (node.nodeType === Node.ELEMENT_NODE &&
-                  !node.classList.contains("pnl-reader-translate-icon"))
-            )
-            .map((node) => node.textContent)
-            .join("")
-            .trim();
+          const text = getTextFromNode(el);
           speak(el, text);
         }
       }

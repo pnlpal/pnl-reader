@@ -12,6 +12,7 @@ import utils from "utils";
 import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
 import injectTranslatorOnPage from "./translation/injectTranslatorOnPage.js";
 
+import getTextFromNode from "./getTextFromNode.js";
 import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
 import {
   clearHighlights,
@@ -262,17 +263,7 @@ export default function ReaderApp({
     for (let i = 0; i < blocks.length; i++) {
       try {
         // Await TTS playback for each paragraph
-        const text = Array.from(blocks[i].childNodes)
-          .filter(
-            (node) =>
-              node.nodeType === Node.TEXT_NODE ||
-              (node.nodeType === Node.ELEMENT_NODE &&
-                !node.classList.contains("pnl-reader-translate-icon"))
-          )
-          .map((node) => node.textContent)
-          .join("")
-          .trim();
-
+        const text = getTextFromNode(blocks[i]);
         if (!text || text.length < 3) {
           continue;
         }
@@ -280,7 +271,7 @@ export default function ReaderApp({
         const [nextParagraphText, nextParagraphIndex] = (() => {
           let j = i + 1;
           while (j < blocks.length) {
-            const nextText_ = blocks[j].textContent.trim();
+            const nextText_ = getTextFromNode(blocks[j]);
             if (nextText_) {
               return [nextText_, j];
             }

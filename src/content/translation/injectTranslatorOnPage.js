@@ -1,6 +1,6 @@
 "use strict";
 import utils from "utils";
-import { clearHighlights } from "../ttsPlayer/highlightSelection.js";
+import getTextFromNode from "../getTextFromNode.js";
 
 export default (translate, paragraphSelector) => {
   function injectTranslator(htmlContent) {
@@ -118,16 +118,7 @@ export default (translate, paragraphSelector) => {
         const wrapper = activateParagraphTranslation(e.target);
         if (wrapper && translate) {
           const el = wrapper.querySelector(paragraphSelector);
-          const text = Array.from(el.childNodes)
-            .filter(
-              (node) =>
-                node.nodeType === Node.TEXT_NODE ||
-                (node.nodeType === Node.ELEMENT_NODE &&
-                  !node.classList.contains("pnl-reader-translate-icon"))
-            )
-            .map((node) => node.textContent)
-            .join("")
-            .trim();
+          const text = getTextFromNode(el);
 
           // Show loading state
           showTranslationLoading(wrapper);

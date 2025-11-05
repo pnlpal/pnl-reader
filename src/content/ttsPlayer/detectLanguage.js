@@ -1,18 +1,4 @@
-function getTextFromNode(node) {
-  if (!node) return "";
-  const text = Array.from(node.childNodes)
-    .filter(
-      (node) =>
-        node.nodeType === Node.TEXT_NODE ||
-        (node.nodeType === Node.ELEMENT_NODE &&
-          !node.classList.contains("paragraph-translator-container") &&
-          node.offsetParent !== null) // Only visible elements
-    )
-    .map((node) => node.textContent)
-    .join("")
-    .trim();
-  return text;
-}
+import getTextFromNode from "../getTextFromNode.js";
 
 /**
  * A fallback function that attempts to detect language from a DOM node.

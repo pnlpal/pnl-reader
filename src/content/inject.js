@@ -129,7 +129,7 @@ async function enableReadMode() {
 
     if (!globalSettings) {
       globalSettings = await getGlobalSettings();
-      console.log("Got global settings", globalSettings);
+      // console.log("Got global settings", globalSettings);
     }
 
     cleanHtmlHead();
