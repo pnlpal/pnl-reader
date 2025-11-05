@@ -1,4 +1,4 @@
-# v2.4.1 Nov 04, 2025
+# v2.4.0 Nov 04, 2025
 - **NEW**: Added translation feature - translate any paragraph with a simple click
   - Inline translation panels appear directly under each paragraph
   - Support for 20+ languages with auto-detection
