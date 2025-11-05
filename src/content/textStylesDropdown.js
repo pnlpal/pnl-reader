@@ -61,7 +61,7 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
   return html`
     <details class="dropdown">
       <summary role="button" class="outline secondary">
-        <span class="icon-fontsize" title="Type controls"></span>
+        <span class="icon-sliders" title="More settings"></span>
       </summary>
       <ul class="text-styles-dropdown-list">
         <div>
