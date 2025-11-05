@@ -3,6 +3,8 @@ import htm from "htm";
 import { useCallback, useRef, useState, useEffect } from "preact/hooks";
 
 import MaleIcon from "../../images/male.png";
+import MaleOld from "../../images/male-old.png";
+import FemaleOld from "../../images/female-old.png";
 import FemaleIcon from "../../images/female.png";
 import {
   PlayIcon,
@@ -21,6 +23,8 @@ const html = htm.bind(h);
 const voices = [
   { name: "Luna", title: "Female Voice", icon: FemaleIcon },
   { name: "Owen", title: "Male Voice", icon: MaleIcon },
+  { name: "Mona", title: "Female Voice", icon: FemaleOld },
+  { name: "Bob", title: "Male Voice", icon: MaleOld },
 ];
 
 const speeds = [0.5, 1, 1.2, 1.5, 2];
