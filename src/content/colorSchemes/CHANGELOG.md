@@ -1,3 +1,16 @@
+# v2.5.0 Nov 05, 2025 
+- **NEW**: Added two new premium voices for enhanced listening experience
+  - "Mona" - High-quality female voice with natural intonation
+  - "Bob" - Professional male voice with clear pronunciation
+- **IMPROVED**: Significantly enhanced text-to-speech performance
+  - Better text extraction from paragraphs for more accurate pronunciation
+  - Fixed audio prefetching issues that caused reading interruptions
+  - Smoother transitions between paragraphs during continuous reading
+- **IMPROVED**: Updated UI controls for better user experience
+  - Replaced type controls button with a more intuitive settings icon
+  - Enhanced visual consistency across all interface elements
+
+
 # v2.4.0 Nov 04, 2025
 - **NEW**: Added translation feature - translate any paragraph with a simple click
   - Inline translation panels appear directly under each paragraph
