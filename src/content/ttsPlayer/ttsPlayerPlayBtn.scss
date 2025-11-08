@@ -1,90 +1,88 @@
-#PNLReader {
-  .tts-player-bar {
-    $play: #6fcf97; // soft green
-    $pause: #eb5757; // soft red
+.tts-player-bar {
+  $play: #6fcf97; // soft green
+  $pause: #eb5757; // soft red
 
-    $playBtnHeight: 80px; // padding: 20px + svg height 40px + padding 20px
+  $playBtnHeight: 80px; // padding: 20px + svg height 40px + padding 20px
 
-    .tts-play-btn {
-      padding: 20px;
-      margin: 0 2em;
+  .tts-play-btn {
+    padding: 20px;
+    margin: 0 2em;
+    display: block;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px 0px;
+    transition: all 0.3s;
+    font-size: 0; // hide text if any
+
+    svg {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: #fff;
       display: block;
-      cursor: pointer;
-      border: none;
-      border-radius: 10px 0px;
-      transition: all 0.3s;
-      font-size: 0; // hide text if any
+      margin: 0 auto;
+      transition: transform 0.3s;
+    }
+
+    &.play {
+      background: $play;
+    }
+    &.pause {
+      background: $pause;
+      transform: rotate(90deg);
 
       svg {
-        font-size: 40px;
-        width: 40px;
-        height: 40px;
-        color: #fff;
-        display: block;
-        margin: 0 auto;
-        transition: transform 0.3s;
-      }
-
-      &.play {
-        background: $play;
-      }
-      &.pause {
-        background: $pause;
-        transform: rotate(90deg);
-
-        svg {
-          transform: rotate(-90deg);
-        }
-      }
-      &[data-error="true"] {
-        background: linear-gradient(
-          120deg,
-          #ff5f6d 0%,
-          #ffc371 25%,
-          #fff 30%,
-          #ff5f6d 45%,
-          #ffc371 60%,
-          #ffb199 80%,
-          #ff5f6d 100%
-        ); // broken-ish, patchy error gradient
+        transform: rotate(-90deg);
       }
     }
-
-    // Responsive styles
-    @media (max-width: 768px) {
-      .tts-play-btn {
-        padding: 0;
-        margin: 0;
-        width: 48px;
-        height: 48px;
-
-        svg {
-          font-size: 28px;
-          width: 28px;
-          height: 28px;
-        }
-      }
-    }
-
-    .tts-loading-spinner {
+    &[data-error="true"] {
       background: linear-gradient(
-        90deg,
-        #ffd700cc 25%,
-        #fffbe6 50%,
-        #ffd700cc 75%
-      );
-      background-size: 200% 100%;
-      animation: tts-shimmer 1.2s linear infinite;
-      box-shadow: 0 0 0 0.8em #ffd70044;
+        120deg,
+        #ff5f6d 0%,
+        #ffc371 25%,
+        #fff 30%,
+        #ff5f6d 45%,
+        #ffc371 60%,
+        #ffb199 80%,
+        #ff5f6d 100%
+      ); // broken-ish, patchy error gradient
     }
+  }
 
-    @keyframes tts-shimmer {
-      0% {
-        background-position: 200% 0;
+  // Responsive styles
+  @media (max-width: 768px) {
+    .tts-play-btn {
+      padding: 0;
+      margin: 0;
+      width: 48px;
+      height: 48px;
+
+      svg {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
       }
-      100% {
-        background-position: 0 0;
-      }
+    }
+  }
+
+  .tts-loading-spinner {
+    background: linear-gradient(
+      90deg,
+      #ffd700cc 25%,
+      #fffbe6 50%,
+      #ffd700cc 75%
+    );
+    background-size: 200% 100%;
+    animation: tts-shimmer 1.2s linear infinite;
+    box-shadow: 0 0 0 0.8em #ffd70044;
+  }
+
+  @keyframes tts-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: 0 0;
     }
   }
 }

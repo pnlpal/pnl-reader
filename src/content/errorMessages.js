@@ -2,16 +2,20 @@ import { h } from "preact";
 import htm from "htm";
 const html = htm.bind(h);
 
+import styles from "./errorMessages.module.scss";
+
 const pnlBase =
   process.env.NODE_ENV === "development"
     ? "http://localhost:4567"
     : "https://pnl.dev";
 
 // Map error messages to user-friendly messages and actions
-export default function getErrorBanner(error, classType = "audio") {
+export default function getErrorBanner(error, classType = "Audio") {
   if (!error) return null;
-  const errorClassName = `pnl-reader-error-banner pnl-reader-error-banner--${classType}`;
-  const serviceName = classType === "audio" ? "text-to-speech" : "translation";
+  const errorClassName = `${styles.pnlReaderErrorBanner} ${
+    styles[`for${classType}`]
+  }`;
+  const serviceName = classType === "Audio" ? "text-to-speech" : "translation";
   const getPrettyMessage = (msg) => {
     if (!msg) return "";
 
@@ -46,13 +50,7 @@ export default function getErrorBanner(error, classType = "audio") {
     return html`
       <div class="${errorClassName}">
         To use ${serviceName}, please
-        <a
-          href="${pnlBase}/login"
-          target="_blank"
-          class="tts-error-action-link"
-        >
-          log in or sign up
-        </a>
+        <a href="${pnlBase}/login" target="_blank"> log in or sign up </a>
         at pnl.dev.
       </div>
     `;
@@ -62,9 +60,7 @@ export default function getErrorBanner(error, classType = "audio") {
       <div class="${errorClassName}">
         Your trial limit (${trialsUsed}/${maxTrialsAllowed} used) has been
         reached. To continue using ${serviceName}, please
-        <a href="${pnlBase}/pro" target="_blank" class="tts-error-action-link">
-          upgrade your account
-        </a>
+        <a href="${pnlBase}/pro" target="_blank"> upgrade your account </a>
         .
       </div>
     `;
@@ -76,9 +72,7 @@ export default function getErrorBanner(error, classType = "audio") {
         You've used ${usedStr} of your trial quota. Our ${serviceName} service
         uses a proprietary API, which incurs real costs for each request. To
         continue using ${serviceName}, please
-        <a href="${pnlBase}/pro" target="_blank" class="tts-error-action-link">
-          upgrade your account
-        </a>
+        <a href="${pnlBase}/pro" target="_blank"> upgrade your account </a>
         .
       </div>
     `;

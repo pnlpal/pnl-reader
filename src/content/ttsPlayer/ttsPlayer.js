@@ -18,6 +18,8 @@ import {
 import text2Audio from "./text2Audio.js";
 import getErrorBanner from "../errorMessages.js";
 
+import styles from "./ttsPlayer.module.scss";
+
 const html = htm.bind(h);
 
 const voices = [
@@ -243,13 +245,13 @@ const TTSPlayer = ({
   return html`
     <div>
       ${error && getErrorBanner(error)}
-      <div class="tts-player-bar">
+      <div class=${styles.ttsPlayerBar}>
         <!-- 1. Voice/avatar selector -->
-        <div class="tts-voice-dropdown">
+        <div class=${styles.ttsVoiceDropdown}>
           <details class="dropdown" open=${showVoiceDropdown}>
             <summary
               role="button"
-              class="tts-voice-avatar-btn"
+              class=${styles.ttsVoiceAvatarBtn}
               aria-label="Select voice"
               onClick=${(e) => {
                 e.preventDefault();
@@ -259,16 +261,16 @@ const TTSPlayer = ({
               <img
                 src=${currentCharacter.icon}
                 alt=${currentCharacter.name}
-                class="tts-voice-avatar tts-voice-avatar-round"
+                class="${styles.ttsVoiceAvatarRound}"
               />
             </summary>
-            <ul class="tts-voice-dropdown-list-top">
+            <ul class="${styles.ttsVoiceDropdownListTop}">
               ${voices.map(
                 (v) => html`
                   <li>
                     <a
                       href="#"
-                      class="tts-voice-dropdown-item"
+                      class="${styles.ttsVoiceDropdownItem}"
                       title="Select ${v.title}"
                       onClick=${(e) => {
                         e.preventDefault();
@@ -279,9 +281,9 @@ const TTSPlayer = ({
                       <img
                         src=${v.icon}
                         alt=${v.name}
-                        class="tts-voice-avatar tts-voice-avatar-round"
+                        class="${styles.ttsVoiceAvatar} ${styles.ttsVoiceAvatarRound}"
                       />
-                      <span class="tts-voice-name">${v.name}</span>
+                      <span class="${styles.ttsVoiceName}">${v.name}</span>
                     </a>
                   </li>
                 `
@@ -290,29 +292,29 @@ const TTSPlayer = ({
           </details>
         </div>
         <!-- 2. Speed selector -->
-        <div class="tts-speed-dropdown">
+        <div class=${styles.ttsSpeedDropdown}>
           <details class="dropdown" open=${showSpeedDropdown}>
             <summary
               role="button"
-              class="tts-player-btn tts-speed-btn"
+              class="${styles.ttsPlayerBtn} ${styles.ttsSpeedBtn}"
               aria-label="Select speed"
               onClick=${(e) => {
                 e.preventDefault();
                 setShowSpeedDropdown((v) => !v);
               }}
             >
-              <span class="tts-speed-label">
-                ${speed}<span class="tts-speed-x">x</span>
+              <span class="${styles.ttsSpeedLabel}">
+                ${speed}<span class="${styles.ttsSpeedX}">x</span>
               </span>
             </summary>
-            <ul class="tts-speed-dropdown-list-top">
+            <ul class="${styles.ttsSpeedDropdownListTop}">
               ${speeds.map(
                 (s) => html`
                   <li>
                     <a
                       href="#"
-                      class="tts-speed-dropdown-item${speed === s
-                        ? " selected"
+                      class="${styles.ttsSpeedDropdownItem}${speed === s
+                        ? ` ${styles.selected}`
                         : ""}"
                       onClick=${(e) => {
                         e.preventDefault();
@@ -321,7 +323,7 @@ const TTSPlayer = ({
                         if (audioRef.current) audioRef.current.playbackRate = s;
                       }}
                     >
-                      ${s}<span class="tts-speed-x">x</span>
+                      ${s}<span class="${styles.ttsSpeedX}">x</span>
                     </a>
                   </li>
                 `
@@ -331,9 +333,11 @@ const TTSPlayer = ({
         </div>
         <!-- 3. Big play button -->
         <button
-          class=${`tts-play-btn ${
-            loading ? "tts-loading-spinner" : isPlaying ? "pause" : "play"
-          }`}
+          class="${styles.ttsPlayBtn} ${loading
+            ? styles.ttsLoadingSpinner
+            : isPlaying
+            ? styles.pause
+            : styles.play}"
           title=${isPlaying ? "Pause" : "Play"}
           onClick=${handlePlayPause}
           aria-label=${isPlaying ? "Pause" : "Play"}
@@ -347,7 +351,7 @@ const TTSPlayer = ({
         ${readingWholePageTimestamp &&
         html`<button
           disabled=${!readingWholePageTimestamp || !nextPageLink}
-          class="tts-player-btn tts-repeat-btn"
+          class="${styles.ttsPlayerBtn} ${styles.ttsRepeatBtn}"
           title=${autoReadNextPage
             ? "Auto Turn & Read Next Page On"
             : "Auto Turn & Read Next Page Off"}
@@ -362,7 +366,7 @@ const TTSPlayer = ({
         ${!readingWholePageTimestamp &&
         html`<button
           disabled=${!!readingWholePageTimestamp}
-          class="tts-player-btn tts-repeat-btn"
+          class="${styles.ttsPlayerBtn} ${styles.ttsRepeatBtn}"
           title=${repeat ? "Repeat On" : "Repeat Off"}
           aria-pressed=${repeat}
           onClick=${() => setRepeat(!repeat)}
@@ -374,12 +378,12 @@ const TTSPlayer = ({
         </button>`}
         <!-- 5. Volume button with hover vertical bar -->
         <div
-          class="tts-volume-container"
+          class="${styles.ttsVolumeContainer}"
           onMouseEnter=${() => setShowVolume(true)}
           onMouseLeave=${() => setShowVolume(false)}
         >
           <button
-            class="tts-player-btn tts-volume-btn"
+            class="${styles.ttsPlayerBtn} ${styles.ttsVolumeBtn}"
             title="Volume"
             onClick=${handleVolumeBtnClick}
             aria-pressed=${volume === 0}
@@ -394,7 +398,7 @@ const TTSPlayer = ({
             step="0.01"
             value=${volume}
             onInput=${onVolumeChange}
-            class="tts-volume-slider"
+            class="${styles.ttsVolumeSlider}"
           />`}
         </div>
         <audio
@@ -407,7 +411,7 @@ const TTSPlayer = ({
           style="display:none"
         />
         <button
-          class="tts-player-btn tts-exit-btn"
+          class="${styles.ttsPlayerBtn} ${styles.ttsExitBtn}"
           title="Exit Voice Mode"
           onClick=${onExitClicked}
         >

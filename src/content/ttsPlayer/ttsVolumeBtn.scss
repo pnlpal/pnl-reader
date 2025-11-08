@@ -1,94 +1,92 @@
-#PNLReader {
-  .tts-player-bar {
-    .tts-volume-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      min-width: 2.5em;
+.tts-player-bar {
+  .tts-volume-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 2.5em;
 
-      // Invisible hover bridge
-      &::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 2.2em; // match slider's bottom
-        width: 48px; // match or slightly wider than slider/button
-        height: 4.5em; // vertical space between button and slider
-        background: transparent;
-        z-index: 1;
-        pointer-events: auto;
+    // Invisible hover bridge
+    &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 2.2em; // match slider's bottom
+      width: 48px; // match or slightly wider than slider/button
+      height: 4.5em; // vertical space between button and slider
+      background: transparent;
+      z-index: 1;
+      pointer-events: auto;
+    }
+
+    .tts-volume-btn {
+      z-index: 1; // ensure button stays below the slider
+    }
+
+    .tts-volume-slider {
+      position: absolute;
+      left: 50%;
+      bottom: 63px; // further above the volume icon
+      transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      transform-origin: left center;
+      width: 160px;
+      height: 32px;
+      display: block;
+      accent-color: var(--pico-primary, #ffd700);
+      background: #23272f;
+      border-radius: 16px;
+      border: 1px solid #888;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      z-index: 10; // ensure slider is above the button
+      padding: 0 10px;
+
+      @media (max-width: 768px) {
+        bottom: 3em;
       }
 
-      .tts-volume-btn {
-        z-index: 1; // ensure button stays below the slider
+      @media (max-width: 576px) {
+        width: 120px;
+        bottom: 2.4em;
       }
 
-      .tts-volume-slider {
-        position: absolute;
-        left: 50%;
-        bottom: 63px; // further above the volume icon
-        transform: rotate(-90deg);
-        -moz-transform: rotate(-90deg);
-        transform-origin: left center;
-        width: 160px;
-        height: 32px;
-        display: block;
-        accent-color: var(--pico-primary, #ffd700);
-        background: #23272f;
-        border-radius: 16px;
-        border: 1px solid #888;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        z-index: 10; // ensure slider is above the button
-        padding: 0 10px;
+      &:focus {
+        outline: 2px solid var(--pico-primary, #ffd700);
+        outline-offset: 2px;
+      }
 
-        @media (max-width: 768px) {
-          bottom: 3em;
-        }
+      // Webkit browsers (Chrome, Safari)
+      &::-webkit-slider-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--pico-primary, #ffd700);
+        border: 2px solid #fff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        appearance: none;
+        margin-top: -8px;
+      }
+      &::-webkit-slider-runnable-track {
+        height: 8px;
+        border-radius: 8px;
+        background: #e6e6e6;
+      }
 
-        @media (max-width: 576px) {
-          width: 120px;
-          bottom: 2.4em;
-        }
-
-        &:focus {
-          outline: 2px solid var(--pico-primary, #ffd700);
-          outline-offset: 2px;
-        }
-
-        // Webkit browsers (Chrome, Safari)
-        &::-webkit-slider-thumb {
-          width: 22px;
-          height: 22px;
-          border-radius: 50%;
-          background: var(--pico-primary, #ffd700);
-          border: 2px solid #fff;
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-          cursor: pointer;
-          appearance: none;
-          margin-top: -8px;
-        }
-        &::-webkit-slider-runnable-track {
-          height: 8px;
-          border-radius: 8px;
-          background: #e6e6e6;
-        }
-
-        // Firefox
-        &::-moz-range-thumb {
-          width: 22px;
-          height: 22px;
-          border-radius: 50%;
-          background: var(--pico-primary, #ffd700);
-          border: 2px solid #fff;
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-          cursor: pointer;
-        }
-        &::-moz-range-track {
-          height: 8px;
-          border-radius: 8px;
-          background: #e6e6e6;
-        }
+      // Firefox
+      &::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--pico-primary, #ffd700);
+        border: 2px solid #fff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+      }
+      &::-moz-range-track {
+        height: 8px;
+        border-radius: 8px;
+        background: #e6e6e6;
       }
     }
   }

@@ -1,75 +1,71 @@
-#PNLReader {
-  .tts-player-bar {
-    .tts-speed-dropdown {
-      details.dropdown {
-        summary.tts-speed-btn {
-          // Remove Pico's dropdown indicator
-          &::after {
-            display: none !important;
-            content: none !important;
-          }
+.tts-player-bar {
+  .tts-speed-dropdown {
+    summary.tts-speed-btn {
+      // Remove Pico's dropdown indicator
+      &::after {
+        display: none !important;
+        content: none !important;
+      }
 
-          .tts-speed-label {
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            font-family: inherit;
+      .tts-speed-label {
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        font-family: inherit;
 
-            .tts-speed-x {
-              font-family: "Inter", "Arial", sans-serif;
-              font-weight: 400;
-              margin-left: 0.1em;
-              font-size: 0.9em;
-              opacity: 0.8;
-            }
-          }
+        .tts-speed-x {
+          font-family: "Inter", "Arial", sans-serif;
+          font-weight: 400;
+          margin-left: 0.1em;
+          font-size: 0.9em;
+          opacity: 0.8;
         }
+      }
+    }
 
-        .tts-speed-dropdown-list-top {
-          position: absolute;
-          left: 50%;
-          bottom: 104px;
-          transform: translateX(-50%);
-          background: var(--pico-background-color, #23272f);
-          border-radius: 0.5em;
-          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-          padding: 0.3em 0;
-          min-width: 6em;
-          z-index: 10;
-          list-style: none;
-          margin: 0;
-          @media (max-width: 768px) {
-            bottom: 86px;
-          }
-          @media (max-width: 576px) {
-            bottom: 70px;
-          }
+    .tts-speed-dropdown-list-top {
+      position: absolute;
+      left: 50%;
+      bottom: 104px;
+      transform: translateX(-50%);
+      background: var(--pico-background-color, #23272f);
+      border-radius: 0.5em;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+      padding: 0.3em 0;
+      min-width: 6em;
+      z-index: 10;
+      list-style: none;
+      margin: 0;
+      @media (max-width: 768px) {
+        bottom: 86px;
+      }
+      @media (max-width: 576px) {
+        bottom: 70px;
+      }
 
-          .tts-speed-dropdown-item {
-            display: block;
-            padding: 0.5em 1.2em;
-            font-size: 1.1em;
-            color: var(--pico-color, #fff);
-            text-align: center;
-            border-radius: 0.4em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.18s;
+      .tts-speed-dropdown-item {
+        display: block;
+        padding: 0.5em 1.2em;
+        font-size: 1.1em;
+        color: var(--pico-color, #fff);
+        text-align: center;
+        border-radius: 0.4em;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.18s;
 
-            &:hover,
-            &:focus,
-            &.selected {
-              background: var(--pico-muted-background-color, #353a45);
-              color: var(--pico-primary, #36b37e);
-            }
-            // Style the 'x' in the dropdown list
-            .tts-speed-x {
-              font-family: "Inter", "Arial", sans-serif;
-              font-weight: 400;
-              margin-left: 0.1em;
-              font-size: 0.9em;
-              opacity: 0.8;
-            }
-          }
+        &:hover,
+        &:focus,
+        &.selected {
+          background: var(--pico-muted-background-color, #353a45);
+          color: var(--pico-primary, #36b37e);
+        }
+        // Style the 'x' in the dropdown list
+        .tts-speed-x {
+          font-family: "Inter", "Arial", sans-serif;
+          font-weight: 400;
+          margin-left: 0.1em;
+          font-size: 0.9em;
+          opacity: 0.8;
         }
       }
     }

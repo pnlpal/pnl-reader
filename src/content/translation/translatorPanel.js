@@ -262,7 +262,7 @@ const Translator = ({
       ${error &&
       html`
         <div class="translator-error">
-          ${getErrorBanner(error, "translation")}
+          ${getErrorBanner(error, "Translation")}
 
           <button
             onClick=${performTranslation}

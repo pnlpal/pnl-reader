@@ -33,6 +33,14 @@ var options = {
     background: path.join(__dirname, "src", "background", "main.js"),
     "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
     "custom-font": path.join(__dirname, "src", "custom-font", "index.js"),
+
+    "tts-player-webcomponent": path.join(
+      __dirname,
+      "src",
+      "content",
+      "ttsPlayer",
+      "webcomponent.js"
+    ),
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -47,8 +55,28 @@ var options = {
         use: ["style-loader", "css-loader"],
       },
 
+      // Add CSS Modules support for .module.scss files
+      {
+        test: /\.module\.scss$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                localIdentName: "[name]__[local]___[hash:base64:5]",
+                exportLocalsConvention: "camelCase", // This is important!
+              },
+              esModule: false, // Important for proper export
+            },
+          },
+          "sass-loader",
+        ],
+      },
+
       {
         test: /\.scss$/,
+        exclude: /\.module\.scss$/, // Exclude module files from this rule
         use: [
           {
             loader: "css-loader",
