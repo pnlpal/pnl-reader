@@ -82,6 +82,7 @@ function cleanHtmlHead() {
         "dictionariez",
         "fairydict",
         "dictionaries-tooltip",
+        "PNLReader",
       ];
       if (!dictionariezKeyWords.some((key) => style.includes(key))) {
         // console.log("Removing style:", style);
