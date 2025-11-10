@@ -71,6 +71,11 @@ chrome.runtime.onMessage.addListener(function (...args) {
       url: chrome.runtime.getURL("custom-font.html"),
     });
   });
+  message.on("open global settings", async () => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("options.html"),
+    });
+  });
 
   chrome.tabs.onRemoved.addListener(async function (tid) {
     // console.log("Tab removed", tid);

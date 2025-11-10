@@ -184,6 +184,10 @@
                   margin-right: 10px;
                   margin-bottom: 0;
                 }
+                #goToGlobalSettings {
+                  margin-left: auto;
+                  cursor: pointer;
+                }
               }
             }
             @media (max-width: 640px) {
@@ -293,7 +297,7 @@
     width: 330px;
     margin: 0;
     position: fixed;
-    z-index: 999;
+    z-index: 999999;
     background-color: #cee7d0;
     right: 50px;
     padding: 20px;

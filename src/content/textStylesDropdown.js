@@ -5,11 +5,16 @@ import FontSizeRange from "./fontSizeRange.js";
 import FontSelector from "./fontSelector.js";
 import LineSpacingRange from "./lineSpacingRange.js";
 import LineWidthRange from "./lineWidthRange.js";
+import utils from "utils";
 
 const html = htm.bind(h);
 
 const TextStylesDropdown = ({ settings, saveSettings }) => {
   const defaultTextJustified = true;
+  const isOnOptionsPage =
+    window.location.href.includes("extension://") &&
+    window.location.href.includes("/options.html");
+
   useEffect(() => {
     handleTextJustified(
       settings.textJustified === undefined
@@ -181,6 +186,23 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                 }}
               />
             </div>
+
+            ${!isOnOptionsPage &&
+            html`
+              <div class="list-in-row">
+                <a
+                  id="goToGlobalSettings"
+                  class="contrast"
+                  onClick=${() => {
+                    utils.send("open global settings");
+                  }}
+                  data-tooltip="Current settings are site-specific. Access global settings to apply changes across all websites."
+                  data-placement="left"
+                >
+                  ⚙️ Go to global settings
+                </a>
+              </div>
+            `}
           </article>
         </div>
       </ul>

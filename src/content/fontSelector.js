@@ -168,7 +168,7 @@ const FontSelector = ({ settings, saveSettings }) => {
       "
         title="Add or manage custom fonts"
       >
-        ⚙️ Manage Custom Fonts
+        🔗 Manage Custom Fonts
       </button>
     </div>
   `;
