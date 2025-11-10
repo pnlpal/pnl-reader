@@ -2,7 +2,7 @@ function removeEmojisAndSymbols(text) {
   return (
     text
       // Remove specific symbols first
-      .replace(/[⚡⭐✨💫★☆🌐🔇🔈🔉🔊]/g, "")
+      .replace(/[⚡⭐✨💫🎨👩‍💻★☆🌐🔇🔈🔉🔊]/g, "")
       // Remove more arrow and geometric symbols
       .replace(/[↑↓←→↖↗↘↙⇧⇩⇦⇨]/g, "")
       // Remove triangular symbols
