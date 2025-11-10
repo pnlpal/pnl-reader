@@ -5,7 +5,7 @@ import getTextFromNode from "../getTextFromNode.js";
 
 // Elements to support: paragraphs, headings, list items, blockquotes, etc.
 const paragraphSelector =
-  "p, h1, h2, h3, h4, h5, h6, li, blockquote, dt, dd, figcaption, summary";
+  "p, h1, h2, h3, h4, h5, h6, li, dt, dd, figcaption, summary";
 
 export default (speak) => {
   function injectParagraphSpeakers(htmlContent) {
