@@ -1,3 +1,10 @@
+# v2.5.1 Non 10, 2025 
+- Added a "Go to Global Settings" link in the options dropdown.
+- Removed emojis from text when reading aloud.
+- Fixed tooltip: now hides after clicking the button and moving the cursor out.
+- Reduced PNG sizes for voice characters to decrease extension size.
+- Fixed issue where blockquotes were read twice, especially when containing sub-paragraphs.
+
 # v2.5.0 Nov 05, 2025 
 - **NEW**: Added two new premium voices for enhanced listening experience
   - "Mona" - High-quality female voice with natural intonation
