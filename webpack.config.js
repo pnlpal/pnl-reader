@@ -55,6 +55,24 @@ var options = {
         use: ["style-loader", "css-loader"],
       },
 
+      // Rule for inline SCSS imports (must come first to catch ?inline query)
+      {
+        test: /\.scss$/,
+        resourceQuery: /inline/,
+        use: [
+          "raw-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                outputStyle: "compressed",
+                includePaths: ["node_modules"], // For @picocss imports
+              },
+            },
+          },
+        ],
+      },
+
       // Add CSS Modules support for .module.scss files
       {
         test: /\.module\.scss$/,
@@ -77,6 +95,7 @@ var options = {
       {
         test: /\.scss$/,
         exclude: /\.module\.scss$/, // Exclude module files from this rule
+        resourceQuery: { not: [/inline/] }, // Exclude inline queries
         use: [
           {
             loader: "css-loader",

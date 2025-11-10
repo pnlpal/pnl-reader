@@ -1,6 +1,7 @@
 import { render, h } from "preact";
 import htm from "htm";
 import TTSPlayer from "./ttsPlayer.js";
+import picoStyles from "@picocss/pico/scss/pico.scss?inline";
 
 const html = htm.bind(h);
 
@@ -36,6 +37,11 @@ class PNLTTSPlayerElement extends HTMLElement {
 
   // Inject styles into shadow DOM
   injectStyles() {
+    // Inject Pico CSS
+    const picoStyleElement = document.createElement("style");
+    picoStyleElement.textContent = picoStyles;
+    this.shadow.appendChild(picoStyleElement);
+
     const styleElement = document.createElement("style");
     styleElement.textContent = ttsPlayerStyles;
     this.shadow.appendChild(styleElement);
