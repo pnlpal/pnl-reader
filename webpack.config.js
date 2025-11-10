@@ -34,13 +34,13 @@ var options = {
     "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
     "custom-font": path.join(__dirname, "src", "custom-font", "index.js"),
 
-    "tts-player-webcomponent": path.join(
-      __dirname,
-      "src",
-      "content",
-      "ttsPlayer",
-      "webcomponent.js"
-    ),
+    // "tts-player-webcomponent": path.join(
+    //   __dirname,
+    //   "src",
+    //   "content",
+    //   "ttsPlayer",
+    //   "webcomponent.js"
+    // ),
   },
   output: {
     path: path.join(__dirname, "build"),

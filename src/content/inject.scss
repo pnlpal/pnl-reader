@@ -27,6 +27,16 @@
 
   --pico-form-element-background-color: var(--pico-card-background-color);
 
+  [data-tooltip] {
+    // fix tooltip visibility issue when cursor has left the element
+    &:focus:not(:hover) {
+      &::before,
+      &::after {
+        opacity: 0 !important;
+      }
+    }
+  }
+
   > #PNLReaderHeader {
     display: block; // fix for ign
     background: unset; // fix for reddit
