@@ -47,6 +47,22 @@ class PNLTTSPlayerElement extends HTMLElement {
     this.shadow.appendChild(styleElement);
   }
 
+  // Add this helper method to update the player
+  updatePlayer() {
+    const playerElement = html`
+      <${TTSPlayer}
+        text=${this._currentText}
+        lang=${this._currentLang}
+        settings=${this._settings}
+        saveSettings=${(update) => this.handleSaveSettings(update)}
+        exitVoiceMode=${() => this.hide()}
+        ...${this._currentOptions}
+      />
+    `;
+
+    render(playerElement, this.renderTarget);
+  }
+
   // Show the player with text and language
   show(text, lang = "en", options = {}) {
     if (!text || !text.trim()) {
@@ -55,19 +71,11 @@ class PNLTTSPlayerElement extends HTMLElement {
     }
 
     this._isVisible = true;
+    this._currentText = text;
+    this._currentLang = lang;
+    this._currentOptions = options;
 
-    const playerElement = html`
-      <${TTSPlayer}
-        text=${text}
-        lang=${lang}
-        settings=${this._settings}
-        saveSettings=${(update) => this.handleSaveSettings(update)}
-        exitVoiceMode=${() => this.hide()}
-        ...${options}
-      />
-    `;
-
-    render(playerElement, this.renderTarget);
+    this.updatePlayer();
 
     // Position the web component itself
     this.style.cssText = `
@@ -117,6 +125,11 @@ class PNLTTSPlayerElement extends HTMLElement {
   handleSaveSettings(update) {
     this._settings = { ...this._settings, ...update };
     this.saveSettings(this._settings);
+
+    // Force a re-render by calling show again with updated settings
+    if (this._isVisible && this._currentText) {
+      this.updatePlayer();
+    }
 
     // Dispatch settings change event
     this.dispatchEvent(
