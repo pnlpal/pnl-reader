@@ -10,7 +10,7 @@ for (const node of document.head.childNodes) {
   if (node.tagName === "STYLE") {
     const style = node.innerHTML;
     if (style.includes("PNLTTSPlayerContainer")) {
-      ttsPlayerStyles = style;
+      ttsPlayerStyles += style;
     }
   }
 }
