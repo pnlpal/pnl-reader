@@ -179,8 +179,10 @@ if (!customElements.get("pnl-tts-player")) {
 // At the end of the file, add these for easy usage:
 window.createTTSPlayer = () => document.createElement("pnl-tts-player");
 window.showTTSPlayer = (text, lang, options) => {
-  const player = window.createTTSPlayer();
-  return player.show(text, lang, options);
+  if (!window._pnlTTSPlayerInstance) {
+    window._pnlTTSPlayerInstance = window.createTTSPlayer();
+  }
+  return window._pnlTTSPlayerInstance.show(text, lang, options);
 };
 
 showTTSPlayer(
