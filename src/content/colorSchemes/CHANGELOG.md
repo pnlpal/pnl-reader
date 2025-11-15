@@ -1,4 +1,7 @@
-# v2.5.1 Non 10, 2025 
+# v2.6.0 Nov 15, 2025
+- Introduced two experimental, realistic voices (male and female). Note: These voices are slower and may be improved in future updates.
+
+# v2.5.1 Nov 10, 2025 
 - Added a "Go to Global Settings" link in the options dropdown.
 - Removed emojis from text when reading aloud.
 - Fixed tooltip: now hides after clicking the button and moving the cursor out.
