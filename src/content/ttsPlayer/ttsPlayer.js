@@ -6,6 +6,8 @@ import MaleIcon from "../../images/male.png";
 import MaleOld from "../../images/male-old.png";
 import FemaleOld from "../../images/female-old.png";
 import FemaleIcon from "../../images/female.png";
+import MaleRealisticIcon from "../../images/male-realistic.png";
+import FemaleRealisticIcon from "../../images/female-realistic.png";
 import {
   PlayIcon,
   PauseIcon,
@@ -27,6 +29,18 @@ const voices = [
   { name: "Owen", title: "Male Voice", icon: MaleIcon },
   { name: "Mona", title: "Female Voice", icon: FemaleOld },
   { name: "Bob", title: "Male Voice", icon: MaleOld },
+  {
+    name: "Lawrence",
+    title: "Female Voice",
+    icon: FemaleRealisticIcon,
+    realisticAI: true,
+  },
+  {
+    name: "Vincent",
+    title: "Male Voice",
+    icon: MaleRealisticIcon,
+    realisticAI: true,
+  },
 ];
 
 const speeds = [0.5, 1, 1.2, 1.5, 2];
@@ -271,7 +285,9 @@ const TTSPlayer = ({
                     <a
                       href="#"
                       class="${styles.ttsVoiceDropdownItem}"
-                      title="Select ${v.title}"
+                      title="Select ${v.title}${v.realisticAI
+                        ? " (Realistic AI - Experimental, Slower)"
+                        : ""}"
                       onClick=${(e) => {
                         e.preventDefault();
                         setVoice(v.name);
@@ -283,7 +299,18 @@ const TTSPlayer = ({
                         alt=${v.name}
                         class="${styles.ttsVoiceAvatar} ${styles.ttsVoiceAvatarRound}"
                       />
-                      <span class="${styles.ttsVoiceName}">${v.name}</span>
+                      <div class="${styles.ttsVoiceInfo}">
+                        <span class="${styles.ttsVoiceName}">${v.name}</span>
+                        ${v.realisticAI &&
+                        html`
+                          <span class="${styles.ttsVoiceTag}">
+                            🤖 Realistic AI
+                          </span>
+                          <span class="${styles.ttsVoiceNote}">
+                            Experimental • Slower
+                          </span>
+                        `}
+                      </div>
                     </a>
                   </li>
                 `

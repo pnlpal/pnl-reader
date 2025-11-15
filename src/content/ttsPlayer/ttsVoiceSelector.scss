@@ -55,7 +55,8 @@
     border-radius: 0.5em;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     padding: 0.3em 0;
-    min-width: 10em;
+    width: max-content;
+    min-width: 11em;
     z-index: 10;
     list-style: none;
     margin: 0;
@@ -70,8 +71,8 @@
 
   .tts-voice-dropdown-item {
     display: flex;
-    align-items: center;
-    gap: 0.7em;
+    align-items: flex-start !important;
+    gap: 8px !important;
     padding: 0.4em 1em;
     cursor: pointer;
     border-radius: 0.4em;
@@ -91,9 +92,26 @@
       object-fit: cover;
     }
 
-    .tts-voice-name {
-      font-size: 1em;
-      color: var(--pico-color, #fff);
+    .ttsVoiceInfo {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ttsVoiceName {
+      font-weight: 500;
+    }
+
+    .ttsVoiceTag {
+      font-size: 0.75rem;
+      color: var(--pico-color);
+      font-weight: 600;
+    }
+
+    .ttsVoiceNote {
+      font-size: 0.7rem;
+      color: var(--pico-muted-color);
+      font-style: italic;
     }
   }
 }
