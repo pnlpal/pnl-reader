@@ -1,5 +1,6 @@
 # v2.6.0 Nov 15, 2025
 - Introduced two experimental, realistic voices (male and female). Note: These voices are slower and may be improved in future updates.
+- Added a 0.8x playback speed option for finer control when slowing down audio. 
 
 # v2.5.1 Nov 10, 2025 
 - Added a "Go to Global Settings" link in the options dropdown.
