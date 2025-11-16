@@ -5,7 +5,8 @@ var webpack = require("webpack"),
   { CleanWebpackPlugin } = require("clean-webpack-plugin"),
   CopyWebpackPlugin = require("copy-webpack-plugin"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
-  TerserPlugin = require("terser-webpack-plugin");
+  TerserPlugin = require("terser-webpack-plugin"),
+  copyOnChange = require("./utils/copy-on-change.js");
 
 // load the secrets
 var alias = {};
@@ -254,5 +255,30 @@ if (env.NODE_ENV === "development") {
     ],
   };
 }
+
+// copy and watch some shared files to dictionariez during development & production build
+(() => {
+  function setupCopyWatchs() {
+    copyOnChange({
+      sourceFile: path.join(
+        __dirname,
+        "build",
+        "tts-player-webcomponent.bundle.js"
+      ),
+      destDir: path.join(__dirname, "..", "dictionariez", "src", "content"),
+      watchMode: env.NODE_ENV === "development",
+    });
+  }
+  if (env.NODE_ENV === "development") {
+    setupCopyWatchs();
+  } else {
+    // Add webpack plugin for production copy
+    options.plugins.push({
+      apply(compiler) {
+        compiler.hooks.afterEmit.tap("ProductionCopyPlugin", setupCopyWatchs);
+      },
+    });
+  }
+})();
 
 module.exports = options;
