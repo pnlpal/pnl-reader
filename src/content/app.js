@@ -13,7 +13,7 @@ import injectSpeakerOnPage from "./ttsPlayer/injectSpeakerOnPage.js";
 import injectTranslatorOnPage from "./translation/injectTranslatorOnPage.js";
 
 import getTextFromNode from "./getTextFromNode.js";
-import { detectLanguage } from "./ttsPlayer/detectLanguage.js";
+import { detectLanguage } from "./detectLanguage.js";
 import {
   clearHighlights,
   highlightSelection,

@@ -268,6 +268,15 @@ if (env.NODE_ENV === "development") {
       destDir: path.join(__dirname, "..", "dictionariez", "src", "content"),
       watchMode: env.NODE_ENV === "development",
     });
+
+    copyOnChange({
+      sourceFiles: [
+        path.resolve("src/content/detectLanguage.js"),
+        path.resolve("src/content/getTextFromNode.js"),
+      ],
+      destDir: path.resolve("../dictionariez/src/shared-readonly"),
+      watchMode: env.NODE_ENV === "development",
+    });
   }
   if (env.NODE_ENV === "development") {
     setupCopyWatchs();

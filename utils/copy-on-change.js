@@ -1,7 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-module.exports = ({ sourceFile, destDir, watchMode = true }) => {
+module.exports = ({
+  sourceFile,
+  sourceFiles = [],
+  destDir,
+  watchMode = true,
+}) => {
   if (!fs.existsSync(destDir)) {
     console.warn(
       `⚠️ Destination directory does not exist: ${destDir}, skipping copy-on-change.`
@@ -9,26 +14,32 @@ module.exports = ({ sourceFile, destDir, watchMode = true }) => {
     return;
   }
 
-  function copyFile() {
+  function copyFile(filepath) {
     try {
-      const destFile = path.join(destDir, path.basename(sourceFile));
-      fs.copyFileSync(path.resolve(sourceFile), destFile);
-      console.log(`✅ Copied ${sourceFile} to ${destFile}`);
+      const destFile = path.join(destDir, path.basename(filepath));
+      fs.copyFileSync(path.resolve(filepath), destFile);
+      console.log(`✅ Copied ${filepath} to ${destFile}`);
     } catch (error) {
       console.error(`❌ Copy failed:`, error);
     }
   }
 
+  function watchFile(filepath) {
+    fs.watchFile(filepath, () => {
+      console.log(`📁 ${filepath} changed`);
+      copyFile(filepath);
+    });
+
+    console.log(`👀 Watching ${filepath} for changes...`);
+  }
+
   // Initial copy
-  copyFile();
+  if (sourceFile) copyFile(sourceFile);
+  sourceFiles.forEach((file) => copyFile(file));
 
   // Watch for changes
   if (watchMode) {
-    fs.watchFile(sourceFile, () => {
-      console.log(`📁 ${sourceFile} changed`);
-      copyFile();
-    });
-
-    console.log(`👀 Watching ${sourceFile} for changes...`);
+    if (sourceFile) watchFile(sourceFile);
+    sourceFiles.forEach((file) => watchFile(file));
   }
 };
