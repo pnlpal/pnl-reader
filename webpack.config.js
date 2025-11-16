@@ -273,8 +273,18 @@ if (env.NODE_ENV === "development") {
       sourceFiles: [
         path.resolve("src/content/detectLanguage.js"),
         path.resolve("src/content/getTextFromNode.js"),
+        path.resolve("src/utils.js"),
       ],
       destDir: path.resolve("../dictionariez/src/shared-readonly"),
+      watchMode: env.NODE_ENV === "development",
+    });
+
+    copyOnChange({
+      sourceFiles: [
+        path.resolve("src/background/tts-speak.js"),
+        path.resolve("src/background/pnl-cloud.js"),
+      ],
+      destDir: path.resolve("../dictionariez/src/background"),
       watchMode: env.NODE_ENV === "development",
     });
   }
