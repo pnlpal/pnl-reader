@@ -2,6 +2,7 @@ import { render, h } from "preact";
 import htm from "htm";
 import TTSPlayer from "./ttsPlayer.js";
 import picoStyles from "@picocss/pico/scss/pico.scss?inline";
+import "@webcomponents/custom-elements";
 
 const html = htm.bind(h);
 
