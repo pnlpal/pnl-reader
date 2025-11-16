@@ -19,6 +19,7 @@
       margin-bottom: 0;
     }
 
+    visibility: visible !important; // override some website(reddit) styles that hide it
     position: fixed;
     left: 50%;
     bottom: $playBarBottomSpacing;
@@ -52,7 +53,7 @@
       background: none;
       border: none;
       color: var(--pico-code-color);
-      width: 48px;
+      width: auto;
       height: 48px;
       font-size: 1.6em;
       cursor: pointer;

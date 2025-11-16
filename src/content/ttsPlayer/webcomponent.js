@@ -78,14 +78,6 @@ class PNLTTSPlayerElement extends HTMLElement {
 
     this.updatePlayer();
 
-    // Position the web component itself
-    this.style.cssText = `
-  position: fixed !important;
-  top: 20px !important;
-  right: 20px !important;
-  z-index: 2147483647 !important;
-  pointer-events: none !important;
-`;
     // Make sure the render target allows pointer events
     this.renderTarget.style.pointerEvents = "auto";
 
