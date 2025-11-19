@@ -78,7 +78,7 @@
 
       &:hover,
       &:focus {
-        background: var(--pico-muted-background-color, #353a45);
+        background: var(--pico-primary-focus, #353a45);
         color: var(--pico-primary, #ffd700);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 

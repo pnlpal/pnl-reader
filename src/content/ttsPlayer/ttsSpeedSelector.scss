@@ -56,7 +56,7 @@
         &:hover,
         &:focus,
         &.selected {
-          background: var(--pico-muted-background-color, #353a45);
+          background: var(--pico-primary-focus, #353a45);
           color: var(--pico-primary, #36b37e);
         }
         // Style the 'x' in the dropdown list
