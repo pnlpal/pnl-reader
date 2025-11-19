@@ -30,7 +30,7 @@ const voices = [
   { name: "Mona", title: "Female Voice", icon: FemaleOld },
   { name: "Bob", title: "Male Voice", icon: MaleOld },
   {
-    name: "Lawrence",
+    name: "Kaylee",
     title: "Female Voice",
     icon: FemaleRealisticIcon,
     realisticAI: true,
