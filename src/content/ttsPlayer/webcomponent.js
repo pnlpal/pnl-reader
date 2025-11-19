@@ -23,9 +23,6 @@ class PNLTTSPlayerElement extends HTMLElement {
     // Create shadow DOM for isolation
     this.shadow = this.attachShadow({ mode: "closed" });
 
-    // Create and inject styles
-    this.injectStyles();
-
     // Create render target
     this.renderTarget = document.createElement("div");
     this.renderTarget.id = "PNLTTSPlayerContainer";
@@ -33,7 +30,17 @@ class PNLTTSPlayerElement extends HTMLElement {
 
     // Internal state
     this._isVisible = false;
-    this._settings = this.loadSettings();
+    this._stylesInjected = false;
+  }
+
+  connectedCallback() {
+    if (!this._settings) {
+      this._settings = this.loadSettings();
+    }
+    if (!this._stylesInjected) {
+      this.injectStyles();
+      this._stylesInjected = true;
+    }
   }
 
   // Inject styles into shadow DOM
@@ -69,6 +76,16 @@ class PNLTTSPlayerElement extends HTMLElement {
     if (!text || !text.trim()) {
       console.warn("No text provided to TTS player");
       return;
+    }
+
+    if (!this._settings) {
+      this._settings = this.loadSettings();
+    }
+
+    // Ensure styles are injected before showing
+    if (!this._stylesInjected) {
+      this.injectStyles();
+      this._stylesInjected = true;
     }
 
     this._isVisible = true;
@@ -169,8 +186,30 @@ if (!customElements.get("pnl-tts-player")) {
   customElements.define("pnl-tts-player", PNLTTSPlayerElement);
 }
 
-// At the end of the file, add these for easy usage:
-window.createTTSPlayer = () => document.createElement("pnl-tts-player");
+window.createTTSPlayer = () => {
+  try {
+    // Try to create custom element first
+    if (customElements.get("pnl-tts-player")) {
+      const element = document.createElement("pnl-tts-player");
+
+      // Firefox fix: ensure the element is properly initialized
+      if (typeof element.show !== "function") {
+        console.warn(
+          "Custom element not properly initialized, creating direct instance"
+        );
+        return new PNLTTSPlayerElement();
+      }
+
+      return element;
+    } else {
+      console.warn("Custom element not registered, creating direct instance");
+      return new PNLTTSPlayerElement();
+    }
+  } catch (error) {
+    console.warn("Failed to create custom element, using fallback:", error);
+    return new PNLTTSPlayerElement();
+  }
+};
 window.showTTSPlayer = (text, lang, options) => {
   if (!window._pnlTTSPlayerInstance) {
     window._pnlTTSPlayerInstance = window.createTTSPlayer();
