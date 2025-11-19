@@ -8,6 +8,7 @@
 
   .pnl-reader-error-banner {
     color: var(--pico-del-color);
+    visibility: visible !important; // override some website(reddit) styles that hide it
 
     a {
       color: var(--pico-primary);
