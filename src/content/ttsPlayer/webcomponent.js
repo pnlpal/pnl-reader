@@ -33,151 +33,142 @@ class PNLTTSPlayerElement extends HTMLElement {
     this._stylesInjected = false;
   }
 
-  connectedCallback() {
-    if (!this._settings) {
-      this._settings = this.loadSettings();
-    }
-    if (!this._stylesInjected) {
-      this.injectStyles();
-      this._stylesInjected = true;
-    }
-  }
-
-  // Inject styles into shadow DOM
-  injectStyles() {
-    // Inject Pico CSS
-    const picoStyleElement = document.createElement("style");
-    picoStyleElement.textContent = picoStyles;
-    this.shadow.appendChild(picoStyleElement);
-
-    const styleElement = document.createElement("style");
-    styleElement.textContent = ttsPlayerStyles;
-    this.shadow.appendChild(styleElement);
-  }
-
-  // Add this helper method to update the player
-  updatePlayer() {
-    const playerElement = html`
-      <${TTSPlayer}
-        text=${this._currentText}
-        lang=${this._currentLang}
-        settings=${this._settings}
-        saveSettings=${(update) => this.handleSaveSettings(update)}
-        exitVoiceMode=${() => this.hide()}
-        ...${this._currentOptions}
-      />
-    `;
-
-    render(playerElement, this.renderTarget);
-  }
-
-  // Show the player with text and language
-  show(text, lang = "en", options = {}) {
-    if (!text || !text.trim()) {
-      console.warn("No text provided to TTS player");
-      return;
-    }
-
-    if (!this._settings) {
-      this._settings = this.loadSettings();
-    }
-
-    // Ensure styles are injected before showing
-    if (!this._stylesInjected) {
-      this.injectStyles();
-      this._stylesInjected = true;
-    }
-
-    this._isVisible = true;
-    this._currentText = text;
-    this._currentLang = lang;
-    this._currentOptions = options;
-
-    this.updatePlayer();
-
-    // Make sure the render target allows pointer events
-    this.renderTarget.style.pointerEvents = "auto";
-
-    // Add to DOM if not already there
-    if (!this.parentNode) {
-      document.body.appendChild(this);
-    }
-
-    // Dispatch show event
-    this.dispatchEvent(
-      new CustomEvent("show", {
-        detail: { text, lang, options },
-        bubbles: true,
-      })
-    );
-    return this;
-  }
-
-  // Hide the player
-  hide() {
-    this._isVisible = false;
-    render(null, this.renderTarget);
-
-    if (this.parentNode) {
-      this.parentNode.removeChild(this);
-    }
-
-    // Dispatch hide event
-    this.dispatchEvent(
-      new CustomEvent("hide", {
-        bubbles: true,
-      })
-    );
-    return this;
-  }
-
-  // Handle settings updates
-  handleSaveSettings(update) {
-    this._settings = { ...this._settings, ...update };
-    this.saveSettings(this._settings);
-
-    // Force a re-render by calling show again with updated settings
-    if (this._isVisible && this._currentText) {
-      this.updatePlayer();
-    }
-
-    // Dispatch settings change event
-    this.dispatchEvent(
-      new CustomEvent("settingschange", {
-        detail: update,
-        bubbles: true,
-      })
-    );
-  }
-
-  // Load settings from localStorage
-  loadSettings() {
-    try {
-      const stored = localStorage.getItem("pnl-tts-settings");
-      return stored ? JSON.parse(stored) : {};
-    } catch (e) {
-      return {};
-    }
-  }
-
-  // Save settings to localStorage
-  saveSettings(settings) {
-    try {
-      localStorage.setItem("pnl-tts-settings", JSON.stringify(settings));
-    } catch (e) {
-      console.warn("Failed to save TTS settings");
-    }
-  }
-
-  // Get current visibility state
-  isVisible() {
-    return this._isVisible;
-  }
-
   disconnectedCallback() {
     if (this.renderTarget) {
       render(null, this.renderTarget);
     }
+  }
+
+  connectedCallback() {
+    // Inject styles into shadow DOM
+    const injectStyles = () => {
+      // Inject Pico CSS
+      const picoStyleElement = document.createElement("style");
+      picoStyleElement.textContent = picoStyles;
+      this.shadow.appendChild(picoStyleElement);
+
+      const styleElement = document.createElement("style");
+      styleElement.textContent = ttsPlayerStyles;
+      this.shadow.appendChild(styleElement);
+    };
+
+    const handleSaveSettings = (update) => {
+      this._settings = { ...this._settings, ...update };
+      try {
+        localStorage.setItem(
+          "pnl-tts-settings",
+          JSON.stringify(this._settings)
+        );
+      } catch (e) {
+        console.warn("Failed to save TTS settings");
+      }
+
+      // Force a re-render by calling show again with updated settings
+      if (this._isVisible && this._currentText) {
+        updatePlayer();
+      }
+
+      // Dispatch settings change event
+      this.dispatchEvent(
+        new CustomEvent("settingschange", {
+          detail: update,
+          bubbles: true,
+        })
+      );
+    };
+
+    const loadSettings = () => {
+      try {
+        const stored = localStorage.getItem("pnl-tts-settings");
+        return stored ? JSON.parse(stored) : {};
+      } catch (e) {
+        return {};
+      }
+    };
+
+    const updatePlayer = () => {
+      const playerElement = html`
+        <${TTSPlayer}
+          text=${this._currentText}
+          lang=${this._currentLang}
+          settings=${this._settings}
+          saveSettings=${handleSaveSettings}
+          exitVoiceMode=${hide}
+          ...${this._currentOptions}
+        />
+      `;
+
+      render(playerElement, this.renderTarget);
+    };
+
+    // Show the player with text and language
+    const show = (text, lang = "en", options = {}) => {
+      if (!text || !text.trim()) {
+        console.warn("No text provided to TTS player");
+        return;
+      }
+
+      this._isVisible = true;
+      this._currentText = text;
+      this._currentLang = lang;
+      this._currentOptions = options;
+
+      updatePlayer();
+
+      // Make sure the render target allows pointer events
+      this.renderTarget.style.pointerEvents = "auto";
+
+      // Add to DOM if not already there
+      if (!this.parentNode) {
+        document.body.appendChild(this);
+      }
+
+      // Dispatch show event
+      this.dispatchEvent(
+        new CustomEvent("show", {
+          detail: { text, lang, options },
+          bubbles: true,
+        })
+      );
+    };
+
+    const hide = () => {
+      this._isVisible = false;
+      render(null, this.renderTarget);
+
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
+
+      // Dispatch hide event
+      this.dispatchEvent(
+        new CustomEvent("hide", {
+          bubbles: true,
+        })
+      );
+    };
+
+    if (!this._settings) {
+      this._settings = loadSettings();
+    }
+    if (!this._stylesInjected) {
+      injectStyles();
+      this._stylesInjected = true;
+    }
+
+    console.log("PNL TTS Player Web Component connected");
+    window.addEventListener("message", (event) => {
+      if (event.source !== window) return; // Only accept messages from the same window
+      // Only accept messages from same origin for security
+      if (event.origin !== window.location.origin) {
+        return;
+      }
+
+      const { command, text, lang } = event.data;
+      if (text && command === "pnl-tts-play") {
+        show(text, lang);
+      }
+    });
   }
 }
 
@@ -187,45 +178,18 @@ if (!customElements.get("pnl-tts-player")) {
 }
 
 window.createTTSPlayer = () => {
-  try {
-    // Try to create custom element first
-    if (customElements.get("pnl-tts-player")) {
-      const element = document.createElement("pnl-tts-player");
-
-      // Firefox fix: ensure the element is properly initialized
-      if (typeof element.show !== "function") {
-        console.warn(
-          "Custom element not properly initialized, creating direct instance"
-        );
-        return new PNLTTSPlayerElement();
-      }
-
-      return element;
-    } else {
-      console.warn("Custom element not registered, creating direct instance");
-      return new PNLTTSPlayerElement();
-    }
-  } catch (error) {
-    console.warn("Failed to create custom element, using fallback:", error);
-    return new PNLTTSPlayerElement();
+  if (document.querySelector("pnl-tts-player")) {
+    return document.querySelector("pnl-tts-player");
   }
-};
-window.showTTSPlayer = (text, lang, options) => {
-  if (!window._pnlTTSPlayerInstance) {
-    window._pnlTTSPlayerInstance = window.createTTSPlayer();
-  }
-  return window._pnlTTSPlayerInstance.show(text, lang, options);
+  const element = document.createElement("pnl-tts-player");
+  document.body.appendChild(element);
+  return element;
 };
 
-window.addEventListener("message", (event) => {
-  if (event.source !== window) return; // Only accept messages from the same window
-  // Only accept messages from same origin for security
-  if (event.origin !== window.location.origin) {
-    return;
-  }
-
-  const { command, text, lang } = event.data;
-  if (text && command === "pnl-tts-play") {
-    window.showTTSPlayer(text, lang);
-  }
-});
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    window.createTTSPlayer();
+  });
+} else {
+  window.createTTSPlayer();
+}
