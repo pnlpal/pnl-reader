@@ -1,5 +1,10 @@
 import getTextFromNode from "./getTextFromNode.js";
 
+const getLangAttribute = (node) => {
+  if (!node) return null;
+  return node.getAttribute("data-tts-lang") || node.getAttribute("data-lang");
+};
+
 /**
  * A fallback function that attempts to detect language from a DOM node.
  * It recursively checks parent nodes if detection is not reliable.
@@ -13,8 +18,8 @@ async function detectLanguageFromNode(node, depth) {
   }
 
   // Check for explicit language attribute on the node, esp for translated text.
-  if (node.getAttribute?.("data-tts-lang")) {
-    return node.getAttribute("data-tts-lang");
+  if (getLangAttribute(node)) {
+    return getLangAttribute(node);
   }
 
   const text = getTextFromNode(node);
@@ -44,8 +49,8 @@ export async function detectLanguage(text, node = null) {
   }
 
   // Check for explicit language attribute on the node, esp for translated text.
-  if (node?.getAttribute?.("data-tts-lang")) {
-    return node.getAttribute("data-tts-lang");
+  if (getLangAttribute(node)) {
+    return getLangAttribute(node);
   }
 
   try {
