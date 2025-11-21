@@ -36,7 +36,7 @@
       z-index: 2;
 
       @media (max-width: 768px) {
-        width: 100%;
+        width: max-content;
         max-width: 98vw;
         font-size: 0.97em;
         padding: 0.5em 1.2em;
@@ -45,6 +45,11 @@
           48px + $playBarBottomSpacingOnMobile + $playBarPaddingVerticalOnMobile *
             2 + 0.5em
         );
+      }
+      @media (max-width: 576px) {
+        width: max-content;
+        max-width: 98vw;
+        padding: 0.5em 0.5em;
       }
     }
   }
