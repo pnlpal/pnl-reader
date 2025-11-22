@@ -182,14 +182,16 @@ window.createTTSPlayer = () => {
     return document.querySelector("pnl-tts-player");
   }
   const element = document.createElement("pnl-tts-player");
-  document.body.appendChild(element);
+  document.documentElement.appendChild(element);
   return element;
 };
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
+setTimeout(() => {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      window.createTTSPlayer();
+    });
+  } else {
     window.createTTSPlayer();
-  });
-} else {
-  window.createTTSPlayer();
-}
+  }
+}, 1000);
