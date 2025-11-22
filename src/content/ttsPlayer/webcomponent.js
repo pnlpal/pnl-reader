@@ -155,20 +155,9 @@ class PNLTTSPlayerElement extends HTMLElement {
       injectStyles();
       this._stylesInjected = true;
     }
-
+    this.show = show;
+    this.hide = hide;
     console.log("PNL TTS Player Web Component connected");
-    window.addEventListener("message", (event) => {
-      if (event.source !== window) return; // Only accept messages from the same window
-      // Only accept messages from same origin for security
-      if (event.origin !== window.location.origin) {
-        return;
-      }
-
-      const { command, text, lang } = event.data;
-      if (text && command === "pnl-tts-play") {
-        show(text, lang);
-      }
-    });
   }
 }
 
@@ -186,12 +175,16 @@ window.createTTSPlayer = () => {
   return element;
 };
 
-setTimeout(() => {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      window.createTTSPlayer();
-    });
-  } else {
-    window.createTTSPlayer();
+window.addEventListener("message", (event) => {
+  if (event.source !== window) return; // Only accept messages from the same window
+  // Only accept messages from same origin for security
+  if (event.origin !== window.location.origin) {
+    return;
   }
-}, 1000);
+
+  const { command, text, lang } = event.data;
+  if (text && command === "pnl-tts-play") {
+    const player = window.createTTSPlayer();
+    player.show(text, lang);
+  }
+});
