@@ -3,6 +3,7 @@ import htm from "htm";
 import { useCallback, useState, useEffect } from "preact/hooks";
 import text2Translation from "./text2Translation.js";
 import getErrorBanner from "../errorMessages.js";
+import styles from "./translator.module.scss";
 
 const html = htm.bind(h);
 
@@ -140,20 +141,24 @@ const Translator = ({
   };
 
   return html`
-    <article class="translator-panel">
-      <header class="translator-header">
-        <div class="translator-lang-selector">
-          <div class="translator-lang-info">
-            <span class="translator-from-label hide-sm">From:</span>
-            <span class="translator-from-lang hide-sm"
+    <article class="${styles.translatorPanel}">
+      <header class="${styles.translatorHeader}">
+        <div class="${styles.translatorLangSelector}">
+          <div class="${styles.translatorLangInfo}">
+            <span class="${styles.translatorFromLabel} ${styles.hideSm}"
+              >From:</span
+            >
+            <span class="${styles.translatorFromLang} ${styles.hideSm}"
               >${getLanguageName(lang)}</span
             >
-            <span class="translator-arrow">→</span>
-            <span class="translator-to-label hide-sm">To:</span>
+            <span class="${styles.translatorArrow}">→</span>
+            <span class="${styles.translatorToLabel} ${styles.hideSm}"
+              >To:</span
+            >
           </div>
 
           <select
-            class="translator-target-select"
+            class="${styles.translatorTargetSelect}"
             value=${targetLang}
             onChange=${handleTargetLangChange}
             aria-label="Select target language"
@@ -177,7 +182,7 @@ const Translator = ({
           <button
             onClick=${onClose}
             type="button"
-            class="translator-close-btn"
+            class="${styles.translatorCloseBtn}"
             aria-label="Close translator"
             data-tooltip="Close translator"
             data-placement="left"
@@ -190,9 +195,9 @@ const Translator = ({
       <!-- Loading State -->
       ${loading &&
       html`
-        <div class="translator-loading">
-          <div class="translator-spinner"></div>
-          <p class="translator-loading-text">Translating...</p>
+        <div class="${styles.translatorLoading}">
+          <div class="${styles.translatorSpinner}"></div>
+          <p class="${styles.translatorLoadingText}">Translating...</p>
         </div>
       `}
 
@@ -201,9 +206,9 @@ const Translator = ({
       !hasError &&
       !targetLang &&
       html`
-        <div class="translator-prompt">
-          <p class="translator-prompt-text">
-            <span class="translator-prompt-icon">👆</span>
+        <div class="${styles.translatorPrompt}">
+          <p class="${styles.translatorPromptText}">
+            <span class="${styles.translatorPromptIcon}">👆</span>
             Please select a target language to translate
           </p>
         </div>
@@ -214,9 +219,9 @@ const Translator = ({
       targetLang &&
       lang === targetLang &&
       html`
-        <div class="translator-warning">
-          <p class="translator-warning-text">
-            <span class="translator-warning-icon">⚠️</span>
+        <div class="${styles.translatorWarning}">
+          <p class="${styles.translatorWarningText}">
+            <span class="${styles.translatorWarningIcon}">⚠️</span>
             Source and target languages are the same. Please choose a different
             target language.
           </p>
@@ -228,15 +233,17 @@ const Translator = ({
       !hasError &&
       translatedText &&
       html`
-        <div class="translator-content tts-paragraph-wrap">
+        <div
+          class="${styles.translatorContent} ${styles.ttsParagraphWrap} tts-paragraph-wrap"
+        >
           <p
-            class="translator-result-text tts-paragraph"
+            class="${styles.ttsParagraph} tts-paragraph"
             data-tts-lang=${targetLang}
           >
             ${translatedText}
           </p>
 
-          <footer class="translator-footer">
+          <footer class="${styles.translatorFooter}">
             <button
               type="button"
               class="pnl-reader-paragraph-speaker"
@@ -248,7 +255,6 @@ const Translator = ({
             <button
               onClick=${copyTranslation}
               type="button"
-              class="translator-copy-btn"
               data-tooltip=${copySuccess ? "Copied!" : "Copy translation"}
               data-placement="top"
             >
@@ -261,14 +267,14 @@ const Translator = ({
       <!-- Error State -->
       ${error &&
       html`
-        <div class="translator-error">
+        <div>
           ${getErrorBanner(error, "Translation")}
 
           <button
             onClick=${performTranslation}
             type="button"
             hidden=${error.type === "in-trial" ? true : false}
-            class="translator-retry-btn secondary"
+            class="secondary"
           >
             🔄 Retry
           </button>
@@ -283,8 +289,8 @@ const Translator = ({
       lang !== targetLang &&
       text &&
       html`
-        <div class="translator-empty">
-          <p class="translator-empty-text">No translation available</p>
+        <div>
+          <p>No translation available</p>
         </div>
       `}
     </article>

@@ -14,8 +14,8 @@
 @import "./ttsPlayer/speakerOnPage.scss";
 @import "./ttsPlayer/highlightSelection.scss";
 @import "./ttsPlayer/ttsReadPageBtn.scss";
+@import "./translation/translateIconOnPage.scss";
 @import "./themeSelector.scss";
-@import "./translation/translatorOnPage.scss";
 
 #PNLReader {
   padding: 0;
@@ -286,6 +286,7 @@
     }
   }
   .hide-sm {
+    // also copied to translator.module.scss
     @media (max-width: 960px) {
       display: none !important;
     }
