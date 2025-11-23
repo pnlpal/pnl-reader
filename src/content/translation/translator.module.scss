@@ -14,6 +14,7 @@
     background: var(--pico-code-background-color);
     padding: 1em 18px;
     position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     @media (max-width: 768px) {
       padding: 0.2em 6px;
@@ -216,6 +217,26 @@
 
       &:focus {
         outline: none;
+        opacity: 1;
+      }
+    }
+
+    &.translator-entering {
+      animation: translatorSlideIn 0.3s ease-out;
+    }
+    &.translator-closing {
+      transform: translateY(-10px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes translatorSlideIn {
+      from {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
         opacity: 1;
       }
     }

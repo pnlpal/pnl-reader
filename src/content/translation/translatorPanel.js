@@ -55,6 +55,7 @@ const Translator = ({
   const [error, setError] = useState(null);
   const [hasError, setHasError] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   // Translate when text or target language changes
   useEffect(() => {
@@ -140,8 +141,20 @@ const Translator = ({
     }
   };
 
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      if (onClose) onClose();
+      setIsClosing(false); // Reset for next re-open
+    }, 300);
+  }, [onClose]);
+
   return html`
-    <article class="${styles.translatorPanel}">
+    <article
+      class="${styles.translatorPanel} ${isClosing
+        ? styles.translatorClosing
+        : styles.translatorEntering}"
+    >
       <header class="${styles.translatorHeader}">
         <div class="${styles.translatorLangSelector}">
           <div class="${styles.translatorLangInfo}">
@@ -180,7 +193,7 @@ const Translator = ({
         ${onClose &&
         html`
           <button
-            onClick=${onClose}
+            onClick=${handleClose}
             type="button"
             class="${styles.translatorCloseBtn}"
             aria-label="Close translator"
