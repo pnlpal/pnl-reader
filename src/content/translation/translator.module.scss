@@ -69,8 +69,7 @@
         }
 
         .translator-target-select {
-          min-width: 150px;
-          max-width: 320px;
+          max-width: max-content;
           flex-shrink: 0;
           font-weight: bolder;
 
@@ -78,7 +77,7 @@
           border: none;
           border-bottom: 1px solid var(--pico-muted-border-color);
           border-radius: 0;
-          padding: 0.25rem 1rem 0.25rem 0.25rem;
+          padding: 0.25rem 1.2rem 0.25rem 0.45rem;
           margin-bottom: 0;
           font-size: 0.9rem;
           height: auto;
