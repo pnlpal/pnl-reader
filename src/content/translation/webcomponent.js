@@ -168,7 +168,7 @@ function adjustTranslatorPosition(translator, selectionRect) {
   let translatorRight;
   // Ensure translator stays within viewport bounds
   const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
+  //   const viewportHeight = window.innerHeight;
   // Adjust if translator goes off-screen horizontally
   if (translatorX < 0) {
     translatorX = window.scrollX;
@@ -176,12 +176,6 @@ function adjustTranslatorPosition(translator, selectionRect) {
   if (viewportWidth - translatorX < 400) {
     translatorRight = 30;
   }
-
-  console.log(`
-        selectionRect: ${JSON.stringify(selectionRect)}
-        translatorX: ${translatorX}, translatorY: ${translatorY}
-        viewportWidth: ${viewportWidth}, viewportHeight: ${viewportHeight}    
-        `);
 
   translator.style.cssText = `
         position: absolute;
@@ -194,7 +188,7 @@ function adjustTranslatorPosition(translator, selectionRect) {
         width: ${selectionRect.width}px;
         min-width: fit-content;
         border-radius: 8px;
-        // box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         z-index: 99999999;
         `;
 }
