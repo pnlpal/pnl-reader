@@ -41,6 +41,13 @@ var options = {
       "ttsPlayer",
       "webcomponent.js"
     ),
+    "translator-webcomponent": path.join(
+      __dirname,
+      "src",
+      "content",
+      "translation",
+      "webcomponent.js"
+    ),
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -264,6 +271,15 @@ if (env.NODE_ENV === "development") {
         __dirname,
         "build",
         "tts-player-webcomponent.bundle.js"
+      ),
+      destDir: path.join(__dirname, "..", "dictionariez", "src", "content"),
+      watchMode: env.NODE_ENV === "development",
+    });
+    copyOnChange({
+      sourceFile: path.join(
+        __dirname,
+        "build",
+        "translator-webcomponent.bundle.js"
       ),
       destDir: path.join(__dirname, "..", "dictionariez", "src", "content"),
       watchMode: env.NODE_ENV === "development",
