@@ -16,6 +16,7 @@ for (const node of document.head.childNodes) {
     }
   }
 }
+let cachedTranslatorSettings = null;
 
 class PNLTranslatorElement extends HTMLElement {
   constructor() {
@@ -32,7 +33,7 @@ class PNLTranslatorElement extends HTMLElement {
     // Internal state
     this._isVisible = false;
     this._stylesInjected = false;
-    this._settings = {};
+    this._settings = cachedTranslatorSettings || {};
   }
 
   disconnectedCallback() {
@@ -56,6 +57,7 @@ class PNLTranslatorElement extends HTMLElement {
 
     const handleSaveSettings = async (update) => {
       this._settings = { ...this._settings, ...update };
+      cachedTranslatorSettings = this._settings;
       try {
         await utils.send("save setting", {
           key: "translatorSettings",
@@ -103,7 +105,7 @@ class PNLTranslatorElement extends HTMLElement {
       this._isVisible = true;
       this._currentText = text;
       this._currentLang = lang;
-      this._settings = settings;
+      this._settings = { ...settings, ...cachedTranslatorSettings };
 
       updateTranslator();
 
