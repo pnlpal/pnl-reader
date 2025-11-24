@@ -298,6 +298,7 @@ if (env.NODE_ENV === "development") {
     copyOnChange({
       sourceFiles: [
         path.resolve("src/background/tts-speak.js"),
+        path.resolve("src/background/translate.js"),
         path.resolve("src/background/pnl-cloud.js"),
       ],
       destDir: path.resolve("../dictionariez/src/background"),

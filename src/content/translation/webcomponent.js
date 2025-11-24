@@ -153,7 +153,7 @@ class PNLTranslatorElement extends HTMLElement {
 function adjustTranslatorPosition(translator, selectionRect) {
   let translatorX = selectionRect.x + window.scrollX;
   let translatorY =
-    selectionRect.y + selectionRect.height + window.scrollY + 40;
+    selectionRect.y + selectionRect.height + window.scrollY + 50;
   let translatorRight;
   // Ensure translator stays within viewport bounds
   const viewportWidth = window.innerWidth;
@@ -175,7 +175,7 @@ function adjustTranslatorPosition(translator, selectionRect) {
         };
         top: ${translatorY}px;
         width: ${selectionRect.width}px;
-        min-width: fit-content;
+        min-width: min-content;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         z-index: 99999999;
