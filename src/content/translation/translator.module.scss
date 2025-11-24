@@ -16,6 +16,8 @@
     position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+    visibility: visible !important; // override some website(reddit) styles that hide it such as reddit
+
     @media (max-width: 768px) {
       padding: 0.2em 6px;
     }
