@@ -1,5 +1,6 @@
 import { render, h } from "preact";
 import htm from "htm";
+import utils from "utils";
 import Translator from "./translatorPanel.js";
 import picoStyles from "@picocss/pico/scss/pico.scss?inline";
 import "@webcomponents/custom-elements";
@@ -31,6 +32,7 @@ class PNLTranslatorElement extends HTMLElement {
     // Internal state
     this._isVisible = false;
     this._stylesInjected = false;
+    this._settings = {};
   }
 
   disconnectedCallback() {
@@ -52,15 +54,15 @@ class PNLTranslatorElement extends HTMLElement {
       this.shadow.appendChild(styleElement);
     };
 
-    const handleSaveSettings = (update) => {
+    const handleSaveSettings = async (update) => {
       this._settings = { ...this._settings, ...update };
       try {
-        localStorage.setItem(
-          "pnl-translator-settings",
-          JSON.stringify(this._settings)
-        );
+        await utils.send("save setting", {
+          key: "translatorSettings",
+          value: JSON.stringify(this._settings),
+        });
       } catch (e) {
-        console.warn("Failed to save translator settings");
+        console.warn("Failed to save translator settings", e);
       }
 
       // Force a re-render by calling show again with updated settings
@@ -77,15 +79,6 @@ class PNLTranslatorElement extends HTMLElement {
       );
     };
 
-    const loadSettings = () => {
-      try {
-        const stored = localStorage.getItem("pnl-translator-settings");
-        return stored ? JSON.parse(stored) : {};
-      } catch (e) {
-        return {};
-      }
-    };
-
     const updateTranslator = () => {
       const translatorElement = html`
         <${Translator}
@@ -94,7 +87,6 @@ class PNLTranslatorElement extends HTMLElement {
           settings=${this._settings}
           saveSettings=${handleSaveSettings}
           onClose=${hide}
-          ...${this._currentOptions}
         />
       `;
 
@@ -102,7 +94,7 @@ class PNLTranslatorElement extends HTMLElement {
     };
 
     // Show the translator with text and language
-    const show = (text, lang = "en", options = {}) => {
+    const show = (text, lang = "en", settings = {}) => {
       if (!text || !text.trim()) {
         console.warn("No text provided to Translator");
         return;
@@ -111,7 +103,7 @@ class PNLTranslatorElement extends HTMLElement {
       this._isVisible = true;
       this._currentText = text;
       this._currentLang = lang;
-      this._currentOptions = options;
+      this._settings = settings;
 
       updateTranslator();
 
@@ -126,7 +118,7 @@ class PNLTranslatorElement extends HTMLElement {
       // Dispatch show event
       this.dispatchEvent(
         new CustomEvent("show", {
-          detail: { text, lang, options },
+          detail: { text, lang, settings },
           bubbles: true,
         })
       );
@@ -148,9 +140,6 @@ class PNLTranslatorElement extends HTMLElement {
       );
     };
 
-    if (!this._settings) {
-      this._settings = loadSettings();
-    }
     if (!this._stylesInjected) {
       injectStyles();
       this._stylesInjected = true;
@@ -214,10 +203,10 @@ window.addEventListener("message", (event) => {
     return;
   }
 
-  const { command, text, lang, selectionRect } = event.data;
+  const { command, text, lang, selectionRect, translatorSettings } = event.data;
   if (text && command === "pnl-translate") {
     const translator = window.createTranslator();
-    translator.show(text, lang);
+    translator.show(text, lang, translatorSettings);
     if (selectionRect) {
       adjustTranslatorPosition(translator, selectionRect);
     }
