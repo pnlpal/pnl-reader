@@ -41,6 +41,7 @@ const getLanguageName = (code) => {
 const Translator = ({
   text,
   lang,
+  speakFn,
   settings,
   saveSettings,
   onTranslationComplete,
@@ -124,6 +125,17 @@ const Translator = ({
     },
     [saveSettings]
   );
+
+  const handleSpeak = (text, lang) => {
+    if (speakFn && text) {
+      speakFn(null, text, lang);
+    } else {
+      window.postMessage(
+        { command: "pnl-tts-play", text, lang },
+        window.location.origin
+      );
+    }
+  };
 
   const copyTranslation = async () => {
     if (!translatedText) return;
@@ -259,9 +271,9 @@ const Translator = ({
           <footer class="${styles.translatorFooter}">
             <button
               type="button"
-              class="pnl-reader-paragraph-speaker"
               data-tooltip="Read translation"
               data-placement="top"
+              onClick=${() => handleSpeak(translatedText, targetLang)}
             >
               🔊
             </button>

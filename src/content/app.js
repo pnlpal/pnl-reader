@@ -173,24 +173,26 @@ export default function ReaderApp({
     clearHighlights();
   }
 
-  async function readSelectionOrParagraph(node, text = "") {
-    if (!text) text = node.textContent.trim();
+  async function readSelectionOrParagraph(node = null, text = "", lang = "") {
+    if (!text) text = node?.textContent.trim();
     if (utils.isSentence(text) || utils.isValidWordOrPhrase(text)) {
-      const translatedLang = node.getAttribute?.("data-tts-lang");
-      let lang = translatedLang;
       if (!lang) {
-        lang = (await detectLanguage(text, node)) || ttsLang || "";
+        const translatedLang = node?.getAttribute?.("data-tts-lang");
+        lang = translatedLang;
+        if (!lang) {
+          lang = (await detectLanguage(text, node)) || ttsLang || "";
+        }
+
+        if (!lang) {
+          console.warn("Could not detect language for text:", text);
+          return;
+        }
+        if (!translatedLang) {
+          saveSettings({ ttsLang: lang });
+        }
       }
 
-      if (!lang) {
-        console.warn("Could not detect language for text:", text);
-        return;
-      }
       setTtsLang(lang);
-      if (!translatedLang) {
-        saveSettings({ ttsLang: lang });
-      }
-
       setTtsStartTimestamp(Date.now());
       setTtsText(text);
       setTtsNextParagraphText("");
@@ -383,6 +385,7 @@ export default function ReaderApp({
         <${TranslatorPanel}
           text=${text}
           lang=${lang}
+          speakFn=${readSelectionOrParagraph}
           settings=${settingsRef.current}
           saveSettings=${saveSettings}
           onClose=${() => {
