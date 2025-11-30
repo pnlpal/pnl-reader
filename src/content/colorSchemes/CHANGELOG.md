@@ -1,3 +1,8 @@
+# v2.6.1 Nov 30, 2025
+- **Improved** mobile responsiveness and transition effects.
+- **Fixed** a visibility issue on Reddit.
+- **Added** an uninstall survey to gather user feedback.
+
 # v2.6.0 Nov 15, 2025
 - Introduced two experimental, realistic voices (male and female). Note: These voices are slower and may be improved in future updates.
 - Added a 0.8x playback speed option for finer control when slowing down audio. 
