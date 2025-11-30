@@ -139,3 +139,5 @@ chrome.runtime.onMessage.addListener(function (...args) {
 })();
 
 setupPdfReader();
+
+chrome.runtime.setUninstallURL("https://forms.gle/tjbgdmaZqbjbPELm7");
