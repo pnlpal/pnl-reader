@@ -34,11 +34,40 @@ class PNLTranslatorElement extends HTMLElement {
     this._isVisible = false;
     this._stylesInjected = false;
     this._settings = cachedTranslatorSettings || {};
+    this._escapeHandler = null;
   }
 
   disconnectedCallback() {
     if (this.renderTarget) {
       render(null, this.renderTarget);
+    }
+    // Remove escape key listener
+    this._removeEscapeListener();
+  }
+
+  _addEscapeListener() {
+    if (!this._escapeHandler) {
+      this._escapeHandler = (event) => {
+        if (event.key === "Escape" && this._isVisible) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.hide();
+        }
+      };
+
+      // Add to document to capture regardless of focus
+      document.addEventListener("keydown", this._escapeHandler, true); // Use capture phase
+
+      // Also add to window as backup
+      window.addEventListener("keydown", this._escapeHandler, true);
+    }
+  }
+
+  _removeEscapeListener() {
+    if (this._escapeHandler) {
+      document.removeEventListener("keydown", this._escapeHandler, true);
+      window.removeEventListener("keydown", this._escapeHandler, true);
+      this._escapeHandler = null;
     }
   }
 
@@ -110,6 +139,25 @@ class PNLTranslatorElement extends HTMLElement {
       render(translatorElement, this.renderTarget);
     };
 
+    const hide = () => {
+      this._isVisible = false;
+      render(null, this.renderTarget);
+
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
+
+      // Remove escape key listener
+      this._removeEscapeListener();
+
+      // Dispatch hide event
+      this.dispatchEvent(
+        new CustomEvent("hide", {
+          bubbles: true,
+        })
+      );
+    };
+
     // Show the translator with text and language
     const show = (text, lang = "en", settings = {}) => {
       if (!text || !text.trim()) {
@@ -132,26 +180,13 @@ class PNLTranslatorElement extends HTMLElement {
         document.body.appendChild(this);
       }
 
+      // Add escape key listener
+      this._addEscapeListener();
+
       // Dispatch show event
       this.dispatchEvent(
         new CustomEvent("show", {
           detail: { text, lang, settings },
-          bubbles: true,
-        })
-      );
-    };
-
-    const hide = () => {
-      this._isVisible = false;
-      render(null, this.renderTarget);
-
-      if (this.parentNode) {
-        this.parentNode.removeChild(this);
-      }
-
-      // Dispatch hide event
-      this.dispatchEvent(
-        new CustomEvent("hide", {
           bubbles: true,
         })
       );
