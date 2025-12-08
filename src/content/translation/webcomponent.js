@@ -42,33 +42,7 @@ class PNLTranslatorElement extends HTMLElement {
       render(null, this.renderTarget);
     }
     // Remove escape key listener
-    this._removeEscapeListener();
-  }
-
-  _addEscapeListener() {
-    if (!this._escapeHandler) {
-      this._escapeHandler = (event) => {
-        if (event.key === "Escape" && this._isVisible) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.hide();
-        }
-      };
-
-      // Add to document to capture regardless of focus
-      document.addEventListener("keydown", this._escapeHandler, true); // Use capture phase
-
-      // Also add to window as backup
-      window.addEventListener("keydown", this._escapeHandler, true);
-    }
-  }
-
-  _removeEscapeListener() {
-    if (this._escapeHandler) {
-      document.removeEventListener("keydown", this._escapeHandler, true);
-      window.removeEventListener("keydown", this._escapeHandler, true);
-      this._escapeHandler = null;
-    }
+    this.removeEscapeListener();
   }
 
   connectedCallback() {
@@ -138,6 +112,31 @@ class PNLTranslatorElement extends HTMLElement {
 
       render(translatorElement, this.renderTarget);
     };
+    const addEscapeListener = () => {
+      if (!this._escapeHandler) {
+        this._escapeHandler = (event) => {
+          if (event.key === "Escape" && this._isVisible) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.hide();
+          }
+        };
+
+        // Add to document to capture regardless of focus
+        document.addEventListener("keydown", this._escapeHandler, true); // Use capture phase
+
+        // Also add to window as backup
+        window.addEventListener("keydown", this._escapeHandler, true);
+      }
+    };
+
+    const removeEscapeListener = () => {
+      if (this._escapeHandler) {
+        document.removeEventListener("keydown", this._escapeHandler, true);
+        window.removeEventListener("keydown", this._escapeHandler, true);
+        this._escapeHandler = null;
+      }
+    };
 
     const hide = () => {
       this._isVisible = false;
@@ -148,7 +147,7 @@ class PNLTranslatorElement extends HTMLElement {
       }
 
       // Remove escape key listener
-      this._removeEscapeListener();
+      removeEscapeListener();
 
       // Dispatch hide event
       this.dispatchEvent(
@@ -181,7 +180,7 @@ class PNLTranslatorElement extends HTMLElement {
       }
 
       // Add escape key listener
-      this._addEscapeListener();
+      addEscapeListener();
 
       // Dispatch show event
       this.dispatchEvent(
@@ -198,6 +197,7 @@ class PNLTranslatorElement extends HTMLElement {
     }
     this.show = show;
     this.hide = hide;
+    this.removeEscapeListener = removeEscapeListener;
     console.log("PNL Translator Web Component connected");
   }
 }
