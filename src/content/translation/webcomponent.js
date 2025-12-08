@@ -195,7 +195,7 @@ function adjustTranslatorPosition(translator, selectionRect) {
         min-width: min-content;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        z-index: 99999999;
+        z-index: 2147483647;
         `;
 }
 
