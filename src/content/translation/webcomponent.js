@@ -45,6 +45,21 @@ class PNLTranslatorElement extends HTMLElement {
   connectedCallback() {
     // Inject styles into shadow DOM
     const injectStyles = () => {
+      // Set base font-size for rem calculations in shadow DOM
+      const baseStyleElement = document.createElement("style");
+      baseStyleElement.textContent = `
+        :host {
+          --pico-font-size: 18px;
+          font-size: 18px !important;
+          line-height: 1.5 !important;
+        }
+        
+        * {
+          box-sizing: border-box;
+        }
+      `;
+      this.shadow.appendChild(baseStyleElement);
+
       // Inject Pico CSS
       const picoStyleElement = document.createElement("style");
       picoStyleElement.textContent = picoStyles;
