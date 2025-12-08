@@ -192,7 +192,7 @@ function adjustTranslatorPosition(translator, selectionRect) {
         };
         top: ${translatorY}px;
         width: ${selectionRect.width}px;
-        min-width: min-content;
+        min-width: 460px;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         z-index: 2147483647;
