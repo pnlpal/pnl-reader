@@ -264,7 +264,7 @@ export default {
 
   isSentence(str = "", minLength = 4) {
     if (this.hasChinese(str) || this.hasJapanese(str) || this.hasKorean(str)) {
-      return str.length >= minLength;
+      return str.length > minLength;
     } else {
       const simpleStopWords = [
         "a",
