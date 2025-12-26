@@ -111,4 +111,27 @@ export default {
     }
     return response.json();
   },
+
+  async lookupInAI({ word, sentence, detectedLangInContext }) {
+    const response = await fetch(pnlBase + "/api/lookup-in-ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ word, sentence, detectedLangInContext }),
+      credentials: "include",
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      const errorMessage =
+        data?.error ||
+        data?.status?.message ||
+        response.statusText ||
+        "Unknown error";
+      console.error(response.status, "AI lookup failed:", errorMessage);
+      data.statusCode = response.status;
+      throw new ErrorResponse(errorMessage, data);
+    }
+    return response.json();
+  },
 };
