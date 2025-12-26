@@ -406,13 +406,13 @@ const TTSPlayer = ({
         <!-- 5. Volume button with hover vertical bar -->
         <div
           class="${styles.ttsVolumeContainer}"
-          onMouseEnter=${() => setShowVolume(true)}
           onMouseLeave=${() => setShowVolume(false)}
         >
           <button
             class="${styles.ttsPlayerBtn} ${styles.ttsVolumeBtn}"
             title="Volume"
             onClick=${handleVolumeBtnClick}
+            onMouseEnter=${() => setShowVolume(true)}
             aria-pressed=${volume === 0}
           >
             ${volume == 0 ? MutedIcon() : VolumeIcon()}
