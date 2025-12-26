@@ -1,3 +1,8 @@
+# v2.6.3 Dec 26, 2025 
+- **IMPROVED**: Optimized TTS player size for MacBook Air displays.
+- **IMPROVED**: Volume slider now appears only on hover for a cleaner interface.
+- **IMPROVED**: Reduced dropdown settings list size for MacBook Air and mobile view.
+
 # v2.6.1 Nov 30, 2025
 - **Improved** mobile responsiveness and transition effects.
 - **Fixed** a visibility issue on Reddit.
