@@ -31,12 +31,15 @@ class PNLTTSPlayerElement extends HTMLElement {
     // Internal state
     this._isVisible = false;
     this._stylesInjected = false;
+    this._escapeHandler = null;
   }
 
   disconnectedCallback() {
     if (this.renderTarget) {
       render(null, this.renderTarget);
     }
+    // Remove escape key listener
+    this.removeEscapeListener();
   }
 
   connectedCallback() {
@@ -101,6 +104,32 @@ class PNLTTSPlayerElement extends HTMLElement {
       render(playerElement, this.renderTarget);
     };
 
+    const addEscapeListener = () => {
+      if (!this._escapeHandler) {
+        this._escapeHandler = (event) => {
+          if (event.key === "Escape" && this._isVisible) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.hide();
+          }
+        };
+
+        // Add to document to capture regardless of focus
+        document.addEventListener("keydown", this._escapeHandler, true); // Use capture phase
+
+        // Also add to window as backup
+        window.addEventListener("keydown", this._escapeHandler, true);
+      }
+    };
+
+    const removeEscapeListener = () => {
+      if (this._escapeHandler) {
+        document.removeEventListener("keydown", this._escapeHandler, true);
+        window.removeEventListener("keydown", this._escapeHandler, true);
+        this._escapeHandler = null;
+      }
+    };
+
     // Show the player with text and language
     const show = (text, lang = "en", options = {}) => {
       if (!text || !text.trim()) {
@@ -123,6 +152,9 @@ class PNLTTSPlayerElement extends HTMLElement {
         document.body.appendChild(this);
       }
 
+      // Add escape key listener
+      addEscapeListener();
+
       // Dispatch show event
       this.dispatchEvent(
         new CustomEvent("show", {
@@ -139,6 +171,9 @@ class PNLTTSPlayerElement extends HTMLElement {
       if (this.parentNode) {
         this.parentNode.removeChild(this);
       }
+
+      // Remove escape key listener
+      removeEscapeListener();
 
       // Dispatch hide event
       this.dispatchEvent(
@@ -157,6 +192,7 @@ class PNLTTSPlayerElement extends HTMLElement {
     }
     this.show = show;
     this.hide = hide;
+    this.removeEscapeListener = removeEscapeListener;
     console.log("PNL TTS Player Web Component connected");
   }
 }
