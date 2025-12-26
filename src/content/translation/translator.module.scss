@@ -7,6 +7,17 @@
     }
   }
 
+  [data-tooltip] {
+    // copied from inject.scss
+    // fix tooltip visibility issue when cursor has left the element
+    &:focus:not(:hover) {
+      &::before,
+      &::after {
+        opacity: 0 !important;
+      }
+    }
+  }
+
   article.translator-panel {
     max-width: none; // Allow full width within paragraph
     margin-bottom: 0;
