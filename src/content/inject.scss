@@ -152,15 +152,24 @@
                 display: flex;
                 align-items: center;
                 padding: 20px 0;
+                @media (max-width: 1280px) {
+                  padding: 10px 0;
+                }
                 > span {
                   margin: 0 10px;
-                  @media (max-width: 640px) {
+                  @media (max-width: 1280px) {
                     margin: 0 8px 0 0;
                   }
                 }
                 .pnl-icon {
                   font-size: 32px;
+                  @media (max-width: 1280px) {
+                    font-size: 24px;
+                  }
                   opacity: 0.7;
+                }
+                select {
+                  padding: 2px 12px;
                 }
                 #fontType,
                 #lineWidth,
