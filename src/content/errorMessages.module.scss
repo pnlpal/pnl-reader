@@ -4,8 +4,9 @@
   $playBarBottomSpacing: 2em;
   $playBarPaddingVertical: 1.2em;
 
+  $playBarBottomSpacingOnMacbookAir: 1em;
   $playBarBottomSpacingOnMobile: 0px;
-  $playBarPaddingVerticalOnMobile: 0.7rem;
+  $playBarPaddingVerticalOnMobile: 0.7em;
 
   .pnl-reader-error-banner {
     color: var(--pico-del-color);
@@ -36,21 +37,25 @@
       max-width: 80vw;
       z-index: 2;
 
-      @media (max-width: 768px) {
+      @media (max-width: 1280px) {
         width: max-content;
         max-width: 98vw;
         font-size: 0.97em;
         padding: 0.5em 1.2em;
         border-radius: 6px;
         bottom: calc(
-          48px + $playBarBottomSpacingOnMobile + $playBarPaddingVerticalOnMobile *
-            2 + 0.5em
+          48px + $playBarBottomSpacingOnMacbookAir +
+            $playBarPaddingVerticalOnMobile * 2 + 0.5em
         );
       }
       @media (max-width: 576px) {
         width: max-content;
         max-width: 98vw;
         padding: 0.5em 0.5em;
+        bottom: calc(
+          48px + $playBarBottomSpacingOnMobile + $playBarPaddingVerticalOnMobile *
+            2 + 0.5em
+        );
       }
     }
   }

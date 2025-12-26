@@ -9,6 +9,7 @@
   $playBarBottomSpacing: 2em;
   $playBarPaddingVertical: 1.2em;
 
+  $playBarBottomSpacingOnMacbookAir: 1em;
   $playBarBottomSpacingOnMobile: 0px;
   $playBarPaddingVerticalOnMobile: 0.7em;
 
@@ -37,16 +38,17 @@
     z-index: 2147483647;
     gap: 1.2em;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1280px) {
       font-size: 1em;
       padding: $playBarPaddingVerticalOnMobile 1.5em;
       gap: 0.7em;
-      bottom: $playBarBottomSpacingOnMobile;
+      bottom: $playBarBottomSpacingOnMacbookAir;
     }
 
     @media (max-width: 576px) {
       width: 100%;
       padding: $playBarPaddingVerticalOnMobile 0.5em;
+      bottom: $playBarBottomSpacingOnMobile;
     }
 
     .tts-player-btn {
@@ -87,7 +89,7 @@
         }
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 1280px) {
         margin: 0;
       }
     }
