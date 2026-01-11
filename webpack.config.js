@@ -304,6 +304,12 @@ if (env.NODE_ENV === "development") {
       destDir: path.resolve("../dictionariez/src/background"),
       watchMode: env.NODE_ENV === "development",
     });
+
+    copyOnChange({
+      sourceFiles: [path.resolve("src/utils.js")],
+      destDir: path.resolve("../cats-love-youtube/captionz-ext/src"),
+      watchMode: env.NODE_ENV === "development",
+    });
   }
   if (env.NODE_ENV === "development") {
     setupCopyWatchs();
