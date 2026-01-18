@@ -6,10 +6,10 @@ import styles from "./inject.scss";
 
 const html = htm.bind(h);
 const readerModeEnabledDate = document.documentElement.getAttribute(
-  "data-pnl-reader-mode-date"
+  "data-pnl-reader-mode-date",
 );
 const readerModeExitDate = localStorage.getItem(
-  "data-pnl-reader-mode-exit-date"
+  "data-pnl-reader-mode-exit-date",
 );
 const isReadMode = !!readerModeEnabledDate;
 let globalSettings;
@@ -47,13 +47,13 @@ function getPageData() {
           el.textContent.includes("Previous") ||
           el.textContent.match(/Prev[^\w]/) || // Such as lightnovelworld.co
           el.textContent.includes("上一章") ||
-          el.textContent.includes("上一页")
+          el.textContent.includes("上一页"),
       )?.href,
       nextPageLink: Array.from(document.querySelectorAll("a")).find(
         (el) =>
           el.textContent.includes("Next") ||
           el.textContent.includes("下一章") ||
-          el.textContent.includes("下一页")
+          el.textContent.includes("下一页"),
       )?.href,
     };
   };
@@ -92,50 +92,120 @@ function cleanHtmlHead() {
   }
 }
 
-function applyCustomStyles() {
-  const customStyles = localStorage.getItem("PNLReader-custom-styles");
-  if (customStyles) {
+// Helper to get site customization matching current URL
+function getSiteCustomization(globalSettings) {
+  const configs = globalSettings.siteCustomizations || [];
+  return configs.find((config) => {
+    try {
+      if (new RegExp(config.pattern).test(location.href)) return true;
+    } catch (e) {
+      // Ignore invalid regex
+    }
+    return location.href.includes(config.pattern);
+  });
+}
+
+function applyCustomStyles(siteCustomization) {
+  // 1. Check for site-specific CSS
+  if (siteCustomization && siteCustomization.css) {
     const styleElement = document.createElement("style");
-    styleElement.textContent = customStyles;
+    styleElement.textContent = siteCustomization.css;
+    document.head.appendChild(styleElement);
+  }
+
+  // 2. Check for global custom styles (legacy or override)
+  const globalCustomStyles = localStorage.getItem("PNLReader-custom-styles");
+  if (globalCustomStyles) {
+    const styleElement = document.createElement("style");
+    styleElement.textContent = globalCustomStyles;
     document.head.appendChild(styleElement);
   }
 }
 
-function getCustomArticle() {
+function removeUnwantedElements(element, selectors) {
+  if (!selectors || !Array.isArray(selectors)) return;
+  selectors.forEach((selector) => {
+    try {
+      const unwanted = element.querySelectorAll(selector);
+      unwanted.forEach((el) => el.remove());
+    } catch (e) {
+      console.warn("Invalid selector:", selector, e);
+    }
+  });
+}
+
+function getArticleContent(documentClone, siteCustomization) {
+  // 1. Try finding content using formatted config
+  if (siteCustomization) {
+    // If selector is provided, try to find it
+    if (siteCustomization.selector) {
+      const customArticle = documentClone.querySelector(
+        siteCustomization.selector,
+      );
+      if (customArticle) {
+        // Remove unwanted elements from the FOUND article
+        if (siteCustomization.exclude) {
+          removeUnwantedElements(customArticle, siteCustomization.exclude);
+        }
+        return {
+          content: customArticle.innerHTML,
+          title: documentClone.title,
+          siteName: location.hostname,
+        };
+      }
+    }
+
+    // If no selector provided, or selector failed, but we have exclude rules:
+    // Apply exclude rules to the documentClone BEFORE passing to Readability?
+    // OR we can rely on Readability.
+    // Let's apply excludes to body if no selector was successfully used.
+    if (siteCustomization.exclude) {
+      removeUnwantedElements(documentClone.body, siteCustomization.exclude);
+    }
+  }
+
+  // 2. Legacy fallback
   const customArticleContentSelector = localStorage.getItem(
-    "PNLReader-article-content-selector"
+    "PNLReader-article-content-selector",
   );
   if (customArticleContentSelector) {
-    const customArticle = document.querySelector(customArticleContentSelector);
+    const customArticle = documentClone.querySelector(
+      customArticleContentSelector,
+    );
     if (customArticle) {
       return {
         content: customArticle.innerHTML,
+        title: documentClone.title,
       };
     }
   }
+
+  // 3. Readability fallback
+  return new Readability(documentClone).parse();
 }
 
 // Function to enable read mode
 async function enableReadMode() {
+  if (!globalSettings) {
+    globalSettings = await getGlobalSettings();
+    // console.log("Got global settings", globalSettings);
+  }
   const documentClone = document.cloneNode(true);
-  const article = getCustomArticle() || new Readability(documentClone).parse();
+  const siteCustomization = getSiteCustomization(globalSettings);
+
+  const article = getArticleContent(documentClone, siteCustomization);
 
   if (article) {
     chrome.runtime.sendMessage({ type: "reader mode enabled" });
     const pageData = getPageData();
     document.documentElement.setAttribute(
       "data-pnl-reader-mode-date",
-      Date.now()
+      Date.now(),
     );
-
-    if (!globalSettings) {
-      globalSettings = await getGlobalSettings();
-      // console.log("Got global settings", globalSettings);
-    }
 
     cleanHtmlHead();
     document.body.innerHTML = "";
-    applyCustomStyles();
+    applyCustomStyles(siteCustomization);
 
     function injectStyles() {
       const style = document.createElement("style");
@@ -152,7 +222,7 @@ async function enableReadMode() {
         globalSettings=${globalSettings}
         +
       />`,
-      document.body
+      document.body,
     );
     makePageVisible();
   } else {
