@@ -2,6 +2,7 @@ import message from "./message.js";
 import "./tts-speak.js";
 import "./translate.js";
 import { parsePDFURL, setupPdfReader } from "./pdf-reader.js";
+import defaultSiteCustomizations from "./defaultSiteCustomizations.json";
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if ([chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason)) {
@@ -61,7 +62,13 @@ chrome.runtime.onMessage.addListener(function (...args) {
     // console.log("Get settings");
     return new Promise(async (resolve) => {
       chrome.storage.local.get("globalPNLReaderSettings", (data) => {
-        resolve(data?.globalPNLReaderSettings);
+        const globalSettings = data?.globalPNLReaderSettings || {};
+        // Merge default site customizations
+        globalSettings.siteCustomizations = [
+          ...defaultSiteCustomizations,
+          ...(globalSettings.siteCustomizations || []),
+        ];
+        resolve(globalSettings);
       });
     });
   });

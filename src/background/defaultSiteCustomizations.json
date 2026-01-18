@@ -1,0 +1,10 @@
+[
+  {
+    "match": "https://www.wattpad.com/\\d+.*",
+    "articleSelector": ".page pre",
+    "excludes": [".component-wrapper"],
+    "navigation": {
+      "next": "#story-part-navigation a"
+    }
+  }
+]

@@ -19,7 +19,7 @@ function makePageVisible() {
   document.body.style.setProperty("visibility", "visible", "important");
 }
 
-function getPageData() {
+function getPageData(siteCustomization) {
   const scribblehub = () => {
     if (location.host === "www.scribblehub.com") {
       return {
@@ -40,6 +40,23 @@ function getPageData() {
     }
   };
 
+  const getFromCustomization = () => {
+    if (
+      siteCustomization &&
+      siteCustomization.navigation &&
+      typeof siteCustomization.navigation === "object"
+    ) {
+      const previousSelector = siteCustomization.navigation.previous;
+      const nextSelector = siteCustomization.navigation.next;
+      return {
+        previousPageLink:
+          previousSelector && document.querySelector(previousSelector)?.href,
+        nextPageLink:
+          nextSelector && document.querySelector(nextSelector)?.href,
+      };
+    }
+  };
+
   const generalTry = () => {
     return {
       previousPageLink: Array.from(document.querySelectorAll("a")).find(
@@ -57,7 +74,7 @@ function getPageData() {
       )?.href,
     };
   };
-  return scribblehub() || royalroad() || generalTry();
+  return getFromCustomization() || scribblehub() || royalroad() || generalTry();
 }
 
 async function getGlobalSettings() {
@@ -97,11 +114,11 @@ function getSiteCustomization(globalSettings) {
   const configs = globalSettings.siteCustomizations || [];
   return configs.find((config) => {
     try {
-      if (new RegExp(config.pattern).test(location.href)) return true;
+      if (new RegExp(config.match).test(location.href)) return true;
     } catch (e) {
       // Ignore invalid regex
     }
-    return location.href.includes(config.pattern);
+    return location.href.includes(config.match);
   });
 }
 
@@ -138,14 +155,14 @@ function getArticleContent(documentClone, siteCustomization) {
   // 1. Try finding content using formatted config
   if (siteCustomization) {
     // If selector is provided, try to find it
-    if (siteCustomization.selector) {
+    if (siteCustomization.articleSelector) {
       const customArticle = documentClone.querySelector(
-        siteCustomization.selector,
+        siteCustomization.articleSelector,
       );
       if (customArticle) {
         // Remove unwanted elements from the FOUND article
-        if (siteCustomization.exclude) {
-          removeUnwantedElements(customArticle, siteCustomization.exclude);
+        if (siteCustomization.excludes) {
+          removeUnwantedElements(customArticle, siteCustomization.excludes);
         }
         return {
           content: customArticle.innerHTML,
@@ -159,8 +176,8 @@ function getArticleContent(documentClone, siteCustomization) {
     // Apply exclude rules to the documentClone BEFORE passing to Readability?
     // OR we can rely on Readability.
     // Let's apply excludes to body if no selector was successfully used.
-    if (siteCustomization.exclude) {
-      removeUnwantedElements(documentClone.body, siteCustomization.exclude);
+    if (siteCustomization.excludes) {
+      removeUnwantedElements(documentClone.body, siteCustomization.excludes);
     }
   }
 
@@ -197,7 +214,7 @@ async function enableReadMode() {
 
   if (article) {
     chrome.runtime.sendMessage({ type: "reader mode enabled" });
-    const pageData = getPageData();
+    const pageData = getPageData(siteCustomization);
     document.documentElement.setAttribute(
       "data-pnl-reader-mode-date",
       Date.now(),
