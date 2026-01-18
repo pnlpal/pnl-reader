@@ -95,7 +95,7 @@ chrome.runtime.onMessage.addListener(function (...args) {
     const previousTabInfo = enabledTabs.find((t) => t.id === tabId);
 
     // check if the host is changed, but it only works on Firefox as only firefox gives the url in tab.
-    if (tab?.url) {
+    if (tab?.url && previousTabInfo) {
       const previousHost = new URL(previousTabInfo.url).host;
       const currentHost = new URL(tab.url).host;
       if (previousHost !== currentHost) {

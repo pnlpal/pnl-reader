@@ -201,6 +201,17 @@ function getArticleContent(documentClone, siteCustomization) {
   return new Readability(documentClone).parse();
 }
 
+function preventPageReload() {
+  window.stop();
+  const script = document.createElement("script");
+  script.textContent = `
+    window.location.reload = function() { console.log("PNLReader blocked reload"); };
+    window.location.replace = function() { console.log("PNLReader blocked replace"); };
+    window.location.assign = function() { console.log("PNLReader blocked assign"); };
+  `;
+  (document.head || document.documentElement).appendChild(script);
+}
+
 // Function to enable read mode
 async function enableReadMode() {
   if (!globalSettings) {
@@ -213,6 +224,7 @@ async function enableReadMode() {
   const article = getArticleContent(documentClone, siteCustomization);
 
   if (article) {
+    preventPageReload();
     chrome.runtime.sendMessage({ type: "reader mode enabled" });
     const pageData = getPageData(siteCustomization);
     document.documentElement.setAttribute(
