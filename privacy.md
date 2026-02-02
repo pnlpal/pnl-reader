@@ -2,7 +2,7 @@
 
 ## Our Commitment to Privacy
 
-We deeply respect your privacy and are committed to protecting your personal information. This extension is designed with privacy-first principles, operating locally on your device and only transmitting data when you explicitly request premium services.
+We deeply respect your privacy. **PNL Reader does not collect any data to any server by default and does not track any user behavior.** This extension is designed with privacy-first principles, operating entirely locally on your device. Data is only transmitted when you explicitly request premium services (like advanced translation or cloud TTS).
 
 ## Data Collection and Storage
 
@@ -17,12 +17,14 @@ We deeply respect your privacy and are committed to protecting your personal inf
 **User Accounts:** Premium services require user account registration for access control and service delivery. We use cookies and local storage to maintain your login session and preferences.
 
 **What We Send:**
+
 - Selected text content for processing
 - Language preferences for translation/speech synthesis
 - Account authentication information
 - No browsing history, personal files, or unrelated device data
 
 **Data Handling:**
+
 - Text content is processed in real-time and not permanently stored
 - Account information is securely stored and used only for service provision
 - Processing occurs only for the duration of the service request
