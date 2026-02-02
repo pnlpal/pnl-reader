@@ -1,25 +1,37 @@
-# v2.6.3 Dec 26, 2025 
+# v2.7.0 Feb 02, 2026
+
+- Improved parser and fixed navigation and theme handling for Wattpad (wattpad.com).
+- Fixed navigation on wuxiaworld.com.
+- Added a new "Nordic" theme.
+- Added a Share page.
+
+# v2.6.3 Dec 26, 2025
+
 - **IMPROVED**: Optimized TTS player size for MacBook Air displays.
 - **IMPROVED**: Volume slider now appears only on hover for a cleaner interface.
 - **IMPROVED**: Reduced dropdown settings list size for MacBook Air and mobile view.
 
 # v2.6.1 Nov 30, 2025
+
 - **Improved** mobile responsiveness and transition effects.
 - **Fixed** a visibility issue on Reddit.
 - **Added** an uninstall survey to gather user feedback.
 
 # v2.6.0 Nov 15, 2025
-- Introduced two experimental, realistic voices (male and female). Note: These voices are slower and may be improved in future updates.
-- Added a 0.8x playback speed option for finer control when slowing down audio. 
 
-# v2.5.1 Nov 10, 2025 
+- Introduced two experimental, realistic voices (male and female). Note: These voices are slower and may be improved in future updates.
+- Added a 0.8x playback speed option for finer control when slowing down audio.
+
+# v2.5.1 Nov 10, 2025
+
 - Added a "Go to Global Settings" link in the options dropdown.
 - Removed emojis from text when reading aloud.
 - Fixed tooltip: now hides after clicking the button and moving the cursor out.
 - Reduced PNG sizes for voice characters to decrease extension size.
 - Fixed issue where blockquotes were read twice, especially when containing sub-paragraphs.
 
-# v2.5.0 Nov 05, 2025 
+# v2.5.0 Nov 05, 2025
+
 - **NEW**: Added two new premium voices for enhanced listening experience
   - "Mona" - High-quality female voice with natural intonation
   - "Bob" - Professional male voice with clear pronunciation
@@ -31,8 +43,8 @@
   - Replaced type controls button with a more intuitive settings icon
   - Enhanced visual consistency across all interface elements
 
-
 # v2.4.0 Nov 04, 2025
+
 - **NEW**: Added translation feature - translate any paragraph with a simple click
   - Inline translation panels appear directly under each paragraph
   - Support for 20+ languages with auto-detection
@@ -48,24 +60,29 @@
   - Improved hover states and visual indicators
 
 # v2.3.1 Nov 01, 2025
+
 - Fix when globalSettings is null for new user.
 
 # v2.3.0 Nov 01, 2025
+
 - Added a custom font page, allowing users to add and manage local fonts.
 - Improved responsive UI for the options page on Firefox for Android.
 
 # v2.2.0 Oct 31, 2025
+
 - Added support for Firefox on Android!
 - Improved responsive UI for Android devices.
 - Prevented page flash when auto-enabling reader mode by hiding the unstyled original page.
 - Reader mode no longer auto-enables when the page host changes.
 - Increased player z-index to prevent overlap from Google ads.
 
-# v2.1.1 Oct 27, 2025 
+# v2.1.1 Oct 27, 2025
+
 - Improved responsive design, especially for mobile devices.
 - Fixed a caching issue where large text could trigger a storage quota exceeded error.
 
 # v2.1.0 Oct 26, 2025
+
 - Added automatic page turning for continuous reading, works nicely on websites like Royalroad or scribble.
 - Improved "read whole page" mode: now continues reading even if a paragraph is selected.
 - Added a visual indicator for "read whole page" mode.
@@ -74,28 +91,32 @@
 - Fixed "continue reading" not working when the voice was changed.
 
 # v2.0.0 Oct 23, 2025
+
 - Added an audio player: users can now select any text to have it read aloud.
 - Refined the theme selector: added a color preview icon for each theme.
 - Improved the reading page appearance: enhanced background, border, and shadow for a more paper-like feel.
 - Added support for loading PDFs from arXiv and additional sites.
 
-
 # v1.3.0 May 04, 2025
+
 - Added support for opening PDF files directly in PNL PDF Reader (Chrome-based browsers only).
 - Fixed an issue preventing word lookups using Dictionariez.
 - Introduced support for custom article content selectors and styles stored in local storage.
 
 # v1.2.0 Apr 09, 2025
+
 - Cleared the webpage's head section when the reader is enabled to prevent original styles from interfering.
 - Fixed an issue where exiting reader mode failed if the background script was inactive.
 - Ensured the page always reloads upon exiting reader mode for consistent behavior.
 
-# v1.1.1 Mar 27, 2025 
+# v1.1.1 Mar 27, 2025
+
 - Updated fonts to support extended character sets, including Latin-Ext, Cyrillic, and Vietnamese.
 - Introduced tooltips to provide clarity when selecting font types.
 - Added a print button to facilitate easy printing of content.
 
 # v1.1.0 Mar 23, 2025
+
 - Introduced font type customization for enhanced readability.
 - Added line spacing and line width adjustment options.
 - Enabled justified text alignment for a cleaner look.
@@ -103,8 +124,8 @@
 - Implemented global settings configuration for streamlined customization.
 - Enhanced mobile support for a better user experience.
 
-
 # v1.0.2 Mar 02, 2025
+
 - Ensured reader mode remains active on the same tab even after a refresh.
 - Fixed an issue where the content script message couldn't wake up the service worker, preventing reader mode activation.
 - Added multiple new themes.
