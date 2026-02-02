@@ -29,24 +29,25 @@ var options = {
       __dirname,
       "src",
       "content",
-      "inject-pdf-reader.js"
+      "inject-pdf-reader.js",
     ),
     background: path.join(__dirname, "src", "background", "main.js"),
     "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
     "custom-font": path.join(__dirname, "src", "custom-font", "index.js"),
+    share: path.join(__dirname, "src", "share.js"),
     "tts-player-webcomponent": path.join(
       __dirname,
       "src",
       "content",
       "ttsPlayer",
-      "webcomponent.js"
+      "webcomponent.js",
     ),
     "translator-webcomponent": path.join(
       __dirname,
       "src",
       "content",
       "translation",
-      "webcomponent.js"
+      "webcomponent.js",
     ),
   },
   output: {
@@ -242,6 +243,12 @@ var options = {
       cache: false,
       chunks: ["custom-font"],
     }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "share.html"),
+      filename: "share.html",
+      chunks: ["share"],
+      cache: false,
+    }),
   ],
   infrastructureLogging: {
     level: "info",
@@ -270,7 +277,7 @@ if (env.NODE_ENV === "development") {
       sourceFile: path.join(
         __dirname,
         "build",
-        "tts-player-webcomponent.bundle.js"
+        "tts-player-webcomponent.bundle.js",
       ),
       destDir: path.join(__dirname, "..", "dictionariez", "src", "content"),
       watchMode: env.NODE_ENV === "development",
@@ -279,7 +286,7 @@ if (env.NODE_ENV === "development") {
       sourceFile: path.join(
         __dirname,
         "build",
-        "translator-webcomponent.bundle.js"
+        "translator-webcomponent.bundle.js",
       ),
       destDir: path.join(__dirname, "..", "dictionariez", "src", "content"),
       watchMode: env.NODE_ENV === "development",

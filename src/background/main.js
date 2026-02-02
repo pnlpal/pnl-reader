@@ -9,6 +9,12 @@ chrome.runtime.onInstalled.addListener(function (details) {
     chrome.tabs.create({
       url: chrome.runtime.getURL("options.html"),
     });
+  } else if (
+    [chrome.runtime.OnInstalledReason.UPDATE].includes(details.reason)
+  ) {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("share.html"),
+    });
   }
 });
 

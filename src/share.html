@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          "Space Grotesk",
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: #111;
+        background: linear-gradient(135deg, #fefefe, #eef3ff 40%, #f4f4ff 70%);
+      }
+
+      body.dark-theme {
+        color: #e7e7e7;
+        background: linear-gradient(135deg, #151515, #1f2431 50%, #141a24 90%);
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 48px 24px 96px;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      header.hero {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 48px;
+      }
+
+      header.hero h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        margin: 0;
+      }
+
+      header.hero p {
+        font-size: 1.25rem;
+        line-height: 1.6;
+      }
+
+      .hero-highlight {
+        padding: 12px 16px;
+        border-left: 4px solid #5d5fee;
+        background: rgba(93, 95, 238, 0.08);
+        border-radius: 6px;
+        font-size: 1.25rem;
+      }
+
+      .support-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 24px;
+        margin-bottom: 64px;
+      }
+
+      .support-card {
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .support-card h3 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+
+      .card-icon {
+        font-size: 2rem;
+      }
+
+      .support-card p {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .btn-primary,
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.15s ease;
+      }
+
+      .btn-primary {
+        background: #5d5fee;
+        color: #fff;
+        border: none;
+      }
+
+      .btn-ghost {
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        color: inherit;
+      }
+
+      .btn-primary:hover,
+      .btn-ghost:hover {
+        transform: translateY(-2px);
+      }
+
+      .share-wrapper {
+        padding: 16px 0px;
+      }
+
+      .community {
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        padding-top: 32px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .community-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .community-links a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px dotted currentColor;
+      }
+
+      .donation {
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 600px) {
+        main {
+          padding: 32px 20px 64px;
+        }
+
+        .support-card {
+          padding: 22px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <header class="hero">
+        <h1>
+          Thank you for using <span class="productName"></span>
+          <span id="app-version"></span>
+        </h1>
+        <p style="font-size: 1.15rem; color: #5d5fee; font-weight: 600">
+          <a
+            href="https://pnl.dev/topic/1052/captionz-reintroduced-dual-subtitles-on-youtube-now-with-auto-translate"
+            target="_blank"
+            style="text-decoration: none; color: inherit"
+          >
+            🚀 Captionz Reintroduced: Dual Subtitles on YouTube (Now with
+            Auto‑Translate) &rarr;
+          </a>
+        </p>
+        <p>
+          I am River, the solo dev behind the curtain. I wrangle the code,
+          squash the bugs, and high-five myself when it works. If
+          <span class="productName"></span> helps you learn faster than you
+          forget, please take a second to keep this indie ship afloat.
+        </p>
+        <div class="hero-highlight">
+          Choose an action below to instantly refill my HP and Mana.
+        </div>
+      </header>
+
+      <section class="support-grid">
+        <article class="support-card">
+          <div class="card-icon">⭐</div>
+          <h3>1. Star it on GitHub</h3>
+          <p>
+            Stars are like XP for this repo. They level up its visibility and
+            signal to other players that
+            <span class="productName"></span> is a legendary item worth
+            equipping.
+          </p>
+          <a
+            class="btn-primary link-github"
+            href="https://github.com/pnlpal/pnl-reader"
+            target="_blank"
+            rel="noreferrer"
+          >
+          </a>
+        </article>
+
+        <article class="support-card">
+          <div class="card-icon">📣</div>
+          <h3>2. Share it forward</h3>
+          <p>
+            A single post acts as a powerful AOE buff, granting thousands of
+            word players faster lookups and better TTS. Cast it in your favorite
+            guild or share the loot with a party member.
+          </p>
+          <div class="share-wrapper">
+            <div
+              id="i-share"
+              data-share-networks="Twitter,Pinterest,Facebook,Reddit,Linkedin,Tumblr,mailto,Evernote,Wechat,Douban"
+              data-share-url="https://github.com/pnlpal/pnl-reader"
+              data-share-title="PNL Reader: an artistic browser extension to read any webpage quietly with dark mode, custom fonts or read aloud with natural sounding voices 📖"
+              class="need-share-panel need-share-button"
+            ></div>
+          </div>
+        </article>
+
+        <article class="support-card">
+          <div class="card-icon">🚀</div>
+          <h3>3. Subscribe to PNL Pro</h3>
+          <p>
+            PNL Pro applies a permanent buff to your learning stats. It unlocks
+            advanced skill trees across my indie tools and funds the dev server.
+          </p>
+          <a
+            class="btn-ghost"
+            href="https://pnl.dev/pro"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Explore PNL Pro
+          </a>
+          <a id="launch-deal-banner" href="https://pnl.dev/pro" target="_blank">
+            🎉 <strong class="coupon-name"></strong>:
+            <span class="percent-off"></span>% OFF!
+            <div class="banner-time">Limited time only</div>
+          </a>
+        </article>
+      </section>
+
+      <section class="community">
+        <strong>Let's keep the conversation going</strong>
+        <p>
+          Feature ideas, bug reports, or just a quick hello, everything lands
+          directly in my inbox. Join the Programming N' Language community or
+          reach out through the channels below.
+        </p>
+        <div class="community-links">
+          <a href="https://pnl.dev" target="_blank" rel="noreferrer"
+            >Community site</a
+          >
+          <a
+            href="https://discord.gg/sazRac4kSa"
+            target="_blank"
+            rel="noreferrer"
+            >Discord</a
+          >
+          <a
+            href="https://bsky.app/profile/pnlcommunity.bsky.social"
+            target="_blank"
+            rel="noreferrer"
+            >BlueSky</a
+          >
+          <a
+            href="https://t.me/programmingandlanguage"
+            target="_blank"
+            rel="noreferrer"
+            >Telegram</a
+          >
+          <a href="options.html" target="_blank" rel="noreferrer"
+            >Open settings</a
+          >
+        </div>
+
+        <div class="donation">
+          <span>If you prefer direct support:</span>
+          <a
+            href="https://www.buymeacoffee.com/riveryoung"
+            class="buymeacoffee"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+              height="40"
+              alt="Buy Me A Coffee"
+            />
+          </a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
