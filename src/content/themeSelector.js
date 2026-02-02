@@ -18,6 +18,8 @@ const allThemes = [
   { value: "iceberg light", label: "Iceberg Light" },
   { value: "typewriter dark", label: "Typewriter Dark" },
   { value: "typewriter light", label: "Typewriter Light" },
+  { value: "nordic dark", label: "Nordic Dark" },
+  { value: "nordic light", label: "Nordic Light" },
 ];
 
 function getThemeBackgroundColor(themeValue) {
@@ -29,7 +31,7 @@ function getThemeBackgroundColor(themeValue) {
     defaultMap[themeValue] ||
     getComputedStyle(document.documentElement)
       .getPropertyValue(
-        `--theme-${themeValue.replace(" ", "-")}-background-color`
+        `--theme-${themeValue.replace(" ", "-")}-background-color`,
       )
       .trim() ||
     "#333"
@@ -101,7 +103,7 @@ const ThemeSelector = ({ settings, saveSettings }) => {
                   <span>${theme.label}</span>
                 </a>
               </li>
-            `
+            `,
           )}
         </ul>
       </details>
