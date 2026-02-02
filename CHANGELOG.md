@@ -2,6 +2,7 @@
 
 - Improved parser and fixed navigation and theme handling for Wattpad (wattpad.com).
 - Fixed navigation on wuxiaworld.com.
+- Added a fullscreen button in the toolbar to toggle fullscreen mode.
 - Added a new "Nordic" theme.
 - Added a Share page.
 

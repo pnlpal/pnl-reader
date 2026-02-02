@@ -100,7 +100,7 @@ export default function ReaderApp({
     } else {
       localStorage.setItem(
         "PNLReader-settings",
-        JSON.stringify({ ...settings, ...update })
+        JSON.stringify({ ...settings, ...update }),
       );
     }
   };
@@ -215,14 +215,14 @@ export default function ReaderApp({
     if (nextPageLink) {
       localStorage.setItem(
         "PNLReader-auto-read-next-page",
-        new Date().toISOString()
+        new Date().toISOString(),
       );
       window.location.href = nextPageLink;
     }
   }
   useEffect(() => {
     const lastPageReadTimestamp = localStorage.getItem(
-      "PNLReader-auto-read-next-page"
+      "PNLReader-auto-read-next-page",
     );
 
     if (
@@ -243,12 +243,12 @@ export default function ReaderApp({
 
     // Get all visible paragraphs and block elements
     const allBlocks = Array.from(
-      articleContent.querySelectorAll(paragraphSelector)
+      articleContent.querySelectorAll(paragraphSelector),
     ).filter((el) => {
       return el.offsetParent !== null; // Only visible elements
     });
     const blocks = allBlocks.slice(
-      startNode ? allBlocks.indexOf(startNode) : 0
+      startNode ? allBlocks.indexOf(startNode) : 0,
     );
 
     const lang =
@@ -297,7 +297,7 @@ export default function ReaderApp({
         activateParagraphSpeaking(
           blocks[i],
           false,
-          nextParagraphIndex ? blocks[nextParagraphIndex] : null
+          nextParagraphIndex ? blocks[nextParagraphIndex] : null,
         );
 
         // Wait for the TTSPlayer to finish before continuing
@@ -352,22 +352,44 @@ export default function ReaderApp({
             if (spokenTextChanged) {
               clearActiveParagraphSpeaking();
             }
-          }
+          },
         );
       }
     }, 200);
+
+    const handleKeyDown = (e) => {
+      // Toggle fullscreen with 'f' or 'F' key
+      if (
+        (e.key === "f" || e.key === "F") &&
+        !utils.checkEditable(document.activeElement)
+      ) {
+        toggleFullScreen();
+      }
+    };
 
     document.removeEventListener("mouseup", handleSelectionSpeak);
     document.removeEventListener("touchend", handleSelectionSpeak);
     document.addEventListener("mouseup", handleSelectionSpeak);
     document.addEventListener("touchend", handleSelectionSpeak);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("mouseup", handleSelectionSpeak);
       document.removeEventListener("touchend", handleSelectionSpeak);
+      document.removeEventListener("keydown", handleKeyDown);
       handleSelectionSpeak.cancel();
     };
   }, [isVoiceMode]);
+
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
 
   async function translateSelectionOrParagraph(node, text = "", container) {
     if (!text) text = node.textContent.trim();
@@ -464,6 +486,31 @@ export default function ReaderApp({
                 settings=${settings}
                 saveSettings=${saveSettings}
               />
+            </li>
+
+            <li>
+              <!-- fullscreen button -->
+              <button
+                role="button"
+                id="fullscreenBtn"
+                class="secondary outline"
+                onClick=${() => toggleFullScreen()}
+                aria-label="Toggle Fullscreen (F)"
+                data-tooltip="Toggle Fullscreen (F)"
+                data-placement="left"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"
+                  />
+                </svg>
+              </button>
             </li>
 
             <li>

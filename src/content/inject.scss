@@ -89,9 +89,12 @@
     .toolbar {
       > li {
         font-size: 18px;
-        margin-left: 25px;
-        @media (max-width: 768px) {
-          margin-left: 0;
+        margin-left: 0;
+        @media (min-width: 1280px) {
+          margin-left: 5px;
+        }
+        @media (min-width: 1920px) {
+          margin-left: 25px;
         }
 
         padding: 0;
@@ -115,13 +118,16 @@
           }
         }
         #toggleReadModeBtn,
+        #fullscreenBtn,
         #printBtn {
           display: flex;
           margin: 0 5px;
           border-color: var(--pico-form-element-border-color);
         }
+
+        #fullscreenBtn,
         #printBtn {
-          @media (max-width: 650px) {
+          @media (max-width: 850px) {
             display: none;
           }
         }
