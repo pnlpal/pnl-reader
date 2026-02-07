@@ -35,6 +35,7 @@ class PNLTranslatorElement extends HTMLElement {
     this._stylesInjected = false;
     this._settings = cachedTranslatorSettings || {};
     this._escapeHandler = null;
+    this._clickOutsideHandler = null;
   }
 
   disconnectedCallback() {
@@ -43,6 +44,7 @@ class PNLTranslatorElement extends HTMLElement {
     }
     // Remove escape key listener
     this.removeEscapeListener();
+    this.removeClickOutsideListener();
   }
 
   connectedCallback() {
@@ -95,7 +97,7 @@ class PNLTranslatorElement extends HTMLElement {
         new CustomEvent("settingschange", {
           detail: update,
           bubbles: true,
-        })
+        }),
       );
     };
 
@@ -130,11 +132,36 @@ class PNLTranslatorElement extends HTMLElement {
       }
     };
 
+    const addClickOutsideListener = () => {
+      if (!this._clickOutsideHandler) {
+        this._clickOutsideHandler = (event) => {
+          if (this._isVisible) {
+            const path = event.composedPath();
+            if (!path.includes(this)) {
+              this.hide();
+            }
+          }
+        };
+        document.addEventListener("mousedown", this._clickOutsideHandler, true);
+      }
+    };
+
     const removeEscapeListener = () => {
       if (this._escapeHandler) {
         document.removeEventListener("keydown", this._escapeHandler, true);
         window.removeEventListener("keydown", this._escapeHandler, true);
         this._escapeHandler = null;
+      }
+    };
+
+    const removeClickOutsideListener = () => {
+      if (this._clickOutsideHandler) {
+        document.removeEventListener(
+          "mousedown",
+          this._clickOutsideHandler,
+          true,
+        );
+        this._clickOutsideHandler = null;
       }
     };
 
@@ -148,12 +175,13 @@ class PNLTranslatorElement extends HTMLElement {
 
       // Remove escape key listener
       removeEscapeListener();
+      removeClickOutsideListener();
 
       // Dispatch hide event
       this.dispatchEvent(
         new CustomEvent("hide", {
           bubbles: true,
-        })
+        }),
       );
     };
 
@@ -173,8 +201,8 @@ class PNLTranslatorElement extends HTMLElement {
 
       // Make sure the render target allows pointer events
       this.renderTarget.style.pointerEvents = "auto";
+      addClickOutsideListener();
 
-      // Add to DOM if not already there
       if (!this.parentNode) {
         document.body.appendChild(this);
       }
@@ -187,7 +215,7 @@ class PNLTranslatorElement extends HTMLElement {
         new CustomEvent("show", {
           detail: { text, lang, settings },
           bubbles: true,
-        })
+        }),
       );
     };
 
@@ -198,6 +226,7 @@ class PNLTranslatorElement extends HTMLElement {
     this.show = show;
     this.hide = hide;
     this.removeEscapeListener = removeEscapeListener;
+    this.removeClickOutsideListener = removeClickOutsideListener;
     console.log("PNL Translator Web Component connected");
   }
 }
