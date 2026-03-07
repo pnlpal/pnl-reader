@@ -268,16 +268,14 @@ export default function ReaderApp({
       return rect.top >= 0 && rect.bottom <= window.innerHeight;
     };
 
-    // Helper: scroll element into view (positioned ~1/3 from top)
+    // Helper: scroll element into view (positioned ~1/3 from top for paragraph mode, top for screen mode)
     const scrollToElement = (el, mode) => {
       if (mode === "paragraph") {
         const rect = el.getBoundingClientRect();
         const targetY = window.scrollY + rect.top - window.innerHeight / 3;
         window.scrollTo({ top: targetY, behavior: "smooth" });
       } else if (mode === "screen" && !isElementInViewport(el)) {
-        const rect = el.getBoundingClientRect();
-        const targetY = window.scrollY + rect.top - window.innerHeight / 3;
-        window.scrollTo({ top: targetY, behavior: "smooth" });
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     };
 
