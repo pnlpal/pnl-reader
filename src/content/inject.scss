@@ -18,6 +18,10 @@
 @import "./translation/translateIconOnPage.scss";
 @import "./themeSelector.scss";
 
+:root {
+  font-size: 16px; // Reset root font-size so rem units work correctly across all sites, such as: https://novelfull.com
+}
+
 #PNLReader {
   padding: 0;
   padding-bottom: 10em; // space for audio player, padding is better than margin because some sites more compatible, such as aftonbladet.se
