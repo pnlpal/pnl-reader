@@ -262,6 +262,25 @@ export default function ReaderApp({
     setReadingWholePageTimestamp(Date.now());
     setTtsStartTimestamp(Date.now());
 
+    // Helper: check if element is visible in viewport
+    const isElementInViewport = (el) => {
+      const rect = el.getBoundingClientRect();
+      return rect.top >= 0 && rect.bottom <= window.innerHeight;
+    };
+
+    // Helper: scroll element into view (positioned ~1/3 from top)
+    const scrollToElement = (el, mode) => {
+      if (mode === "paragraph") {
+        const rect = el.getBoundingClientRect();
+        const targetY = window.scrollY + rect.top - window.innerHeight / 3;
+        window.scrollTo({ top: targetY, behavior: "smooth" });
+      } else if (mode === "screen" && !isElementInViewport(el)) {
+        const rect = el.getBoundingClientRect();
+        const targetY = window.scrollY + rect.top - window.innerHeight / 3;
+        window.scrollTo({ top: targetY, behavior: "smooth" });
+      }
+    };
+
     for (let i = 0; i < blocks.length; i++) {
       try {
         // Await TTS playback for each paragraph
@@ -299,6 +318,13 @@ export default function ReaderApp({
           false,
           nextParagraphIndex ? blocks[nextParagraphIndex] : null,
         );
+
+        // Auto-scroll based on setting
+        const autoScrollMode =
+          settingsRef.current.autoScrollMode ?? "paragraph";
+        if (autoScrollMode && autoScrollMode !== "off") {
+          scrollToElement(blocks[i], autoScrollMode);
+        }
 
         // Wait for the TTSPlayer to finish before continuing
 

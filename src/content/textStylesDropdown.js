@@ -19,7 +19,7 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
     handleTextJustified(
       settings.textJustified === undefined
         ? defaultTextJustified
-        : settings.textJustified
+        : settings.textJustified,
     );
   }, []);
 
@@ -29,7 +29,7 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
 
     $article.style.setProperty(
       "--pnl-reader-text-align",
-      textJustified ? "justify" : "initial"
+      textJustified ? "justify" : "initial",
     );
     const $icon = document.getElementById("textJustifiedIcon");
     if (textJustified) {
@@ -185,6 +185,25 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
                   saveSettings({ hideTranslateIcons });
                 }}
               />
+            </div>
+            <div
+              class="list-in-row"
+              data-tooltip="Automatically scroll the article while reading. 'Paragraph' mode scrolls to keep the current paragraph in view, while 'Screen' mode scrolls by a full screen height."
+            >
+              <span class="pnl-icon" title="Auto Scroll">📜</span>
+              <span>Auto Scroll Mode</span>
+              <select
+                id="autoScrollMode"
+                name="autoScrollMode"
+                value=${settings.autoScrollMode ?? "paragraph"}
+                onChange=${(e) => {
+                  saveSettings({ autoScrollMode: e.target.value });
+                }}
+              >
+                <option value="off">Off</option>
+                <option value="paragraph">Paragraph</option>
+                <option value="screen">Screen</option>
+              </select>
             </div>
 
             ${!isOnOptionsPage &&

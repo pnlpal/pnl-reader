@@ -165,8 +165,12 @@
                 display: flex;
                 align-items: center;
                 padding: 20px 0;
+                border-bottom: 0;
                 @media (max-width: 1280px) {
                   padding: 10px 0;
+                }
+                @media (max-width: 640px) {
+                  padding: 5px 0;
                 }
                 > span {
                   margin: 0 10px;
@@ -186,7 +190,8 @@
                 }
                 #fontType,
                 #lineWidth,
-                #lineSpacing {
+                #lineSpacing,
+                #autoScrollMode {
                   width: 260px;
                   margin-left: auto;
                   margin-right: 10px;
