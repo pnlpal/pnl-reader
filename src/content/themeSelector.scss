@@ -17,16 +17,35 @@
           ul {
             left: auto;
             width: auto; // Firefox needs this to avoid being too wide.
+            max-height: 90vh;
+            overflow-y: auto;
+            @media (max-width: 576px) {
+              max-height: 50vh;
+            }
 
             .theme-dropdown-item {
+              display: flex;
+              align-items: center;
+              padding: 0.4em 0.8em;
+              min-height: 40px; // touch-friendly target
+              gap: 0.5em;
+              @media (max-width: 576px) {
+                padding: 0.3em 0.6em;
+                min-height: 36px;
+                font-size: 0.9em;
+              }
+
               .theme-preview-circle {
-                width: 2em;
-                height: 2em;
+                width: 1.6em;
+                height: 1.6em;
                 border-radius: 50%;
                 border: 1px solid #ccc;
                 display: inline-block;
-                margin-right: 0.7em;
-                vertical-align: middle;
+                flex-shrink: 0;
+                @media (max-width: 576px) {
+                  width: 1.4em;
+                  height: 1.4em;
+                }
 
                 //  special handling for auto theme
                 &[data-value="auto"] {
