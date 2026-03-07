@@ -6,5 +6,11 @@
     "navigation": {
       "next": "#story-part-navigation a"
     }
+  },
+  {
+    "match": "https://novelfull.com/[^/]+/[^/]+\\.html$",
+    "articleSelector": "#chapter-content",
+    "titleSelector": "a.chapter-title",
+    "excludes": ["div", "h3"]
   }
 ]

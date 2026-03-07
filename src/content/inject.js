@@ -164,9 +164,13 @@ function getArticleContent(documentClone, siteCustomization) {
         if (siteCustomization.excludes) {
           removeUnwantedElements(customArticle, siteCustomization.excludes);
         }
+        const title = siteCustomization.titleSelector
+          ? documentClone.querySelector(siteCustomization.titleSelector)
+              ?.textContent || documentClone.title
+          : documentClone.title;
         return {
           content: customArticle.innerHTML,
-          title: documentClone.title,
+          title: title,
           siteName: location.hostname,
         };
       }
