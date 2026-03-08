@@ -151,6 +151,48 @@ function removeUnwantedElements(element, selectors) {
   });
 }
 
+// Helper to extract HTML content from an element, including shadow DOM
+function extractElementContent(el) {
+  // If element has a shadow root, extract content from it
+  if (el.shadowRoot) {
+    // ShadowRoot doesn't have innerHTML, so we need to serialize children
+    const temp = document.createElement("div");
+    Array.from(el.shadowRoot.childNodes).forEach((child) => {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        // Skip style, script, link elements
+        if (["STYLE", "SCRIPT", "LINK"].includes(child.tagName)) return;
+        temp.appendChild(child.cloneNode(true));
+      } else if (child.nodeType === Node.TEXT_NODE) {
+        temp.appendChild(child.cloneNode(true));
+      }
+    });
+    // Also check for slotted content
+    const slots = el.shadowRoot.querySelectorAll("slot");
+    slots.forEach((slot) => {
+      const assigned = slot.assignedNodes({ flatten: true });
+      assigned.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          temp.appendChild(node.cloneNode(true));
+        } else if (
+          node.nodeType === Node.TEXT_NODE &&
+          node.textContent.trim()
+        ) {
+          temp.appendChild(node.cloneNode(true));
+        }
+      });
+    });
+    return temp.innerHTML;
+  }
+  return el.innerHTML;
+}
+
+// Helper to query elements including those with shadow DOM on the live document
+function querySelectorAllWithShadow(selector) {
+  // First try normal query on live document (not clone, since shadow DOM isn't cloned)
+  const elements = document.querySelectorAll(selector);
+  return Array.from(elements);
+}
+
 function getArticleContent(documentClone, siteCustomization) {
   // 1. Try finding content using formatted config
   if (siteCustomization) {
@@ -164,14 +206,19 @@ function getArticleContent(documentClone, siteCustomization) {
       const contentParts = [];
       selectors.forEach((selector) => {
         try {
-          const elements = documentClone.querySelectorAll(selector);
+          // Query live document to access shadow DOM
+          const elements = querySelectorAllWithShadow(selector);
           elements.forEach((el) => {
-            // Clone to avoid modifying original when removing excludes
-            const clone = el.cloneNode(true);
+            // Extract content (handles shadow DOM)
+            let html = extractElementContent(el);
+
+            // Create a temp container to apply excludes
+            const temp = document.createElement("div");
+            temp.innerHTML = html;
             if (siteCustomization.excludes) {
-              removeUnwantedElements(clone, siteCustomization.excludes);
+              removeUnwantedElements(temp, siteCustomization.excludes);
             }
-            contentParts.push(clone.innerHTML);
+            contentParts.push(temp.innerHTML);
           });
         } catch (e) {
           console.warn("Invalid articleSelector:", selector, e);
@@ -180,8 +227,11 @@ function getArticleContent(documentClone, siteCustomization) {
 
       if (contentParts.length > 0) {
         const title = siteCustomization.titleSelector
-          ? documentClone.querySelector(siteCustomization.titleSelector)
-              ?.textContent || documentClone.title
+          ? document.querySelector(siteCustomization.titleSelector)
+              ?.textContent ||
+            documentClone.querySelector(siteCustomization.titleSelector)
+              ?.textContent ||
+            documentClone.title
           : documentClone.title;
         return {
           content: contentParts.join("\n"),

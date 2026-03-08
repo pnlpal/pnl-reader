@@ -16,10 +16,11 @@
   {
     "match": "https://www.reddit.com/r/\\w+/comments/\\w+/.*",
     "articleSelector": [
-      "shreddit-post",
+      "shreddit-post [slot=\"text-body\"]",
+      "shreddit-post [slot=\"post-media-container\"] img",
       "shreddit-comment-tree shreddit-comment"
     ],
-    "titleSelector": "[slot=\"title\"]",
+    "titleSelector": "shreddit-post [slot=\"title\"]",
     "excludes": [
       "shreddit-post-overflow-menu",
       "faceplate-dropdown-menu",
@@ -29,6 +30,6 @@
       "shreddit-async-loader",
       "shreddit-comment-action-row"
     ],
-    "css": "#PNLReaderArticle img { max-width: 100%; border-radius: 8px; } #PNLReaderArticle a { word-break: break-word; } #PNLReaderArticle shreddit-comment { display: block; padding: 0.5em 0 0.5em 1em; border-left: 2px solid var(--pico-muted-border-color); margin: 0.5em 0; }"
+    "css": "#PNLReaderArticle { --reddit-accent: #ff4500; --reddit-author: var(--pico-primary); --reddit-meta: var(--pico-muted-color); } #PNLReaderArticle img { max-width: 100%; border-radius: 8px; margin: 1em 0; } #PNLReaderArticle a { word-break: break-word; text-decoration-thickness: 1px; text-underline-offset: 2px; } #PNLReaderArticle > div:first-child { padding-bottom: 1.5em; margin-bottom: 2em; border-bottom: 1px solid var(--pico-muted-border-color); } #PNLReaderArticle p { line-height: 1.7; } #PNLReaderArticle shreddit-comment { display: block; padding: 1em 0 1em 1.25em; border-left: 3px solid var(--pico-muted-border-color); margin: 0.75em 0; border-radius: 0; transition: border-color 0.2s; } #PNLReaderArticle shreddit-comment:hover { border-left-color: var(--reddit-accent); } #PNLReaderArticle shreddit-comment[depth='0'] { border-left-width: 4px; border-left-color: var(--reddit-accent); margin-top: 1.5em; padding-top: 1.25em; } #PNLReaderArticle shreddit-comment[depth='1'] { margin-left: 0.5em; } #PNLReaderArticle shreddit-comment[depth='2'] { margin-left: 1em; opacity: 0.95; } #PNLReaderArticle shreddit-comment[depth='3'] { margin-left: 1.5em; opacity: 0.9; } #PNLReaderArticle shreddit-comment a[href*='/user/'] { color: var(--reddit-author); font-weight: 600; text-decoration: none; } #PNLReaderArticle shreddit-comment a[href*='/user/']:hover { text-decoration: underline; } #PNLReaderArticle shreddit-comment time, #PNLReaderArticle shreddit-comment faceplate-number { color: var(--reddit-meta); } #PNLReaderArticle shreddit-comment p { margin: 0.5em 0; line-height: 1.6; } #PNLReaderArticle shreddit-comment blockquote { border-left: 2px solid var(--pico-muted-border-color); padding-left: 1em; margin: 0.75em 0; color: var(--reddit-meta); font-style: italic; } #PNLReaderArticle shreddit-comment-action-row, #PNLReaderArticle [slot='actionRow'], #PNLReaderArticle [slot='commentActionRow'], #PNLReaderArticle faceplate-dropdown-menu, #PNLReaderArticle shreddit-overflow-menu, #PNLReaderArticle [slot='post-media-container'] video { display: none !important; }"
   }
 ]
