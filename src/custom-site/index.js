@@ -31,8 +31,8 @@ const customizationsList = document.getElementById("customizations-list");
   // Display status message
   function showStatus(message, isError = false) {
     saveStatus.textContent = message;
-    saveStatus.style.color = isError ? "#d63384" : "#36b37e";
-    saveStatus.style.display = "inline-block";
+    saveStatus.className = isError ? "error" : "success";
+    saveStatus.style.display = "block";
     setTimeout(() => (saveStatus.style.display = "none"), 5000);
   }
 
@@ -151,8 +151,7 @@ const customizationsList = document.getElementById("customizations-list");
         customization,
       });
 
-      showStatus("Customization saved!");
-      clearForm();
+      showStatus("Saved! Consider sharing your customization at pnl.dev 🎨");
       renderCustomizationsList();
     } catch (error) {
       showStatus("Failed to save. Please try again.", true);
