@@ -19,7 +19,8 @@ export default [
     match: "https://www.reddit.com/r/\\w+/comments/\\w+/.*",
     articleSelector: [
       'shreddit-post [slot="text-body"]',
-      'shreddit-post [slot="post-media-container"] img',
+      'shreddit-post [slot="post-media-container"] img#post-image',
+      "shreddit-post gallery-carousel img#post-image",
       "shreddit-comment-tree > shreddit-comment",
     ],
     titleSelector: 'shreddit-post [slot="title"]',

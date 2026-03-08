@@ -200,7 +200,8 @@ function extractElementContent(el) {
     });
     return temp.innerHTML;
   }
-  return el.innerHTML;
+  // Use outerHTML to preserve the element and its attributes
+  return el.outerHTML;
 }
 
 // Helper to query elements including those with shadow DOM on the live document

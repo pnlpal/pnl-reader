@@ -3,10 +3,28 @@
   --reddit-meta: var(--pico-muted-color);
 }
 
+/* Post images */
 #PNLReaderArticle img {
   max-width: 100%;
   border-radius: 8px;
   margin: 1em 0;
+  height: auto !important;
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  object-fit: contain !important;
+}
+
+/* Main post image */
+#PNLReaderArticle img#post-image,
+#PNLReaderArticle img.media-lightbox-img {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  max-height: 80vh;
+  margin: 1.5em auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 #PNLReaderArticle a {
