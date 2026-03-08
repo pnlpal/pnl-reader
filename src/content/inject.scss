@@ -275,6 +275,9 @@
         border: none;
         filter: none;
       }
+      summary.title {
+        line-height: normal;
+      }
     }
 
     img {
