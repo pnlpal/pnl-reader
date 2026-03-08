@@ -208,7 +208,20 @@ const TextStylesDropdown = ({ settings, saveSettings }) => {
 
             ${!isOnOptionsPage &&
             html`
-              <div class="list-in-row">
+              <div class="list-in-row" style="justify-content: flex-end">
+                <a
+                  id="goToSiteCustomization"
+                  class="contrast"
+                  onClick=${() => {
+                    utils.send("open custom site page");
+                  }}
+                  data-tooltip="Create custom rules for extracting and rendering content from specific websites"
+                  data-placement="left"
+                >
+                  🎨 Site Customization
+                </a>
+              </div>
+              <div class="list-in-row" style="justify-content: flex-end">
                 <a
                   id="goToGlobalSettings"
                   class="contrast"
