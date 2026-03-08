@@ -32,10 +32,6 @@
   --pico-code-background-color: var(--pico-background-color);
   --pico-table-border-color: var(--pico-card-background-color);
   --pico-color-azure-550: var(--pico-primary);
-
-  .toolbar input[type="checkbox"]:before {
-    background-color: #333 !important; /* This is a hack to make the checkbox switch visible in dark mode */
-  }
 }
 [data-color-scheme="nordic"][data-theme="dark"]
   pre:has(> code.language-mermaid) {
