@@ -153,6 +153,39 @@
   display: none !important;
 }
 
+/* "More replies" button - style as link */
+#PNLReaderArticle button:has(faceplate-tracker) {
+  all: unset !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0.5em 0 !important;
+  cursor: pointer;
+  color: var(--pico-muted-color);
+  font-size: 0.85em !important;
+  font-weight: normal !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.25em;
+  width: auto !important;
+  height: auto !important;
+  line-height: 1.4 !important;
+}
+
+#PNLReaderArticle button:has(faceplate-tracker):hover {
+  text-decoration: underline;
+  color: var(--pico-primary);
+  background: none !important;
+}
+
+#PNLReaderArticle button:has(faceplate-tracker) svg {
+  margin-right: 5px !important;
+}
+
+#PNLReaderArticle button:has(faceplate-tracker) span {
+  font-size: inherit !important;
+}
+
 /* Clean up comment internal structure */
 #PNLReaderArticle details {
   display: block;
