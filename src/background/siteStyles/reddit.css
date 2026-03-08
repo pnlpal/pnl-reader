@@ -125,19 +125,29 @@
   align-items: center;
 }
 
-#PNLReaderArticle [slot="commentAvatar"] svg {
+/* Hide decorative avatar frames/badges (keep only svg with actual image) */
+#PNLReaderArticle [slot="commentAvatar"] svg:not(:has(image)) {
+  display: none !important;
+}
+
+#PNLReaderArticle [slot="commentAvatar"] svg:has(image) {
   width: 32px !important;
+  height: 32px !important;
   border-radius: 50%;
   overflow: hidden;
 }
 
 #PNLReaderArticle [slot="commentAvatar"] [rpl][avatar] {
   width: 32px !important;
+  height: 32px !important;
 }
 
-#PNLReaderArticle [slot="commentAvatar"] .fp-avatar-container {
+#PNLReaderArticle [slot="commentAvatar"] .fp-avatar-container,
+#PNLReaderArticle [slot="commentAvatar"] .snoovatar {
   width: 32px !important;
+  height: 32px !important;
   min-width: 32px !important;
+  min-height: 32px !important;
 }
 
 /* Hide hover card content */
