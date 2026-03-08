@@ -20,7 +20,7 @@ export default [
     articleSelector: [
       'shreddit-post [slot="text-body"]',
       'shreddit-post [slot="post-media-container"] img',
-      "shreddit-comment-tree shreddit-comment",
+      "shreddit-comment-tree > shreddit-comment",
     ],
     titleSelector: 'shreddit-post [slot="title"]',
     excludes: [

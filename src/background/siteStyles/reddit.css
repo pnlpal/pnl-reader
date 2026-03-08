@@ -94,7 +94,43 @@
   font-style: italic;
 }
 
-/* Avatars */
+/* Avatars - Reddit uses SVG <image> not <img> */
+#PNLReaderArticle [slot="commentAvatar"] {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+
+#PNLReaderArticle [slot="commentAvatar"] rpl-hovercard,
+#PNLReaderArticle [slot="commentAvatar"] faceplate-tracker {
+  display: inline-flex;
+  align-items: center;
+}
+
+#PNLReaderArticle [slot="commentAvatar"] svg {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+#PNLReaderArticle [slot="commentAvatar"] [rpl][avatar] {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+#PNLReaderArticle [slot="commentAvatar"] .fp-avatar-container {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+}
+
+/* Hide hover card content */
+#PNLReaderArticle [slot="commentAvatar"] [slot="content"] {
+  display: none !important;
+}
+
 #PNLReaderArticle img[alt*="avatar"],
 #PNLReaderArticle faceplate-img {
   width: 24px !important;
@@ -108,9 +144,72 @@
 /* Hide unwanted elements */
 #PNLReaderArticle shreddit-comment-action-row,
 #PNLReaderArticle [slot="actionRow"],
+#PNLReaderArticle [slot="awardsRow"],
 #PNLReaderArticle [slot="commentActionRow"],
 #PNLReaderArticle faceplate-dropdown-menu,
 #PNLReaderArticle shreddit-overflow-menu,
-#PNLReaderArticle [slot="post-media-container"] video {
+#PNLReaderArticle [slot="post-media-container"] video,
+#PNLReaderArticle [slot="next-reply"] {
   display: none !important;
+}
+
+/* Clean up comment internal structure */
+#PNLReaderArticle details {
+  display: block;
+}
+
+#PNLReaderArticle details > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+  list-style: none;
+  cursor: default;
+}
+
+#PNLReaderArticle details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Hide thread lines and collapse buttons */
+#PNLReaderArticle [data-testid="main-thread-line"],
+#PNLReaderArticle [data-testid="branch-line"],
+#PNLReaderArticle .threadline,
+#PNLReaderArticle button[aria-label="Toggle Comment Thread"],
+#PNLReaderArticle button[aria-controls="comment-children"] {
+  display: none !important;
+}
+
+/* Reset grid layout to simple block */
+#PNLReaderArticle details > div {
+  display: block !important;
+}
+
+#PNLReaderArticle .contents {
+  display: contents;
+}
+
+/* Hide empty structural divs */
+#PNLReaderArticle div[aria-hidden="true"] {
+  display: none !important;
+}
+
+/* Extracted top-level comments (from shadow DOM) */
+#PNLReaderArticle [slot="comment"],
+#PNLReaderArticle div[id$="-comment-rtjson-content"] {
+  display: block;
+  padding: 1em 0;
+  border-left: 4px solid var(--reddit-accent);
+  padding-left: 1.25em;
+  margin: 1.5em 0 0.75em 0;
+}
+
+#PNLReaderArticle [slot="comment"] p,
+#PNLReaderArticle div[id$="-comment-rtjson-content"] p {
+  margin: 0.5em 0;
+  line-height: 1.6;
+}
+
+#PNLReaderArticle div[id$="-post-rtjson-content"] {
+  padding: 0;
 }
