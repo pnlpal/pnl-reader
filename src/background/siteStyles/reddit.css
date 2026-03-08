@@ -1,10 +1,11 @@
+/* Variables - use full selector so it's skipped by auto-prefix */
 #PNLReaderArticle {
   --reddit-author: var(--pico-primary);
   --reddit-meta: var(--pico-muted-color);
 }
 
 /* Post images */
-#PNLReaderArticle img {
+img {
   max-width: 100%;
   border-radius: 8px;
   margin: 1em 0;
@@ -16,8 +17,8 @@
 }
 
 /* Main post image */
-#PNLReaderArticle img#post-image,
-#PNLReaderArticle img.media-lightbox-img {
+img#post-image,
+img.media-lightbox-img {
   display: block;
   max-width: 100%;
   width: auto;
@@ -27,12 +28,13 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-#PNLReaderArticle a {
+a {
   word-break: break-word;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
 
+/* First div separator - use full selector */
 #PNLReaderArticle > div:first-child {
   padding-bottom: 1.5em;
   margin-bottom: 2em;
@@ -40,7 +42,7 @@
 }
 
 /* Comments styling */
-#PNLReaderArticle shreddit-comment {
+shreddit-comment {
   display: block;
   padding: 0.5em 0 0.5em 1em;
   border-left: 1px dashed var(--pico-muted-border-color);
@@ -49,11 +51,11 @@
   transition: border-color 0.2s;
 }
 
-#PNLReaderArticle shreddit-comment:hover {
+shreddit-comment:hover {
   border-left-color: var(--pico-secondary);
 }
 
-#PNLReaderArticle shreddit-comment[depth="0"] {
+shreddit-comment[depth="0"] {
   border-left-width: 1px;
   border-left-style: dashed;
   border-left-color: var(--pico-secondary);
@@ -61,46 +63,46 @@
   padding-top: 0.75em;
 }
 
-#PNLReaderArticle shreddit-comment[depth="1"] {
+shreddit-comment[depth="1"] {
   margin-left: 0.5em;
 }
 
-#PNLReaderArticle shreddit-comment[depth="2"] {
+shreddit-comment[depth="2"] {
   margin-left: 1em;
   opacity: 0.95;
 }
 
-#PNLReaderArticle shreddit-comment[depth="3"] {
+shreddit-comment[depth="3"] {
   margin-left: 1.5em;
   opacity: 0.9;
 }
 
 /* Override comment content line height */
-#PNLReaderArticle shreddit-comment p,
+shreddit-comment p,
 .tts-speaker-icon {
   line-height: var(--pnl-reader-line-height) !important;
 }
 
 /* Author links */
-#PNLReaderArticle a[href*="/user/"] {
+a[href*="/user/"] {
   color: var(--reddit-author);
   font-weight: 600;
   text-decoration: none;
 }
 
-#PNLReaderArticle a[href*="/user/"]:hover {
+a[href*="/user/"]:hover {
   text-decoration: underline;
 }
 
 /* Timestamps */
-#PNLReaderArticle time,
-#PNLReaderArticle faceplate-timeago {
+time,
+faceplate-timeago {
   font-size: 0.85em;
   color: var(--reddit-meta);
   margin-left: 0.5em;
 }
 
-#PNLReaderArticle shreddit-comment blockquote {
+shreddit-comment blockquote {
   border-left: 2px solid var(--pico-muted-border-color);
   padding-left: 1em;
   color: var(--reddit-meta);
@@ -108,37 +110,37 @@
 }
 
 /* Avatars - Reddit uses SVG <image> not <img> */
-#PNLReaderArticle [slot="commentAvatar"] {
+[slot="commentAvatar"] {
   display: inline-block;
   vertical-align: middle;
   margin-right: 0.5em;
 }
 
-#PNLReaderArticle [slot="commentAvatar"] rpl-hovercard,
-#PNLReaderArticle [slot="commentAvatar"] faceplate-tracker {
+[slot="commentAvatar"] rpl-hovercard,
+[slot="commentAvatar"] faceplate-tracker {
   display: inline-flex;
   align-items: center;
 }
 
 /* Hide decorative avatar frames/badges (keep only svg with actual image) */
-#PNLReaderArticle [slot="commentAvatar"] svg:not(:has(image)) {
+[slot="commentAvatar"] svg:not(:has(image)) {
   display: none !important;
 }
 
-#PNLReaderArticle [slot="commentAvatar"] svg:has(image) {
+[slot="commentAvatar"] svg:has(image) {
   width: 32px !important;
   height: 32px !important;
   border-radius: 50%;
   overflow: hidden;
 }
 
-#PNLReaderArticle [slot="commentAvatar"] [rpl][avatar] {
+[slot="commentAvatar"] [rpl][avatar] {
   width: 32px !important;
   height: 32px !important;
 }
 
-#PNLReaderArticle [slot="commentAvatar"] .fp-avatar-container,
-#PNLReaderArticle [slot="commentAvatar"] .snoovatar {
+[slot="commentAvatar"] .fp-avatar-container,
+[slot="commentAvatar"] .snoovatar {
   width: 32px !important;
   height: 32px !important;
   min-width: 32px !important;
@@ -146,12 +148,12 @@
 }
 
 /* Hide hover card content */
-#PNLReaderArticle [slot="commentAvatar"] [slot="content"] {
+[slot="commentAvatar"] [slot="content"] {
   display: none !important;
 }
 
-#PNLReaderArticle img[alt*="avatar"],
-#PNLReaderArticle faceplate-img {
+img[alt*="avatar"],
+faceplate-img {
   width: 32px !important;
   border-radius: 50% !important;
   margin: 0 0.5em 0 0 !important;
@@ -160,19 +162,19 @@
 }
 
 /* Hide unwanted elements */
-#PNLReaderArticle shreddit-comment-action-row,
-#PNLReaderArticle [slot="actionRow"],
-#PNLReaderArticle [slot="awardsRow"],
-#PNLReaderArticle [slot="commentActionRow"],
-#PNLReaderArticle faceplate-dropdown-menu,
-#PNLReaderArticle shreddit-overflow-menu,
-#PNLReaderArticle [slot="post-media-container"] video,
-#PNLReaderArticle [slot="next-reply"] {
+shreddit-comment-action-row,
+[slot="actionRow"],
+[slot="awardsRow"],
+[slot="commentActionRow"],
+faceplate-dropdown-menu,
+shreddit-overflow-menu,
+[slot="post-media-container"] video,
+[slot="next-reply"] {
   display: none !important;
 }
 
 /* "More replies" button - style as link */
-#PNLReaderArticle button:has(faceplate-tracker) {
+button:has(faceplate-tracker) {
   all: unset !important;
   background: none !important;
   border: none !important;
@@ -190,26 +192,26 @@
   line-height: 1.4 !important;
 }
 
-#PNLReaderArticle button:has(faceplate-tracker):hover {
+button:has(faceplate-tracker):hover {
   text-decoration: underline;
   color: var(--pico-primary);
   background: none !important;
 }
 
-#PNLReaderArticle button:has(faceplate-tracker) svg {
+button:has(faceplate-tracker) svg {
   margin-right: 5px !important;
 }
 
-#PNLReaderArticle button:has(faceplate-tracker) span {
+button:has(faceplate-tracker) span {
   font-size: inherit !important;
 }
 
 /* Clean up comment internal structure */
-#PNLReaderArticle details {
+details {
   display: block;
 }
 
-#PNLReaderArticle details > summary {
+details > summary {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -219,17 +221,17 @@
   cursor: default;
 }
 
-#PNLReaderArticle details > summary > div {
+details > summary > div {
   display: inline-flex;
   align-items: center;
 }
 
-#PNLReaderArticle details > summary::-webkit-details-marker {
+details > summary::-webkit-details-marker {
   display: none;
 }
 
 /* Comment meta (author + timestamp) */
-#PNLReaderArticle [slot="commentMeta"] {
+[slot="commentMeta"] {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
@@ -237,30 +239,30 @@
 }
 
 /* Hide thread lines and collapse buttons */
-#PNLReaderArticle [data-testid="main-thread-line"],
-#PNLReaderArticle button[aria-label="Toggle Comment Thread"],
-#PNLReaderArticle button[aria-controls="comment-children"],
-#PNLReaderArticle details[role="article"][open] {
+[data-testid="main-thread-line"],
+button[aria-label="Toggle Comment Thread"],
+button[aria-controls="comment-children"],
+details[role="article"][open] {
   display: none !important;
 }
 
 /* Reset grid layout to simple block */
-#PNLReaderArticle details > div {
+details > div {
   display: block !important;
 }
 
-#PNLReaderArticle .contents {
+.contents {
   display: contents;
 }
 
 /* Hide empty structural divs */
-#PNLReaderArticle div[aria-hidden="true"] {
+div[aria-hidden="true"] {
   display: none !important;
 }
 
 /* Extracted top-level comments (from shadow DOM) */
-#PNLReaderArticle [slot="comment"],
-#PNLReaderArticle div[id$="-comment-rtjson-content"] {
+[slot="comment"],
+div[id$="-comment-rtjson-content"] {
   display: block;
   padding: 0.5em 0;
   border-left: 1px dashed var(--pico-secondary);

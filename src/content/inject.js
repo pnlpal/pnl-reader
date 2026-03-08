@@ -143,7 +143,11 @@ function applyCustomStyles(siteCustomization) {
   // 1. Check for site-specific CSS
   if (siteCustomization && siteCustomization.css) {
     const styleElement = document.createElement("style");
-    styleElement.textContent = siteCustomization.css;
+    // Auto-prefix all selectors with #PNLReaderArticle
+    styleElement.textContent = prefixCssSelectors(
+      siteCustomization.css,
+      "#PNLReaderArticle",
+    );
     document.head.appendChild(styleElement);
   }
 
@@ -154,6 +158,30 @@ function applyCustomStyles(siteCustomization) {
     styleElement.textContent = globalCustomStyles;
     document.head.appendChild(styleElement);
   }
+}
+
+/**
+ * Prefix all CSS selectors with a given prefix.
+ * Handles @media queries but skips @keyframes.
+ */
+function prefixCssSelectors(css, prefix) {
+  return css.replace(/([^{}]+)\{/g, (match, selectors) => {
+    const trimmed = selectors.trim();
+    // Skip @rules (media, keyframes, supports, etc.)
+    if (trimmed.startsWith("@")) {
+      return match;
+    }
+    // Skip if already prefixed
+    if (trimmed.includes(prefix)) {
+      return match;
+    }
+    // Prefix each selector in comma-separated list
+    const prefixed = trimmed
+      .split(",")
+      .map((s) => `${prefix} ${s.trim()}`)
+      .join(", ");
+    return prefixed + " {";
+  });
 }
 
 function removeUnwantedElements(element, selectors) {
