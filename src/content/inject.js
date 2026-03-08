@@ -86,27 +86,44 @@ async function getGlobalSettings() {
 }
 
 function cleanHtmlHead() {
-  for (const node of document.head.childNodes) {
+  const keepKeywords = [
+    "dictionariez",
+    "fairydict",
+    "dictionaries-tooltip",
+    "PNLReader",
+  ];
+
+  // Clean head
+  for (const node of Array.from(document.head.childNodes)) {
     if (node.tagName === "LINK" && node.rel === "stylesheet") {
-      // console.log("Removing stylesheet:", node.href);
       node.remove();
     } else if (node.tagName === "SCRIPT") {
-      // console.log("Removing script:", node.src);
       node.remove();
     } else if (node.tagName === "STYLE") {
       const style = node.innerHTML;
-      const dictionariezKeyWords = [
-        "dictionariez",
-        "fairydict",
-        "dictionaries-tooltip",
-        "PNLReader",
-      ];
-      if (!dictionariezKeyWords.some((key) => style.includes(key))) {
-        // console.log("Removing style:", style);
+      if (!keepKeywords.some((key) => style.includes(key))) {
         node.remove();
       }
     }
   }
+
+  // Also clean any styles/links in body (some sites inject there)
+  document.body
+    .querySelectorAll("style, link[rel='stylesheet']")
+    .forEach((el) => {
+      const content = el.innerHTML || el.href || "";
+      if (!keepKeywords.some((key) => content.includes(key))) {
+        el.remove();
+      }
+    });
+
+  // Remove all inline styles from remaining elements
+  document.querySelectorAll("[style]").forEach((el) => {
+    // Keep only our reader container
+    if (!el.closest("#PNLReader")) {
+      el.removeAttribute("style");
+    }
+  });
 }
 
 // Helper to get site customization matching current URL
@@ -212,12 +229,18 @@ function getArticleContent(documentClone, siteCustomization) {
             // Extract content (handles shadow DOM)
             let html = extractElementContent(el);
 
-            // Create a temp container to apply excludes
+            // Create a temp container to apply excludes and clean styles
             const temp = document.createElement("div");
             temp.innerHTML = html;
             if (siteCustomization.excludes) {
               removeUnwantedElements(temp, siteCustomization.excludes);
             }
+            // Remove inline styles from extracted content
+            temp.querySelectorAll("[style]").forEach((styled) => {
+              styled.removeAttribute("style");
+            });
+            // Remove any style tags that came with the content
+            temp.querySelectorAll("style").forEach((s) => s.remove());
             contentParts.push(temp.innerHTML);
           });
         } catch (e) {
