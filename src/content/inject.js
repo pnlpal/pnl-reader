@@ -257,9 +257,44 @@ function getArticleContent(documentClone, siteCustomization) {
               ?.textContent ||
             documentClone.title
           : documentClone.title;
+
+        // Extract byline (author)
+        let byline = null;
+        if (siteCustomization.bylineSelector) {
+          byline =
+            document.querySelector(siteCustomization.bylineSelector)
+              ?.textContent ||
+            documentClone.querySelector(siteCustomization.bylineSelector)
+              ?.textContent;
+        }
+
+        // Extract published time
+        let publishedTime = null;
+        if (siteCustomization.publishedTimeSelector) {
+          const timeEl = document.querySelector(
+            siteCustomization.publishedTimeSelector,
+          );
+          if (timeEl) {
+            // Try datetime attribute first, then title, then textContent
+            publishedTime =
+              timeEl.getAttribute("datetime") ||
+              timeEl.getAttribute("title") ||
+              timeEl.textContent;
+          }
+        }
+
+        const content = contentParts.join("\n");
+        // Calculate text length (excluding HTML tags)
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = content;
+        const textLength = tempDiv.textContent.length;
+
         return {
-          content: contentParts.join("\n"),
-          title: title,
+          content,
+          title,
+          byline,
+          publishedTime,
+          length: textLength,
           siteName: location.hostname,
         };
       }

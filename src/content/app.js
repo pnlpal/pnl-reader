@@ -625,7 +625,7 @@ export default function ReaderApp({
               <p class="published-time" datetime=${publishedTime}>
                 ${new Date(publishedTime).toLocaleString()}
               </p>
-              <p class="length">${length} words</p>
+              <p class="length">${length} characters</p>
             </details>
           </header>
           <section

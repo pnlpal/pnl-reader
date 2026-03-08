@@ -24,6 +24,8 @@ export default [
       "shreddit-comment-tree > shreddit-comment",
     ],
     titleSelector: 'shreddit-post [slot="title"]',
+    bylineSelector: "shreddit-post a[href*='/user/']",
+    publishedTimeSelector: "shreddit-post faceplate-timeago time",
     excludes: [
       "shreddit-post-overflow-menu",
       "faceplate-dropdown-menu",
