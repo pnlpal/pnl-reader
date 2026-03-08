@@ -488,7 +488,7 @@ export default function ReaderApp({
                 onClick=${() => readWholePage()}
                 aria-label="Read the whole page"
                 data-tooltip="Read the whole page"
-                data-placement="bottom"
+                data-placement="left"
               >
                 ${ReadPageIcon()}
               </button>
