@@ -275,7 +275,11 @@ export default function ReaderApp({
         const targetY = window.scrollY + rect.top - window.innerHeight / 3;
         window.scrollTo({ top: targetY, behavior: "smooth" });
       } else if (mode === "screen" && !isElementInViewport(el)) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        // Account for sticky header (approx 80px) by scrolling with offset
+        const rect = el.getBoundingClientRect();
+        const headerOffset = 100;
+        const targetY = window.scrollY + rect.top - headerOffset;
+        window.scrollTo({ top: targetY, behavior: "smooth" });
       }
     };
 
