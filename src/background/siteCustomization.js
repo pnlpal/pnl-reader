@@ -1,3 +1,4 @@
+import message from "./message.js";
 import defaultSiteCustomizations from "./defaultSiteCustomizations.js";
 
 const STORAGE_KEY = "pnlReaderSiteCustomizations";
@@ -80,9 +81,14 @@ export async function updateSiteCustomizations(customizations) {
   return customizations;
 }
 
-export default {
-  getSiteCustomizations,
-  addSiteCustomization,
-  removeSiteCustomization,
-  updateSiteCustomizations,
-};
+message.on("get site customizations", async () => {
+  return await getSiteCustomizations();
+});
+
+message.on("add site customization", async ({ customization }) => {
+  return await addSiteCustomization(customization);
+});
+
+message.on("remove site customization", async ({ name }) => {
+  return await removeSiteCustomization(name);
+});

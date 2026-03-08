@@ -20,14 +20,13 @@ const navNextInput = document.getElementById("nav-next-input");
 const cssInput = document.getElementById("css-input");
 const saveBtn = document.getElementById("save-btn");
 const clearBtn = document.getElementById("clear-btn");
-const editingIndexInput = document.getElementById("editing-index");
+const editingNameInput = document.getElementById("editing-index");
 const saveStatus = document.getElementById("save-status");
 const customizationsList = document.getElementById("customizations-list");
 
 (async () => {
-  // Load global settings
-  const globalSettings = await utils.send("get settings");
-  let siteCustomizations = globalSettings?.siteCustomizations || [];
+  // Load site customizations
+  let siteCustomizations = await utils.send("get site customizations");
 
   // Display status message
   function showStatus(message, isError = false) {
@@ -58,17 +57,20 @@ const customizationsList = document.getElementById("customizations-list");
   function buildCustomizationFromForm() {
     const customization = {};
 
-    // Required field
+    // Required fields
+    const name = nameInput.value.trim();
+    if (!name) {
+      showStatus("Name is required", true);
+      return null;
+    }
+    customization.name = name;
+
     const match = matchInput.value.trim();
     if (!match) {
       showStatus("Match pattern is required", true);
       return null;
     }
     customization.match = match;
-
-    // Optional name
-    const name = nameInput.value.trim();
-    if (name) customization.name = name;
 
     // Article object (optional)
     const articleContent = parseCommaSeparated(articleContentInput.value);
@@ -133,7 +135,7 @@ const customizationsList = document.getElementById("customizations-list");
   // Clear the form
   function clearForm() {
     form.reset();
-    editingIndexInput.value = "";
+    editingNameInput.value = "";
     saveBtn.textContent = "Save Customization";
   }
 
@@ -144,27 +146,12 @@ const customizationsList = document.getElementById("customizations-list");
     const customization = buildCustomizationFromForm();
     if (!customization) return;
 
-    const editingIndex = editingIndexInput.value;
-
-    if (editingIndex !== "") {
-      // Update existing
-      siteCustomizations[parseInt(editingIndex)] = customization;
-    } else {
-      // Add new
-      siteCustomizations.push(customization);
-    }
-
     try {
-      await utils.send("save settings", {
-        globalSettings: {
-          ...globalSettings,
-          siteCustomizations: siteCustomizations,
-        },
+      siteCustomizations = await utils.send("add site customization", {
+        customization,
       });
 
-      showStatus(
-        editingIndex !== "" ? "Customization updated!" : "Customization saved!",
-      );
+      showStatus("Customization saved!");
       clearForm();
       renderCustomizationsList();
     } catch (error) {
@@ -174,10 +161,12 @@ const customizationsList = document.getElementById("customizations-list");
   }
 
   // Edit customization
-  function editCustomization(index) {
-    const customization = siteCustomizations[index];
+  function editCustomization(name) {
+    const customization = siteCustomizations.find((c) => c.name === name);
+    if (!customization) return;
+
     populateForm(customization);
-    editingIndexInput.value = index;
+    editingNameInput.value = name;
     saveBtn.textContent = "Update Customization";
 
     // Scroll to form
@@ -185,27 +174,24 @@ const customizationsList = document.getElementById("customizations-list");
   }
 
   // Delete customization
-  async function deleteCustomization(index) {
-    const customization = siteCustomizations[index];
+  async function deleteCustomization(name) {
+    const customization = siteCustomizations.find((c) => c.name === name);
+    if (!customization) return;
+
     const displayName = customization.name || customization.match;
 
     if (!confirm(`Delete "${displayName}"?`)) return;
 
-    siteCustomizations.splice(index, 1);
-
     try {
-      await utils.send("save settings", {
-        globalSettings: {
-          ...globalSettings,
-          siteCustomizations: siteCustomizations,
-        },
+      siteCustomizations = await utils.send("remove site customization", {
+        name,
       });
 
       showStatus("Customization deleted!");
       renderCustomizationsList();
 
       // Clear form if we were editing this one
-      if (editingIndexInput.value === String(index)) {
+      if (editingNameInput.value === name) {
         clearForm();
       }
     } catch (error) {
@@ -225,7 +211,7 @@ const customizationsList = document.getElementById("customizations-list");
 
     customizationsList.innerHTML = "";
 
-    siteCustomizations.forEach((customization, index) => {
+    siteCustomizations.forEach((customization) => {
       const item = document.createElement("div");
       item.className = "customization-item";
 
@@ -250,13 +236,17 @@ const customizationsList = document.getElementById("customizations-list");
       editBtn.type = "button";
       editBtn.className = "secondary outline";
       editBtn.textContent = "Edit";
-      editBtn.addEventListener("click", () => editCustomization(index));
+      editBtn.addEventListener("click", () =>
+        editCustomization(customization.name),
+      );
 
       const deleteBtn = document.createElement("button");
       deleteBtn.type = "button";
       deleteBtn.className = "secondary outline danger";
       deleteBtn.textContent = "Delete";
-      deleteBtn.addEventListener("click", () => deleteCustomization(index));
+      deleteBtn.addEventListener("click", () =>
+        deleteCustomization(customization.name),
+      );
 
       actions.appendChild(editBtn);
       actions.appendChild(deleteBtn);
