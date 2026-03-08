@@ -12,5 +12,23 @@
     "articleSelector": "#chapter-content",
     "titleSelector": "a.chapter-title",
     "excludes": ["div", "h3"]
+  },
+  {
+    "match": "https://www.reddit.com/r/\\w+/comments/\\w+/.*",
+    "articleSelector": [
+      "shreddit-post",
+      "shreddit-comment-tree shreddit-comment"
+    ],
+    "titleSelector": "[slot=\"title\"]",
+    "excludes": [
+      "shreddit-post-overflow-menu",
+      "faceplate-dropdown-menu",
+      "award-button",
+      "[slot=\"credit-bar\"]",
+      "shreddit-post-share-button",
+      "shreddit-async-loader",
+      "shreddit-comment-action-row"
+    ],
+    "css": "#PNLReaderArticle img { max-width: 100%; border-radius: 8px; } #PNLReaderArticle a { word-break: break-word; } #PNLReaderArticle shreddit-comment { display: block; padding: 0.5em 0 0.5em 1em; border-left: 2px solid var(--pico-muted-border-color); margin: 0.5em 0; }"
   }
 ]

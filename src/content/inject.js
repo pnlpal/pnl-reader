@@ -156,20 +156,35 @@ function getArticleContent(documentClone, siteCustomization) {
   if (siteCustomization) {
     // If selector is provided, try to find it
     if (siteCustomization.articleSelector) {
-      const customArticle = documentClone.querySelector(
-        siteCustomization.articleSelector,
-      );
-      if (customArticle) {
-        // Remove unwanted elements from the FOUND article
-        if (siteCustomization.excludes) {
-          removeUnwantedElements(customArticle, siteCustomization.excludes);
+      // Support array of selectors - combine content from all matches
+      const selectors = Array.isArray(siteCustomization.articleSelector)
+        ? siteCustomization.articleSelector
+        : [siteCustomization.articleSelector];
+
+      const contentParts = [];
+      selectors.forEach((selector) => {
+        try {
+          const elements = documentClone.querySelectorAll(selector);
+          elements.forEach((el) => {
+            // Clone to avoid modifying original when removing excludes
+            const clone = el.cloneNode(true);
+            if (siteCustomization.excludes) {
+              removeUnwantedElements(clone, siteCustomization.excludes);
+            }
+            contentParts.push(clone.innerHTML);
+          });
+        } catch (e) {
+          console.warn("Invalid articleSelector:", selector, e);
         }
+      });
+
+      if (contentParts.length > 0) {
         const title = siteCustomization.titleSelector
           ? documentClone.querySelector(siteCustomization.titleSelector)
               ?.textContent || documentClone.title
           : documentClone.title;
         return {
-          content: customArticle.innerHTML,
+          content: contentParts.join("\n"),
           title: title,
           siteName: location.hostname,
         };
