@@ -29,7 +29,7 @@
 #PNLReaderArticle shreddit-comment {
   display: block;
   padding: 0.5em 0 0.5em 1em;
-  border-left: 2px dashed var(--pico-muted-border-color);
+  border-left: 1px dashed var(--pico-muted-border-color);
   margin: 0.5em 0;
   border-radius: 0;
   transition: border-color 0.2s;
@@ -40,7 +40,7 @@
 }
 
 #PNLReaderArticle shreddit-comment[depth="0"] {
-  border-left-width: 3px;
+  border-left-width: 1px;
   border-left-style: dashed;
   border-left-color: var(--pico-secondary);
   margin-top: 1em;
@@ -109,21 +109,17 @@
 
 #PNLReaderArticle [slot="commentAvatar"] svg {
   width: 32px !important;
-  height: 32px !important;
   border-radius: 50%;
   overflow: hidden;
 }
 
 #PNLReaderArticle [slot="commentAvatar"] [rpl][avatar] {
   width: 32px !important;
-  height: 32px !important;
 }
 
 #PNLReaderArticle [slot="commentAvatar"] .fp-avatar-container {
   width: 32px !important;
-  height: 32px !important;
   min-width: 32px !important;
-  min-height: 32px !important;
 }
 
 /* Hide hover card content */
@@ -134,7 +130,6 @@
 #PNLReaderArticle img[alt*="avatar"],
 #PNLReaderArticle faceplate-img {
   width: 32px !important;
-  height: 32px !important;
   border-radius: 50% !important;
   margin: 0 0.5em 0 0 !important;
   vertical-align: middle;
@@ -220,8 +215,6 @@
 
 /* Hide thread lines and collapse buttons */
 #PNLReaderArticle [data-testid="main-thread-line"],
-#PNLReaderArticle [data-testid="branch-line"],
-#PNLReaderArticle .threadline,
 #PNLReaderArticle button[aria-label="Toggle Comment Thread"],
 #PNLReaderArticle button[aria-controls="comment-children"],
 #PNLReaderArticle details[role="article"][open] {
@@ -247,7 +240,7 @@
 #PNLReaderArticle div[id$="-comment-rtjson-content"] {
   display: block;
   padding: 0.5em 0;
-  border-left: 3px dashed var(--pico-secondary);
+  border-left: 1px dashed var(--pico-secondary);
   padding-left: 1em;
   margin: 1em 0 0.5em 0;
 }
