@@ -209,6 +209,24 @@ main {
     }
   }
 
+  // Section header with title and action
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+    gap: 1em;
+
+    h2 {
+      margin: 0;
+    }
+
+    a[role="button"] {
+      margin: 0;
+      flex-shrink: 0;
+    }
+  }
+
   // Status message
   #save-status {
     margin-left: 1em;
