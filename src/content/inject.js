@@ -229,13 +229,14 @@ function querySelectorAllWithShadow(selector) {
 
 function getArticleContent(documentClone, siteCustomization) {
   // 1. Try finding content using formatted config
-  if (siteCustomization) {
-    // If selector is provided, try to find it
-    if (siteCustomization.articleSelector) {
+  if (siteCustomization?.article) {
+    const articleConfig = siteCustomization.article;
+    // If content selector is provided, try to find it
+    if (articleConfig.content) {
       // Support array of selectors - combine content from all matches
-      const selectors = Array.isArray(siteCustomization.articleSelector)
-        ? siteCustomization.articleSelector
-        : [siteCustomization.articleSelector];
+      const selectors = Array.isArray(articleConfig.content)
+        ? articleConfig.content
+        : [articleConfig.content];
 
       const contentParts = [];
       selectors.forEach((selector) => {
@@ -248,8 +249,8 @@ function getArticleContent(documentClone, siteCustomization) {
             // Create a temp container to apply excludes and clean styles
             const temp = document.createElement("div");
             temp.innerHTML = html;
-            if (siteCustomization.excludes) {
-              removeUnwantedElements(temp, siteCustomization.excludes);
+            if (articleConfig.excludes) {
+              removeUnwantedElements(temp, articleConfig.excludes);
             }
             // Remove inline styles from extracted content
             temp.querySelectorAll("[style]").forEach((styled) => {
@@ -260,35 +261,29 @@ function getArticleContent(documentClone, siteCustomization) {
             contentParts.push(temp.innerHTML);
           });
         } catch (e) {
-          console.warn("Invalid articleSelector:", selector, e);
+          console.warn("Invalid content selector:", selector, e);
         }
       });
 
       if (contentParts.length > 0) {
-        const title = siteCustomization.titleSelector
-          ? document.querySelector(siteCustomization.titleSelector)
-              ?.textContent ||
-            documentClone.querySelector(siteCustomization.titleSelector)
-              ?.textContent ||
+        const title = articleConfig.title
+          ? document.querySelector(articleConfig.title)?.textContent ||
+            documentClone.querySelector(articleConfig.title)?.textContent ||
             documentClone.title
           : documentClone.title;
 
         // Extract byline (author)
         let byline = null;
-        if (siteCustomization.bylineSelector) {
+        if (articleConfig.byline) {
           byline =
-            document.querySelector(siteCustomization.bylineSelector)
-              ?.textContent ||
-            documentClone.querySelector(siteCustomization.bylineSelector)
-              ?.textContent;
+            document.querySelector(articleConfig.byline)?.textContent ||
+            documentClone.querySelector(articleConfig.byline)?.textContent;
         }
 
         // Extract published time
         let publishedTime = null;
-        if (siteCustomization.publishedTimeSelector) {
-          const timeEl = document.querySelector(
-            siteCustomization.publishedTimeSelector,
-          );
+        if (articleConfig.publishedTime) {
+          const timeEl = document.querySelector(articleConfig.publishedTime);
           if (timeEl) {
             // Try datetime attribute first, then title, then textContent
             publishedTime =
@@ -315,12 +310,10 @@ function getArticleContent(documentClone, siteCustomization) {
       }
     }
 
-    // If no selector provided, or selector failed, but we have exclude rules:
-    // Apply exclude rules to the documentClone BEFORE passing to Readability?
-    // OR we can rely on Readability.
-    // Let's apply excludes to body if no selector was successfully used.
-    if (siteCustomization.excludes) {
-      removeUnwantedElements(documentClone.body, siteCustomization.excludes);
+    // If no content selector provided, or selector failed, but we have exclude rules:
+    // Apply excludes to body before passing to Readability
+    if (articleConfig.excludes) {
+      removeUnwantedElements(documentClone.body, articleConfig.excludes);
     }
   }
 
