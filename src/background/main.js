@@ -2,7 +2,7 @@ import message from "./message.js";
 import "./tts-speak.js";
 import "./translate.js";
 import { parsePDFURL, setupPdfReader } from "./pdf-reader.js";
-import defaultSiteCustomizations from "./defaultSiteCustomizations.json";
+import defaultSiteCustomizations from "./defaultSiteCustomizations.js";
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if ([chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason)) {
