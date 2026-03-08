@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Site Customization – PNL Reader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body style="visibility: hidden">
+    <main class="container">
+      <!-- Section 1: Craft Customization -->
+      <section class="section">
+        <h2>Craft Site Customization</h2>
+        <article>
+          <form id="customization-form">
+            <!-- Part 1: Basic Fields -->
+            <div class="form-section">
+              <h4>Basic Settings</h4>
+
+              <label for="name-input">
+                Name
+                <small>(A descriptive name for this customization)</small>
+              </label>
+              <input
+                type="text"
+                id="name-input"
+                name="name"
+                placeholder="e.g. Reddit Posts, Medium Articles"
+                autocomplete="off"
+              />
+
+              <label for="match-input">
+                Match Pattern
+                <small>(URL pattern to match - supports regex)</small>
+              </label>
+              <input
+                type="text"
+                id="match-input"
+                name="match"
+                placeholder="e.g. https://www.reddit.com/r/\\w+/comments/.*"
+                autocomplete="off"
+                required
+              />
+
+              <details open>
+                <summary>Article (Optional)</summary>
+                <div class="article-fields">
+                  <label for="article-content-input">
+                    Content
+                    <small
+                      >(CSS selector(s) for main content - comma-separated for
+                      multiple)</small
+                    >
+                  </label>
+                  <input
+                    type="text"
+                    id="article-content-input"
+                    name="articleContent"
+                    placeholder="e.g. article .content, .post-body"
+                    autocomplete="off"
+                  />
+
+                  <label for="article-title-input">
+                    Title
+                    <small>(CSS selector for the article title)</small>
+                  </label>
+                  <input
+                    type="text"
+                    id="article-title-input"
+                    name="articleTitle"
+                    placeholder="e.g. h1.title, .post-title"
+                    autocomplete="off"
+                  />
+
+                  <label for="article-byline-input">
+                    Byline
+                    <small>(CSS selector for author info)</small>
+                  </label>
+                  <input
+                    type="text"
+                    id="article-byline-input"
+                    name="articleByline"
+                    placeholder="e.g. .author-name, a[href*='/user/']"
+                    autocomplete="off"
+                  />
+
+                  <label for="article-published-time-input">
+                    Published Time
+                    <small>(CSS selector for publish date/time)</small>
+                  </label>
+                  <input
+                    type="text"
+                    id="article-published-time-input"
+                    name="articlePublishedTime"
+                    placeholder="e.g. time[datetime], .publish-date"
+                    autocomplete="off"
+                  />
+
+                  <label for="article-excludes-input">
+                    Excludes
+                    <small
+                      >(CSS selectors for elements to remove -
+                      comma-separated)</small
+                    >
+                  </label>
+                  <input
+                    type="text"
+                    id="article-excludes-input"
+                    name="articleExcludes"
+                    placeholder="e.g. .ads, .sidebar, .share-buttons"
+                    autocomplete="off"
+                  />
+                </div>
+              </details>
+
+              <details>
+                <summary>Navigation (Optional)</summary>
+                <div class="navigation-fields">
+                  <label for="nav-previous-input">
+                    Previous Page
+                    <small>(CSS selector for previous page link)</small>
+                  </label>
+                  <input
+                    type="text"
+                    id="nav-previous-input"
+                    name="navigationPrevious"
+                    placeholder="e.g. a.prev-chapter"
+                    autocomplete="off"
+                  />
+
+                  <label for="nav-next-input">
+                    Next Page
+                    <small>(CSS selector for next page link)</small>
+                  </label>
+                  <input
+                    type="text"
+                    id="nav-next-input"
+                    name="navigationNext"
+                    placeholder="e.g. a.next-chapter"
+                    autocomplete="off"
+                  />
+                </div>
+              </details>
+            </div>
+
+            <!-- Part 2: CSS Editor -->
+            <div class="form-section css-section">
+              <h4>Custom CSS</h4>
+              <label for="css-input">
+                <small
+                  >Add custom styles for the extracted content. These styles
+                  will be applied when in reader mode.</small
+                >
+              </label>
+              <textarea
+                id="css-input"
+                name="css"
+                placeholder="/* Your custom CSS here */
+.comment {
+  border-left: 2px dashed var(--pico-muted-border-color);
+  padding-left: 1em;
+  margin: 1em 0;
+}
+
+.author {
+  font-weight: bold;
+  color: var(--pico-primary);
+}"
+                rows="12"
+              ></textarea>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <button type="submit" id="save-btn">Save Customization</button>
+              <button type="button" id="clear-btn" class="secondary outline">
+                Clear Form
+              </button>
+              <input type="hidden" id="editing-index" value="" />
+            </div>
+
+            <span id="save-status" style="display: none"></span>
+          </form>
+        </article>
+      </section>
+
+      <!-- Section 2: Manage Customizations -->
+      <section class="section">
+        <h2>Manage Customizations</h2>
+        <article id="customizations-list-card">
+          <div id="customizations-list">
+            <p class="empty-message">
+              No custom site configurations yet. Create one above!
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Section 3: Help & Community -->
+      <section class="section">
+        <h2>About Site Customization</h2>
+        <article>
+          <header>
+            <h3>What is Site Customization?</h3>
+          </header>
+          <p>
+            Site customization allows you to teach PNL Reader how to extract
+            content from specific websites. When a site doesn't work well with
+            the default reader mode, you can create a custom configuration to:
+          </p>
+          <ul>
+            <li>
+              <strong>Target specific content</strong> – Tell PNL Reader exactly
+              which parts of the page to extract
+            </li>
+            <li>
+              <strong>Remove unwanted elements</strong> – Hide ads, sidebars,
+              and other distractions
+            </li>
+            <li>
+              <strong>Style the content</strong> – Add custom CSS to make the
+              extracted content look great
+            </li>
+            <li>
+              <strong>Enable navigation</strong> – Set up previous/next page
+              links for multi-page articles
+            </li>
+          </ul>
+          <p>
+            <a
+              href="https://pnl.dev/topic/950/pnl-reader-simple-elegant-and-transparent"
+              target="_blank"
+              rel="noopener"
+            >
+              📖 Read the detailed guide on pnl.dev
+            </a>
+          </p>
+        </article>
+
+        <article>
+          <header>
+            <h3>Share Your Customizations</h3>
+          </header>
+          <p>
+            Created a great customization for a popular website?
+            <strong>Share it with the community!</strong> Your contributions
+            help others enjoy a better reading experience.
+          </p>
+          <p>
+            Post your customization configurations, get feedback, and discover
+            customizations made by other users.
+          </p>
+          <p>
+            <a
+              href="https://pnl.dev/category/1/sharing"
+              target="_blank"
+              rel="noopener"
+            >
+              🎨 Share your customizations at pnl.dev
+            </a>
+          </p>
+        </article>
+
+        <article>
+          <header>
+            <h3>Need Help?</h3>
+          </header>
+          <p>
+            Having trouble creating a customization? The PNL community is here
+            to help! Post your questions and get assistance from experienced
+            users.
+          </p>
+          <p>
+            <a
+              href="https://pnl.dev/category/3/feedback"
+              target="_blank"
+              rel="noopener"
+            >
+              💡 Ask questions & get help at pnl.dev
+            </a>
+          </p>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

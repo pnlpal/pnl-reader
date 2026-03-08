@@ -34,6 +34,7 @@ var options = {
     background: path.join(__dirname, "src", "background", "main.js"),
     "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
     "custom-font": path.join(__dirname, "src", "custom-font", "index.js"),
+    "custom-site": path.join(__dirname, "src", "custom-site", "index.js"),
     share: path.join(__dirname, "src", "share.js"),
     "tts-player-webcomponent": path.join(
       __dirname,
@@ -249,6 +250,12 @@ var options = {
       filename: "custom-font.html",
       cache: false,
       chunks: ["custom-font"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "custom-site", "index.html"),
+      filename: "custom-site.html",
+      cache: false,
+      chunks: ["custom-site"],
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "share.html"),

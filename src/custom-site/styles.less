@@ -1,0 +1,185 @@
+@import "~@picocss/pico/css/pico.css";
+
+main {
+  max-width: 900px !important;
+
+  .section {
+    margin-bottom: 2.5em;
+    padding-bottom: 2em;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  // Form sections
+  .form-section {
+    margin-bottom: 1.5em;
+    padding: 1em;
+    background: var(--pico-form-element-background-color);
+    border-radius: 0.5em;
+    border: 1px solid var(--pico-muted-border-color);
+
+    h4 {
+      margin-top: 0;
+      margin-bottom: 1em;
+      padding-bottom: 0.5em;
+      border-bottom: 1px solid var(--pico-muted-border-color);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.25em;
+
+      small {
+        color: var(--pico-muted-color);
+        font-weight: normal;
+      }
+    }
+
+    input[type="text"] {
+      margin-bottom: 1em;
+    }
+
+    details {
+      margin-top: 1em;
+
+      summary {
+        cursor: pointer;
+        color: var(--pico-primary);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .article-fields,
+      .navigation-fields {
+        padding-top: 1em;
+      }
+    }
+  }
+
+  // CSS section with larger textarea
+  .css-section {
+    textarea {
+      font-family:
+        "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9em;
+      line-height: 1.4;
+      resize: vertical;
+      min-height: 200px;
+    }
+  }
+
+  // Form actions
+  .form-actions {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    flex-wrap: wrap;
+
+    button[type="submit"] {
+      min-width: 180px;
+    }
+  }
+
+  // Customizations list
+  #customizations-list {
+    .empty-message {
+      color: var(--pico-muted-color);
+      font-style: italic;
+      text-align: center;
+      padding: 2em;
+    }
+
+    .customization-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75em 0;
+      border-bottom: 1px solid var(--pico-muted-border-color);
+      gap: 1em;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .customization-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+
+        .customization-name {
+          font-weight: 600;
+          color: var(--pico-color);
+        }
+
+        .customization-match {
+          font-size: 0.85em;
+          color: var(--pico-muted-color);
+          background: var(--pico-code-background-color);
+          padding: 0.15em 0.4em;
+          border-radius: 0.25em;
+          word-break: break-all;
+          display: inline-block;
+        }
+      }
+
+      .customization-actions {
+        display: flex;
+        gap: 0.5em;
+        flex-shrink: 0;
+
+        button {
+          margin: 0;
+          padding: 0.35em 0.8em;
+          font-size: 0.85em;
+
+          &.danger {
+            color: var(--pico-del-color);
+            border-color: var(--pico-del-color);
+
+            &:hover {
+              background: var(--pico-del-color);
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Status message
+  #save-status {
+    margin-left: 1em;
+    font-size: 0.9em;
+  }
+
+  // Responsive adjustments
+  @media (max-width: 600px) {
+    .customization-item {
+      flex-direction: column;
+      align-items: flex-start !important;
+
+      .customization-actions {
+        margin-top: 0.5em;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    .form-actions {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
