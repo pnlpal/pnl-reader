@@ -2,7 +2,10 @@ import message from "./message.js";
 import "./tts-speak.js";
 import "./translate.js";
 import { parsePDFURL, setupPdfReader } from "./pdf-reader.js";
-import defaultSiteCustomizations from "./defaultSiteCustomizations.js";
+import {
+  getSiteCustomizations,
+  updateSiteCustomizations,
+} from "./siteCustomization.js";
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if ([chrome.runtime.OnInstalledReason.INSTALL].includes(details.reason)) {
@@ -62,18 +65,21 @@ chrome.runtime.onMessage.addListener(function (...args) {
 
   message.on("save settings", async ({ globalSettings }) => {
     // console.log("Save settings", settings);
-    chrome.storage.local.set({ globalPNLReaderSettings: globalSettings });
+    // Extract and save site customizations separately
+    if (globalSettings.siteCustomizations !== undefined) {
+      await updateSiteCustomizations(globalSettings.siteCustomizations);
+    }
+    // Save other settings without siteCustomizations
+    const { siteCustomizations, ...otherSettings } = globalSettings;
+    chrome.storage.local.set({ globalPNLReaderSettings: otherSettings });
   });
   message.on("get settings", async () => {
     // console.log("Get settings");
     return new Promise(async (resolve) => {
-      chrome.storage.local.get("globalPNLReaderSettings", (data) => {
+      chrome.storage.local.get("globalPNLReaderSettings", async (data) => {
         const globalSettings = data?.globalPNLReaderSettings || {};
-        // Merge default site customizations
-        globalSettings.siteCustomizations = [
-          ...defaultSiteCustomizations,
-          ...(globalSettings.siteCustomizations || []),
-        ];
+        // Get site customizations from dedicated storage
+        globalSettings.siteCustomizations = await getSiteCustomizations();
         resolve(globalSettings);
       });
     });
@@ -82,6 +88,11 @@ chrome.runtime.onMessage.addListener(function (...args) {
   message.on("open custom font page", async () => {
     chrome.tabs.create({
       url: chrome.runtime.getURL("custom-font.html"),
+    });
+  });
+  message.on("open custom site page", async () => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("custom-site.html"),
     });
   });
   message.on("open global settings", async () => {
