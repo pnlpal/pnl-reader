@@ -13,7 +13,7 @@ export default [
     match: "https://novelfull.com/[^/]+/[^/]+\\.html$",
     articleSelector: "#chapter-content",
     titleSelector: "a.chapter-title",
-    excludes: ["div", "h3"],
+    excludes: ["div"],
   },
   {
     match: "https://www.reddit.com/r/\\w+/comments/\\w+/.*",

@@ -200,8 +200,24 @@ function extractElementContent(el) {
     });
     return temp.innerHTML;
   }
-  // Use outerHTML to preserve the element and its attributes
-  return el.outerHTML;
+  // Use outerHTML for media elements that need to preserve the tag itself
+  const outerHTMLTags = [
+    "IMG",
+    "VIDEO",
+    "AUDIO",
+    "PICTURE",
+    "SOURCE",
+    "IFRAME",
+    "CANVAS",
+    "SVG",
+    "EMBED",
+    "OBJECT",
+  ];
+  if (outerHTMLTags.includes(el.tagName)) {
+    return el.outerHTML;
+  }
+  // Default to innerHTML for container elements
+  return el.innerHTML;
 }
 
 // Helper to query elements including those with shadow DOM on the live document
@@ -229,7 +245,6 @@ function getArticleContent(documentClone, siteCustomization) {
           elements.forEach((el) => {
             // Extract content (handles shadow DOM)
             let html = extractElementContent(el);
-
             // Create a temp container to apply excludes and clean styles
             const temp = document.createElement("div");
             temp.innerHTML = html;
