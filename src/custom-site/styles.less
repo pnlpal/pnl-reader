@@ -1,11 +1,42 @@
 @import "~@picocss/pico/css/pico.css";
 
+.section-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  padding: 0.75em 1em;
+  background: var(--pico-background-color);
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  backdrop-filter: blur(10px);
+
+  a {
+    color: var(--pico-muted-color);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+    transition:
+      color 0.2s,
+      background 0.2s;
+
+    &:hover {
+      color: var(--pico-primary);
+      background: var(--pico-primary-focus);
+    }
+  }
+}
+
 main {
   max-width: 900px !important;
+  padding-top: 1em;
 
   .section {
     margin-bottom: 2.5em;
     padding-bottom: 2em;
+    padding-top: 1em;
     border-bottom: 1px solid var(--pico-muted-border-color);
 
     &:last-child {
@@ -80,10 +111,33 @@ main {
     display: flex;
     gap: 1em;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
 
-    button[type="submit"] {
-      min-width: 180px;
+    .form-actions-left {
+      display: flex;
+      gap: 1em;
+      align-items: center;
+    }
+
+    button {
+      width: auto;
+      margin: 0;
+    }
+
+    .share-btn {
+      --pico-background-color: transparent;
+      --pico-border-color: var(--pico-primary);
+      --pico-color: var(--pico-primary);
+      background: var(--pico-background-color);
+      border-color: var(--pico-border-color);
+      color: var(--pico-color);
+      white-space: nowrap;
+
+      &:hover {
+        --pico-background-color: var(--pico-primary);
+        --pico-color: var(--pico-primary-inverse);
+      }
     }
   }
 
@@ -171,14 +225,6 @@ main {
         margin-top: 0.5em;
         width: 100%;
         justify-content: flex-end;
-      }
-    }
-
-    .form-actions {
-      flex-direction: column;
-
-      button {
-        width: 100%;
       }
     }
   }

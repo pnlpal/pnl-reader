@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body style="visibility: hidden">
+    <nav class="section-nav">
+      <a href="#craft">Craft</a>
+      <a href="#manage">Manage</a>
+      <a href="#about">About</a>
+    </nav>
     <main class="container">
       <!-- Section 1: Craft Customization -->
-      <section class="section">
+      <section class="section" id="craft">
         <h2>Craft Site Customization</h2>
         <article>
           <form id="customization-form">
@@ -41,7 +46,7 @@
                 required
               />
 
-              <details open>
+              <details>
                 <summary>Article (Optional)</summary>
                 <div class="article-fields">
                   <label for="article-content-input">
@@ -171,10 +176,21 @@
 
             <!-- Actions -->
             <div class="form-actions">
-              <button type="submit" id="save-btn">Save Customization</button>
-              <button type="button" id="clear-btn" class="secondary outline">
-                Clear Form
-              </button>
+              <div class="form-actions-left">
+                <button type="submit" id="save-btn">Save Customization</button>
+                <button type="button" id="clear-btn" class="secondary outline">
+                  Clear Form
+                </button>
+              </div>
+              <a
+                href="https://pnl.dev/category/1/sharing"
+                target="_blank"
+                rel="noopener"
+                role="button"
+                class="share-btn"
+              >
+                🎨 Share at pnl.dev
+              </a>
               <input type="hidden" id="editing-index" value="" />
             </div>
 
@@ -184,7 +200,7 @@
       </section>
 
       <!-- Section 2: Manage Customizations -->
-      <section class="section">
+      <section class="section" id="manage">
         <h2>Manage Customizations</h2>
         <article id="customizations-list-card">
           <div id="customizations-list">
@@ -196,7 +212,7 @@
       </section>
 
       <!-- Section 3: Help & Community -->
-      <section class="section">
+      <section class="section" id="about">
         <h2>About Site Customization</h2>
         <article>
           <header>
