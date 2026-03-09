@@ -7,11 +7,11 @@ export function getSiteCustomization(globalSettings) {
   const configs = globalSettings.siteCustomizations || [];
   return configs.find((config) => {
     try {
-      if (new RegExp(config.match).test(location.href)) return true;
+      if (new RegExp(config.urlMatch).test(location.href)) return true;
     } catch (e) {
       // Ignore invalid regex
     }
-    return location.href.includes(config.match);
+    return location.href.includes(config.urlMatch);
   });
 }
 

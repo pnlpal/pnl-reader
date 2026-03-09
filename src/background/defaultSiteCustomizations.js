@@ -3,7 +3,7 @@ import redditCss from "./siteStyles/reddit.css?raw";
 export default [
   {
     name: "Wattpad Stories",
-    match: "https://www.wattpad.com/\\d+.*",
+    urlMatch: "https://www.wattpad.com/\\d+.*",
     article: {
       content: ".page pre",
       excludes: [".component-wrapper"],
@@ -14,7 +14,7 @@ export default [
   },
   {
     name: "NovelFull Chapters",
-    match: "https://novelfull.com/[^/]+/[^/]+\\.html$",
+    urlMatch: "https://novelfull.com/[^/]+/[^/]+\\.html$",
     article: {
       content: "#chapter-content",
       title: "a.chapter-title",
@@ -23,7 +23,7 @@ export default [
   },
   {
     name: "Reddit Posts and Comments",
-    match: "https://www.reddit.com/r/\\w+/comments/\\w+/.*",
+    urlMatch: "https://www.reddit.com/r/\\w+/comments/\\w+/.*",
     article: {
       content: [
         'shreddit-post [slot="text-body"]',

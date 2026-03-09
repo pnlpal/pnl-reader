@@ -7,7 +7,7 @@ document.body.style.setProperty("visibility", "visible", "important");
 // DOM elements
 const form = document.getElementById("customization-form");
 const nameInput = document.getElementById("name-input");
-const matchInput = document.getElementById("match-input");
+const urlMatchInput = document.getElementById("url-match-input");
 const articleContentInput = document.getElementById("article-content-input");
 const articleTitleInput = document.getElementById("article-title-input");
 const articleBylineInput = document.getElementById("article-byline-input");
@@ -65,12 +65,12 @@ const customizationsList = document.getElementById("customizations-list");
     }
     customization.name = name;
 
-    const match = matchInput.value.trim();
-    if (!match) {
-      showStatus("Match pattern is required", true);
+    const urlMatch = urlMatchInput.value.trim();
+    if (!urlMatch) {
+      showStatus("URL match pattern is required", true);
       return null;
     }
-    customization.match = match;
+    customization.urlMatch = urlMatch;
 
     // Article object (optional)
     const articleContent = parseCommaSeparated(articleContentInput.value);
@@ -116,7 +116,7 @@ const customizationsList = document.getElementById("customizations-list");
   // Populate form with customization data
   function populateForm(customization) {
     nameInput.value = customization.name || "";
-    matchInput.value = customization.match || "";
+    urlMatchInput.value = customization.urlMatch || "";
     articleContentInput.value = formatToCommaSeparated(
       customization.article?.content,
     );
@@ -177,7 +177,7 @@ const customizationsList = document.getElementById("customizations-list");
     const customization = siteCustomizations.find((c) => c.name === name);
     if (!customization) return;
 
-    const displayName = customization.name || customization.match;
+    const displayName = customization.name || customization.urlMatch;
 
     if (!confirm(`Delete "${displayName}"?`)) return;
 
@@ -221,12 +221,12 @@ const customizationsList = document.getElementById("customizations-list");
       name.className = "customization-name";
       name.textContent = customization.name || "(Unnamed)";
 
-      const match = document.createElement("code");
-      match.className = "customization-match";
-      match.textContent = customization.match;
+      const urlMatch = document.createElement("code");
+      urlMatch.className = "customization-match";
+      urlMatch.textContent = customization.urlMatch;
 
       info.appendChild(name);
-      info.appendChild(match);
+      info.appendChild(urlMatch);
 
       const actions = document.createElement("div");
       actions.className = "customization-actions";
