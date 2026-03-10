@@ -4,6 +4,12 @@
  */
 
 (async function () {
+  // Set data attribute to pnl.dev to indicate PNL Reader is installed
+  document.body.setAttribute(
+    "data-pnl-reader-version",
+    chrome.runtime.getManifest().version,
+  );
+
   // Only run on compose page
   if (!location.href.includes("/compose")) return;
 
