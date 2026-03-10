@@ -4,6 +4,20 @@ import utils from "utils";
 // Make body visible as we have hidden the unstyled page during loading.
 document.body.style.setProperty("visibility", "visible", "important");
 
+// Show welcome dialog on first visit
+const welcomeDialog = document.getElementById("welcome-dialog");
+const welcomeDismissBtn = document.getElementById("welcome-dismiss");
+const WELCOME_SEEN_KEY = "pnlReaderCustomSiteWelcomeSeen";
+
+if (!localStorage.getItem(WELCOME_SEEN_KEY)) {
+  welcomeDialog.showModal();
+}
+
+welcomeDismissBtn.addEventListener("click", () => {
+  localStorage.setItem(WELCOME_SEEN_KEY, "true");
+  welcomeDialog.close();
+});
+
 // DOM elements
 const form = document.getElementById("customization-form");
 const nameInput = document.getElementById("name-input");
