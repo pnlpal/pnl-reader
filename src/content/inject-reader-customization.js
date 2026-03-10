@@ -1,17 +1,34 @@
 /**
  * Content script for pnl.dev
- * Fills NodeBB composer with site customization data from temp storage
  */
 
-(async function () {
-  // Set data attribute to pnl.dev to indicate PNL Reader is installed
-  document.body.setAttribute(
-    "data-pnl-reader-version",
-    chrome.runtime.getManifest().version,
-  );
+import utils from "utils";
 
+function waitForElement(selector, timeout = 5000) {
+  return new Promise((resolve, reject) => {
+    const interval = setInterval(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        clearInterval(interval);
+        resolve(element);
+      }
+    }, 100);
+    setTimeout(() => {
+      clearInterval(interval);
+      reject(new Error(`Element ${selector} not found`));
+    }, timeout);
+  });
+}
+
+// Set data attribute to pnl.dev to indicate PNL Reader is installed
+document.body.setAttribute(
+  "data-pnl-reader-version",
+  chrome.runtime.getManifest().version,
+);
+
+async function fillComposerWithCustomizationData() {
   // Only run on compose page
-  if (!location.href.includes("/compose")) return;
+  if (!location.pathname.includes("/compose")) return;
 
   // Check for share data
   const { siteCustomizationsShareData } = await chrome.storage.local.get(
@@ -54,22 +71,6 @@
     return md;
   }
 
-  function waitForElement(selector, timeout = 5000) {
-    return new Promise((resolve, reject) => {
-      const interval = setInterval(() => {
-        const element = document.querySelector(selector);
-        if (element) {
-          clearInterval(interval);
-          resolve(element);
-        }
-      }, 100);
-      setTimeout(() => {
-        clearInterval(interval);
-        reject(new Error(`Element ${selector} not found`));
-      }, timeout);
-    });
-  }
-
   // Wait for NodeBB composer to load and fill it
   async function fillComposer() {
     try {
@@ -101,4 +102,76 @@
 
   // Start filling composer
   fillComposer();
-})();
+}
+
+function handleAddToReader() {
+  const allowedHosts = ["pnl.dev", "localhost:4567"];
+  if (!allowedHosts.includes(location.host)) return;
+
+  function parseConfigFromContent(contentNode) {
+    const jsonCode = contentNode.querySelector("code.language-json");
+    const json =
+      jsonCode?.textContent || contentNode.querySelector("code")?.textContent;
+    const css = contentNode.querySelector("code.language-css")?.textContent;
+
+    const config = JSON.parse(json);
+    if (css) config.css = css;
+    return config;
+  }
+
+  async function addCustomizationByTopic(tid) {
+    const res = await fetch(`${location.origin}/api/topic/${tid}`);
+    const topic = await res.json();
+
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = topic.posts[0].content;
+
+    const config = parseConfigFromContent(tempDiv);
+    config.troveUrl = `${location.origin}${topic.url}`;
+    await utils.send("add site customization", { customization: config });
+  }
+
+  async function addCustomizationByParseContent(contentNode) {
+    const config = parseConfigFromContent(contentNode);
+
+    const postEl = contentNode.closest('[component="post"]');
+    const pid = postEl?.dataset.pid;
+    if (pid) config.troveUrl = `${location.origin}/post/${pid}`;
+
+    await utils.send("add site customization", { customization: config });
+  }
+
+  // Event delegation for dynamically added buttons
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".add-to-reader");
+    if (!btn) return;
+
+    e.preventDefault();
+    btn.textContent = "waiting...";
+    btn.classList.add("disabled");
+
+    try {
+      if (btn.dataset.tid) {
+        await addCustomizationByTopic(btn.dataset.tid);
+      } else {
+        const contentNode = btn.closest(".content, .preview");
+        await addCustomizationByParseContent(contentNode);
+      }
+      btn.textContent = "Added!";
+      btn.classList.remove("disabled");
+      alert(
+        "Customization added to PNL Reader!\n\n" +
+          "• Go to the target site and activate PNL Reader to see the effect\n" +
+          "• Or manage your customizations in extension options → Site Customization",
+      );
+    } catch (err) {
+      btn.textContent = "Error";
+      btn.classList.remove("disabled");
+      alert(`Failed to add customization:\n\n${err.message}`);
+      console.error("Failed to add customization:", err);
+    }
+  });
+}
+
+fillComposerWithCustomizationData();
+handleAddToReader();

@@ -245,6 +245,16 @@ const customizationsList = document.getElementById("customizations-list");
       const actions = document.createElement("div");
       actions.className = "customization-actions";
 
+      if (customization.troveUrl) {
+        const troveLink = document.createElement("a");
+        troveLink.href = customization.troveUrl;
+        troveLink.target = "_blank";
+        troveLink.rel = "noopener";
+        troveLink.className = "trove-link";
+        troveLink.textContent = "Source ↗";
+        actions.appendChild(troveLink);
+      }
+
       const editBtn = document.createElement("button");
       editBtn.type = "button";
       editBtn.className = "secondary outline";
