@@ -92,3 +92,8 @@ message.on("add site customization", async ({ customization }) => {
 message.on("remove site customization", async ({ name }) => {
   return await removeSiteCustomization(name);
 });
+
+message.on("share site customization", async ({ shareData }) => {
+  await chrome.storage.local.set({ siteCustomizationsShareData: shareData });
+  return true;
+});

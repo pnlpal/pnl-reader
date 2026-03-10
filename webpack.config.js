@@ -31,6 +31,12 @@ var options = {
       "content",
       "inject-pdf-reader.js",
     ),
+    "inject-reader-customization": path.join(
+      __dirname,
+      "src",
+      "content",
+      "inject-reader-customization.js",
+    ),
     background: path.join(__dirname, "src", "background", "main.js"),
     "pdf-viewer": path.join(__dirname, "src", "content", "pdf-viewer.js"),
     "custom-font": path.join(__dirname, "src", "custom-font", "index.js"),

@@ -10,7 +10,10 @@
   "content_scripts": [
     {
       "matches": ["https://pnl.dev/*"],
-      "js": ["inject-pdf-reader.bundle.js"]
+      "js": [
+        "inject-pdf-reader.bundle.js",
+        "inject-reader-customization.bundle.js"
+      ]
     }
   ],
   "action": {

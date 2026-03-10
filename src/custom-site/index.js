@@ -20,6 +20,7 @@ const navNextInput = document.getElementById("nav-next-input");
 const cssInput = document.getElementById("css-input");
 const saveBtn = document.getElementById("save-btn");
 const clearBtn = document.getElementById("clear-btn");
+const shareBtn = document.getElementById("share-btn");
 const editingNameInput = document.getElementById("editing-index");
 const saveStatus = document.getElementById("save-status");
 const customizationsList = document.getElementById("customizations-list");
@@ -256,9 +257,33 @@ const customizationsList = document.getElementById("customizations-list");
     });
   }
 
+  // Share customization to pnl.dev
+  async function shareCustomization() {
+    const customization = buildCustomizationFromForm();
+    if (!customization) {
+      showStatus("Please fill in at least name and URL match to share", true);
+      return;
+    }
+
+    // Build share data - separate config and CSS
+    const { css, ...config } = customization;
+    const shareData = {
+      config,
+      css: css || null,
+      timestamp: Date.now(),
+    };
+
+    // Save to temp storage via background script
+    await utils.send("share site customization", { shareData });
+
+    // Open pnl.dev composer
+    window.open("https://pnl.dev/compose?cid=8", "_blank");
+  }
+
   // Event listeners
   form.addEventListener("submit", saveCustomization);
   clearBtn.addEventListener("click", clearForm);
+  shareBtn.addEventListener("click", shareCustomization);
 
   // Initial render
   renderCustomizationsList();
