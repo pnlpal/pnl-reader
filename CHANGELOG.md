@@ -1,3 +1,29 @@
+# v2.8.0 Mar 10, 2026
+
+- **NEW**: Site Customization page for creating and managing custom site configurations
+  - Craft custom configurations with CSS selectors for article content, navigation, and styling
+  - Manage all your customizations with edit, delete, and source tracking
+  - Support array of selectors for article content extraction
+- **NEW**: Share customizations to pnl.dev community
+  - One-click sharing that pre-fills the forum composer with your configuration
+  - Import shared customizations from pnl.dev directly into PNL Reader
+- **IMPROVED**: Reddit reader experience
+  - Full comment tree extraction with proper threading display
+  - Extract content from shadow DOM for complete comment support
+  - Hidden profile badges, flairs, and decorative avatar frames
+  - Fixed carousel/gallery images and image posts not displaying
+  - Styled "more comments" button and comment threads
+- **IMPROVED**: TTS now replaces decorative section dividers (~~~, \*\*\*, ---, etc.) with pauses
+- **IMPROVED**: Auto scroll mode for "read whole page" - automatically scrolls to the current reading position
+- **IMPROVED**: More compact text styles dropdown panel
+- **FIXED**: Reset root font-size so rem units work correctly across all sites
+- **FIXED**: Theme selector height on mobile devices
+- **FIXED**: Title line-height for multi-line titles
+- **FIXED**: Border colors across multiple themes
+- **FIXED**: NovelFull chapter navigation
+- **FIXED**: Checkbox visibility in dark mode themes (Typewriter, Nordic)
+- **FIXED**: "Read whole page" tooltip positioning
+
 # v2.7.0 Feb 02, 2026
 
 - Improved parser and fixed navigation and theme handling for Wattpad (wattpad.com).
