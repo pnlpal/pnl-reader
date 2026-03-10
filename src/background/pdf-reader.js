@@ -23,8 +23,8 @@ function parsePDFURL(url) {
         // Use regexMatch to extract the real PDF URL after the extension prefix
         const match = url.match(
           new RegExp(
-            `${browserExtensionPattern.source}[^/]+/(${regexMatch.source})`
-          )
+            `${browserExtensionPattern.source}[^/]+/(${regexMatch.source})`,
+          ),
         );
         return match?.[2];
       }
@@ -38,6 +38,7 @@ function parsePDFURL(url) {
 function setupPdfReader() {
   let pdfBlobUrl = null;
   let tempTabId = null;
+  let pdfBlobTimer = null;
 
   (chrome.action || chrome.browserAction).onClicked.addListener(async (tab) => {
     if (parsePDFURL(tab.url)) {
@@ -52,10 +53,15 @@ function setupPdfReader() {
   });
 
   message.on("pdf content", async ({ blobUrl }) => {
+    clearTimeout(pdfBlobTimer);
     pdfBlobUrl = blobUrl;
     chrome.tabs.create({
       url: "https://pnl.dev/pdf-reader/",
     });
+    // clear the blob URL after 1 minute;
+    pdfBlobTimer = setTimeout(() => {
+      pdfBlobUrl = null;
+    }, 60 * 1000);
   });
   message.on("redirect to pnl-reader", async () => {
     chrome.tabs.update(tempTabId, {
