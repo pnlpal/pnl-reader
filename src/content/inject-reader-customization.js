@@ -33,11 +33,15 @@
 
   // Build markdown content
   function buildMarkdown() {
+    // Ensure name and urlMatch appear first in JSON output
+    const { name, urlMatch, ...rest } = config;
+    const orderedConfig = { name, urlMatch, ...rest };
+
     let md = `## ${config.name}\n\n`;
     md += `**URL Match:** \`${config.urlMatch}\`\n\n`;
     md += `### Configuration\n\n`;
     md += "```json\n";
-    md += JSON.stringify(config, null, 2);
+    md += JSON.stringify(orderedConfig, null, 2);
     md += "\n```\n";
 
     if (css) {
