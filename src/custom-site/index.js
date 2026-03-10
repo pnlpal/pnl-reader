@@ -111,6 +111,19 @@ const customizationsList = document.getElementById("customizations-list");
     const css = cssInput.value.trim();
     if (css) customization.css = css;
 
+    // Require at least one of article, navigation, or css
+    if (
+      !customization.article &&
+      !customization.navigation &&
+      !customization.css
+    ) {
+      showStatus(
+        "Please add article selectors, navigation, or custom CSS",
+        true,
+      );
+      return null;
+    }
+
     return customization;
   }
 
@@ -261,7 +274,6 @@ const customizationsList = document.getElementById("customizations-list");
   async function shareCustomization() {
     const customization = buildCustomizationFromForm();
     if (!customization) {
-      showStatus("Please fill in at least name and URL match to share", true);
       return;
     }
 
