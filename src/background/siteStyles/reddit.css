@@ -238,6 +238,12 @@ details > summary::-webkit-details-marker {
   flex-wrap: wrap;
 }
 
+/* Hide profile badges and flairs */
+author-flair-event-handler,
+rpl-hovercard:has(img[alt*="Profile Badge"]) {
+  display: none !important;
+}
+
 /* Hide thread lines and collapse buttons */
 [data-testid="main-thread-line"],
 button[aria-label="Toggle Comment Thread"],
