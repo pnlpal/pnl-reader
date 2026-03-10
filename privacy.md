@@ -36,7 +36,7 @@ Users receive complimentary trial usage of premium features. During trial usage,
 
 ## No Tracking
 
-We do not track user behavior beyond what is necessary for service delivery, collect analytics for advertising purposes, or maintain browsing profiles. The extension operates locally on your device except when premium services are explicitly requested.
+We do not collect analytics, serve ads, or maintain browsing profiles. The extension operates entirely on your device except when you explicitly use premium services.
 
 ## Data Retention
 
