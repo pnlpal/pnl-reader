@@ -97,3 +97,16 @@ message.on("share site customization", async ({ shareData }) => {
   await chrome.storage.local.set({ siteCustomizationsShareData: shareData });
   return true;
 });
+
+message.on("get share data", async () => {
+  return new Promise((resolve) => {
+    chrome.storage.local.get("siteCustomizationsShareData", (data) => {
+      resolve(data.siteCustomizationsShareData || null);
+    });
+  });
+});
+
+message.on("clear share data", async () => {
+  await chrome.storage.local.remove("siteCustomizationsShareData");
+  return true;
+});

@@ -30,17 +30,15 @@ async function fillComposerWithCustomizationData() {
   // Only run on compose page
   if (!location.pathname.includes("/compose")) return;
 
-  // Check for share data
-  const { siteCustomizationsShareData } = await chrome.storage.local.get(
-    "siteCustomizationsShareData",
-  );
+  // Check for share data (route through background for Firefox compatibility)
+  const siteCustomizationsShareData = await utils.send("get share data");
   if (!siteCustomizationsShareData) return;
   console.log(
     "[PNL Reader] Found shared customization data, filling composer...",
     siteCustomizationsShareData,
   );
   // Clear storage immediately to prevent re-triggering
-  await chrome.storage.local.remove("siteCustomizationsShareData");
+  await utils.send("clear share data");
 
   // Check if data is fresh (within 5 minutes)
   if (Date.now() - siteCustomizationsShareData.timestamp > 5 * 60 * 1000)
