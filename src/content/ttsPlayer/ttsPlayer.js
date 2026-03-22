@@ -143,45 +143,67 @@ const TTSPlayer = ({
     text2Audio({ text: nextParagraphText, lang, voice }, true);
   }, [nextParagraphText, voice]);
 
+  const handleAudioPlayEnded = useCallback(() => {
+    onAudioPlayEnded && onAudioPlayEnded({ text, voice, startTimestamp });
+  }, [text, voice, startTimestamp, onAudioPlayEnded]);
+
+  // Helper to start/restart synthesis playback
+  const startSynthesisPlayback = useCallback(async () => {
+    if (!synthesisData) return;
+
+    try {
+      if (synthesisPlayerRef.current) {
+        synthesisPlayerRef.current.cancel();
+      }
+
+      const player = await createSynthesisPlayer(
+        synthesisData.text,
+        synthesisData.synthesisVoice,
+        { rate: speed, volume },
+      );
+      synthesisPlayerRef.current = player;
+
+      player.onEnd(() => {
+        setIsPlaying(false);
+        if (repeat && !readingWholePageTimestamp) {
+          // Restart for repeat mode
+          startSynthesisPlayback();
+        } else {
+          handleAudioPlayEnded();
+        }
+      });
+
+      player.onError((e) => {
+        if (e.error == "canceled" || e.error == "interrupted") {
+          // Ignore errors caused by cancellation or interruption when restarting
+          return;
+        }
+        console.error("Speech synthesis error:", e);
+        setError(new Error("An error occurred during speech synthesis."));
+        setIsPlaying(false);
+      });
+
+      player.play();
+      setIsPlaying(true);
+      setError(null);
+    } catch (err) {
+      setError(err);
+      setIsPlaying(false);
+    }
+  }, [
+    synthesisData,
+    speed,
+    volume,
+    repeat,
+    readingWholePageTimestamp,
+    handleAudioPlayEnded,
+  ]);
+
   // Start synthesis playback when synthesisData is ready
   useEffect(() => {
     if (!synthesisData) return;
 
-    const startSynthesis = async () => {
-      try {
-        const player = await createSynthesisPlayer(
-          synthesisData.text,
-          synthesisData.synthesisVoice,
-          { rate: speed, volume },
-        );
-        synthesisPlayerRef.current = player;
-
-        player.onEnd(() => {
-          setIsPlaying(false);
-          if (repeat && !readingWholePageTimestamp) {
-            // Restart for repeat mode
-            startSynthesis();
-          } else {
-            handleAudioPlayEnded();
-          }
-        });
-
-        player.onError((e) => {
-          console.error("Speech synthesis error:", e);
-          setError(new Error("An error occurred during speech synthesis."));
-          setIsPlaying(false);
-        });
-
-        player.play();
-        setIsPlaying(true);
-        setError(null);
-      } catch (err) {
-        setError(err);
-        setIsPlaying(false);
-      }
-    };
-
-    startSynthesis();
+    startSynthesisPlayback();
 
     return () => {
       if (synthesisPlayerRef.current) {
@@ -196,42 +218,8 @@ const TTSPlayer = ({
     if (!synthesisData || !synthesisPlayerRef.current) return;
     if (!isPlaying) return;
 
-    // Cancel current and restart with new settings
-    const restartSynthesis = async () => {
-      synthesisPlayerRef.current.cancel();
-
-      const player = await createSynthesisPlayer(
-        synthesisData.text,
-        synthesisData.synthesisVoice,
-        { rate: speed, volume },
-      );
-      synthesisPlayerRef.current = player;
-
-      player.onEnd(() => {
-        setIsPlaying(false);
-        if (repeat && !readingWholePageTimestamp) {
-          restartSynthesis();
-        } else {
-          handleAudioPlayEnded();
-        }
-      });
-
-      player.onError((e) => {
-        if (e.error == "canceled" || e.error == "interrupted") {
-          // Ignore errors caused by cancellation or interruption when restarting
-          return;
-        }
-
-        console.error("Speech synthesis error:", e);
-        setError(new Error("An error occurred during speech synthesis."));
-        setIsPlaying(false);
-      });
-
-      player.play();
-    };
-
-    restartSynthesis();
-  }, [speed, volume, synthesisData ? synthesisData.text : null]);
+    startSynthesisPlayback();
+  }, [speed, volume]);
 
   // Repeat handler for <audio>
   useEffect(() => {
@@ -307,10 +295,6 @@ const TTSPlayer = ({
   // Sync play/pause state
   const onPlay = () => setIsPlaying(true);
   const onPause = () => setIsPlaying(false);
-
-  const handleAudioPlayEnded = useCallback(() => {
-    onAudioPlayEnded && onAudioPlayEnded({ text, voice, startTimestamp });
-  }, [text, voice, startTimestamp, onAudioPlayEnded]);
 
   useEffect(() => {
     const audio = audioRef.current;

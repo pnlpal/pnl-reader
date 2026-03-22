@@ -56,6 +56,7 @@ export async function createSynthesisPlayer(
     const matchedVoice = voices.find(
       (v) => v.name === synthesisVoice.name && v.lang === synthesisVoice.lang,
     );
+    // const matchedVoice = voices.find((v) => v.name === "Google US English");
     if (matchedVoice) {
       console.log("Using synthesis voice:", matchedVoice);
       utterance.voice = matchedVoice;
