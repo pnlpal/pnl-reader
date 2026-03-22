@@ -2,6 +2,8 @@
 import utils from "utils";
 import getSynthesisVoices from "../getSynthesisVoices.js";
 
+let hasUnloadListener = false;
+
 const CACHE_KEY = "PNLReader-tts-cache";
 const CACHE_LIMIT = 10;
 
@@ -52,6 +54,14 @@ export async function createSynthesisPlayer(
   let utterance;
   let hasStarted = false;
   let isPausedState = false;
+
+  // Add unload listener to stop speech when page is closed or navigated away
+  if (!hasUnloadListener) {
+    window.addEventListener("beforeunload", () => {
+      speechSynthesis.cancel();
+    });
+    hasUnloadListener = true;
+  }
 
   try {
     utterance = new SpeechSynthesisUtterance(text);
