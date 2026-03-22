@@ -50,15 +50,16 @@ export async function createSynthesisPlayer(
 ) {
   const { rate = 1, volume = 1 } = options;
   let utterance;
+  let hasStarted = false;
+  let isPausedState = false;
+
   try {
     utterance = new SpeechSynthesisUtterance(text);
     const voices = await getSynthesisVoices(synthesisVoice.lang, true);
     const matchedVoice = voices.find(
       (v) => v.name === synthesisVoice.name && v.lang === synthesisVoice.lang,
     );
-    // const matchedVoice = voices.find((v) => v.name === "Google US English");
     if (matchedVoice) {
-      console.log("Using synthesis voice:", matchedVoice);
       utterance.voice = matchedVoice;
     } else {
       console.warn(
@@ -76,27 +77,37 @@ export async function createSynthesisPlayer(
   return {
     utterance,
     play: () => {
-      if (speechSynthesis.paused) {
-        console.log("Resuming paused speech synthesis");
+      if (isPausedState && speechSynthesis.paused) {
         speechSynthesis.resume();
+        isPausedState = false;
       } else {
-        console.log("Starting new speech synthesis");
-        speechSynthesis.speak(utterance);
+        // Cancel any existing speech before starting new one
+        speechSynthesis.cancel();
+        // Small delay to ensure cancel completes (Chrome bug workaround)
+        setTimeout(() => {
+          speechSynthesis.speak(utterance);
+          hasStarted = true;
+        }, 10);
       }
     },
     pause: () => {
-      speechSynthesis.pause();
-      console.log("Speech synthesis paused");
+      if (hasStarted && speechSynthesis.speaking) {
+        speechSynthesis.pause();
+        isPausedState = true;
+      }
     },
     resume: () => {
-      console.log("Resuming speech synthesis");
-      speechSynthesis.resume();
+      if (isPausedState && speechSynthesis.paused) {
+        speechSynthesis.resume();
+        isPausedState = false;
+      }
     },
     cancel: () => {
-      console.log("Cancelling speech synthesis");
       speechSynthesis.cancel();
+      hasStarted = false;
+      isPausedState = false;
     },
-    isPaused: () => speechSynthesis.paused,
+    isPaused: () => isPausedState,
     isSpeaking: () => speechSynthesis.speaking,
     setRate: (r) => {
       utterance.rate = r;
