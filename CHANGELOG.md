@@ -1,3 +1,6 @@
+# v2.8.1 Mar 22, 2026
+- Try synthesis speech for faster and high quality voices. 
+
 # v2.8.0 Mar 10, 2026
 
 - **NEW**: Site Customization page for creating and managing custom site configurations
