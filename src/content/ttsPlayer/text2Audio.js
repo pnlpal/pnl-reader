@@ -1,5 +1,7 @@
 "use strict";
 import utils from "utils";
+import getSynthesisVoices from "../getSynthesisVoices.js";
+
 const CACHE_KEY = "PNLReader-tts-cache";
 const CACHE_LIMIT = 10;
 
@@ -27,7 +29,7 @@ function setCache(cacheArr) {
       ) {
         console.warn(
           "Storage quota exceeded when saving TTS cache, removing oldest cache item.",
-          e
+          e,
         );
         arr.shift();
       } else {
@@ -40,9 +42,79 @@ function setCache(cacheArr) {
   console.warn("Unable to save any cache due to storage quota limits.");
 }
 
+// Create a synthesis voice player that can be controlled like an audio element
+export async function createSynthesisPlayer(
+  text,
+  synthesisVoice,
+  options = {},
+) {
+  const { rate = 1, volume = 1 } = options;
+  let utterance;
+  try {
+    utterance = new SpeechSynthesisUtterance(text);
+    const voices = await getSynthesisVoices(synthesisVoice.lang, true);
+    const matchedVoice = voices.find(
+      (v) => v.name === synthesisVoice.name && v.lang === synthesisVoice.lang,
+    );
+    if (matchedVoice) {
+      console.log("Using synthesis voice:", matchedVoice);
+      utterance.voice = matchedVoice;
+    } else {
+      console.warn(
+        "Requested synthesis voice not found, using default voice:",
+        synthesisVoice,
+      );
+    }
+    utterance.rate = rate;
+    utterance.volume = volume;
+  } catch (e) {
+    console.error("Error creating SpeechSynthesisUtterance:", e);
+    throw new Error("Speech synthesis is not supported in this browser.");
+  }
+
+  return {
+    utterance,
+    play: () => {
+      if (speechSynthesis.paused) {
+        console.log("Resuming paused speech synthesis");
+        speechSynthesis.resume();
+      } else {
+        console.log("Starting new speech synthesis");
+        speechSynthesis.speak(utterance);
+      }
+    },
+    pause: () => {
+      speechSynthesis.pause();
+      console.log("Speech synthesis paused");
+    },
+    resume: () => {
+      console.log("Resuming speech synthesis");
+      speechSynthesis.resume();
+    },
+    cancel: () => {
+      console.log("Cancelling speech synthesis");
+      speechSynthesis.cancel();
+    },
+    isPaused: () => speechSynthesis.paused,
+    isSpeaking: () => speechSynthesis.speaking,
+    setRate: (r) => {
+      utterance.rate = r;
+    },
+    setVolume: (v) => {
+      utterance.volume = v;
+    },
+    onEnd: (callback) => {
+      utterance.onend = callback;
+    },
+    onError: (callback) => {
+      utterance.onerror = callback;
+    },
+  };
+}
+
 export default async (
   { text = "", lang = "en", voice = "Luna" },
-  prefetch = false
+  prefetch = false,
 ) => {
   let speakResult;
 
@@ -50,7 +122,7 @@ export default async (
 
   // Find cached result
   const cachedSpeakResult = cacheArr.find(
-    (item) => item.text === text && item.voice === voice
+    (item) => item.text === text && item.voice === voice,
   );
 
   if (cachedSpeakResult) {
@@ -64,6 +136,7 @@ export default async (
       text,
       lang,
       voice,
+      synthesisVoices: await getSynthesisVoices(lang),
     });
 
     // console.log(
@@ -78,8 +151,13 @@ export default async (
     // );
 
     // Add to cache, keep only last CACHE_LIMIT items
-    if (speakResult.audio) {
-      cacheArr.push({ text, voice, audio: speakResult.audio });
+    if (speakResult.audio || speakResult.synthesisVoice) {
+      cacheArr.push({
+        text,
+        voice,
+        audio: speakResult.audio,
+        synthesisVoice: speakResult.synthesisVoice,
+      });
       if (cacheArr.length > CACHE_LIMIT) {
         cacheArr.shift();
       }
@@ -95,10 +173,21 @@ export default async (
     const blob = new Blob([uint8], { type: "audio/mpeg" });
     const url = URL.createObjectURL(blob);
     return {
+      type: "audio",
       url,
       trialsUsed: speakResult.trialsUsed,
       isProUser: speakResult.isProUser,
       trialsMaxAllowed: speakResult.trialsMaxAllowed,
+    };
+  } else if (speakResult.synthesisVoice) {
+    if (prefetch) {
+      return;
+    }
+    // Return synthesis voice info for ttsPlayer to control
+    return {
+      type: "synthesis",
+      text,
+      synthesisVoice: speakResult.synthesisVoice,
     };
   } else {
     console.error("No audio received:", speakResult.error || "Unknown error");

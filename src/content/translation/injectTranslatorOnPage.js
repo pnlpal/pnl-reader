@@ -53,7 +53,7 @@ export default (translate, paragraphSelector) => {
       wrapper.classList.remove("tts-paragraph-wrap--translation");
     }
     translatorContainer.classList.remove(
-      "paragraph-translator-container--active"
+      "paragraph-translator-container--active",
     );
   }
 
@@ -68,7 +68,7 @@ export default (translate, paragraphSelector) => {
     wrapper.classList.add("tts-paragraph-wrap--translation");
 
     const translatorContainer = wrapper.querySelector(
-      ".paragraph-translator-container"
+      ".paragraph-translator-container",
     );
     translatorContainer.classList.add("paragraph-translator-container--active");
     return wrapper;
@@ -76,7 +76,7 @@ export default (translate, paragraphSelector) => {
 
   function showTranslationLoading(wrapper) {
     const translateIcon = wrapper.querySelector(
-      ".pnl-reader-paragraph-translate"
+      ".pnl-reader-paragraph-translate",
     );
     if (translateIcon) {
       translateIcon.classList.add("pnl-reader-translate-icon--loading");
@@ -85,7 +85,7 @@ export default (translate, paragraphSelector) => {
 
   function hideTranslationLoading(wrapper, success = true) {
     const translateIcon = wrapper.querySelector(
-      ".pnl-reader-paragraph-translate"
+      ".pnl-reader-paragraph-translate",
     );
     if (translateIcon) {
       translateIcon.classList.remove("pnl-reader-translate-icon--loading");
@@ -107,9 +107,9 @@ export default (translate, paragraphSelector) => {
   if (!document._pnlReaderTranslateListenerAdded) {
     document.addEventListener("click", function (e) {
       if (
-        e.target.classList.contains("pnl-reader-paragraph-translate") ||
-        e.target.parentElement.classList.contains(
-          "pnl-reader-paragraph-translate"
+        e.target?.classList.contains("pnl-reader-paragraph-translate") ||
+        e.target?.parentElement?.classList.contains(
+          "pnl-reader-paragraph-translate",
         )
       ) {
         e.preventDefault();
@@ -127,7 +127,7 @@ export default (translate, paragraphSelector) => {
           translate(
             el,
             text,
-            wrapper.querySelector(".paragraph-translator-container")
+            wrapper.querySelector(".paragraph-translator-container"),
           )
             .then(() => {
               hideTranslationLoading(wrapper, true);

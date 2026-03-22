@@ -17,7 +17,7 @@ import {
   MutedIcon,
   AutoReadNextPageIcon,
 } from "./icons.js";
-import text2Audio from "./text2Audio.js";
+import text2Audio, { createSynthesisPlayer } from "./text2Audio.js";
 import getErrorBanner from "../errorMessages.js";
 
 import styles from "./ttsPlayer.module.scss";
@@ -65,10 +65,12 @@ const TTSPlayer = ({
     autoReadNextPage = false,
   } = settings || {};
   const audioRef = useRef(null);
+  const synthesisPlayerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showVolume, setShowVolume] = useState(false);
   const [prevVolume, setPrevVolume] = useState(volume);
   const [audioUrl, setAudioUrl] = useState(null);
+  const [synthesisData, setSynthesisData] = useState(null); // { text, synthesisVoice }
   const [loading, setLoading] = useState(false);
   const [showVoiceDropdown, setShowVoiceDropdown] = useState(false);
   const [showSpeedDropdown, setShowSpeedDropdown] = useState(false);
@@ -76,32 +78,46 @@ const TTSPlayer = ({
 
   const currentCharacter = voices.find((v) => v.name === voice) || voices[0];
 
-  // Fetch audio URL when text changes, and only if volume > 0
+  // Fetch audio URL or synthesis data when text changes, and only if volume > 0
   useEffect(() => {
     let revokedUrl;
     setAudioUrl(null);
+    setSynthesisData(null);
     setError(null);
     setShowVoiceDropdown(false);
     setShowSpeedDropdown(false);
+    // Cancel any ongoing synthesis
+    if (synthesisPlayerRef.current) {
+      synthesisPlayerRef.current.cancel();
+      synthesisPlayerRef.current = null;
+    }
     if (!text || volume === 0) {
       return;
     }
     setLoading(true);
     text2Audio({ text, lang, voice })
       .then((audioResult) => {
-        setAudioUrl(audioResult.url);
-        revokedUrl = audioResult.url;
-        if (audioResult.isProUser === false) {
-          setError({
-            type: "in-trial",
-            ...audioResult,
+        if (audioResult.type === "audio") {
+          setAudioUrl(audioResult.url);
+          revokedUrl = audioResult.url;
+          if (audioResult.isProUser === false) {
+            setError({
+              type: "in-trial",
+              ...audioResult,
+            });
+          } else {
+            setError(null);
+          }
+        } else if (audioResult.type === "synthesis") {
+          setSynthesisData({
+            text: audioResult.text,
+            synthesisVoice: audioResult.synthesisVoice,
           });
-        } else {
-          setError(null);
         }
       })
       .catch((err) => {
         setAudioUrl(null);
+        setSynthesisData(null);
         setError(err);
       })
       .finally(() => setLoading(false));
@@ -111,6 +127,10 @@ const TTSPlayer = ({
       }
       if (audioRef.current) {
         audioRef.current.removeEventListener("ended", handleAudioPlayEnded);
+      }
+      if (synthesisPlayerRef.current) {
+        synthesisPlayerRef.current.cancel();
+        synthesisPlayerRef.current = null;
       }
     };
   }, [text, voice]);
@@ -122,6 +142,96 @@ const TTSPlayer = ({
     }
     text2Audio({ text: nextParagraphText, lang, voice }, true);
   }, [nextParagraphText, voice]);
+
+  // Start synthesis playback when synthesisData is ready
+  useEffect(() => {
+    if (!synthesisData) return;
+
+    const startSynthesis = async () => {
+      try {
+        const player = await createSynthesisPlayer(
+          synthesisData.text,
+          synthesisData.synthesisVoice,
+          { rate: speed, volume },
+        );
+        synthesisPlayerRef.current = player;
+
+        player.onEnd(() => {
+          setIsPlaying(false);
+          if (repeat && !readingWholePageTimestamp) {
+            // Restart for repeat mode
+            startSynthesis();
+          } else {
+            handleAudioPlayEnded();
+          }
+        });
+
+        player.onError((e) => {
+          console.error("Speech synthesis error:", e);
+          setError(new Error("An error occurred during speech synthesis."));
+          setIsPlaying(false);
+        });
+
+        player.play();
+        setIsPlaying(true);
+        setError(null);
+      } catch (err) {
+        setError(err);
+        setIsPlaying(false);
+      }
+    };
+
+    startSynthesis();
+
+    return () => {
+      if (synthesisPlayerRef.current) {
+        synthesisPlayerRef.current.cancel();
+        synthesisPlayerRef.current = null;
+      }
+    };
+  }, [synthesisData]);
+
+  // Handle speed/volume changes for synthesis voice (reactive - cancel and restart)
+  useEffect(() => {
+    if (!synthesisData || !synthesisPlayerRef.current) return;
+    if (!isPlaying) return;
+
+    // Cancel current and restart with new settings
+    const restartSynthesis = async () => {
+      synthesisPlayerRef.current.cancel();
+
+      const player = await createSynthesisPlayer(
+        synthesisData.text,
+        synthesisData.synthesisVoice,
+        { rate: speed, volume },
+      );
+      synthesisPlayerRef.current = player;
+
+      player.onEnd(() => {
+        setIsPlaying(false);
+        if (repeat && !readingWholePageTimestamp) {
+          restartSynthesis();
+        } else {
+          handleAudioPlayEnded();
+        }
+      });
+
+      player.onError((e) => {
+        if (e.error == "canceled" || e.error == "interrupted") {
+          // Ignore errors caused by cancellation or interruption when restarting
+          return;
+        }
+
+        console.error("Speech synthesis error:", e);
+        setError(new Error("An error occurred during speech synthesis."));
+        setIsPlaying(false);
+      });
+
+      player.play();
+    };
+
+    restartSynthesis();
+  }, [speed, volume, synthesisData ? synthesisData.text : null]);
 
   // Repeat handler for <audio>
   useEffect(() => {
@@ -152,26 +262,39 @@ const TTSPlayer = ({
 
   const setVoice = useCallback(
     (v) => saveSettings && saveSettings({ voice: v }),
-    [saveSettings]
+    [saveSettings],
   );
   const setRepeat = useCallback(
     (r) => saveSettings && saveSettings({ repeat: r }),
-    [saveSettings]
+    [saveSettings],
   );
   const setSpeed = useCallback(
     (s) => saveSettings && saveSettings({ speed: s }),
-    [saveSettings]
+    [saveSettings],
   );
   const setVolume = useCallback(
     (v) => saveSettings && saveSettings({ volume: v }),
-    [saveSettings]
+    [saveSettings],
   );
   const setAutoReadNextPage = useCallback(
     (v) => saveSettings && saveSettings({ autoReadNextPage: v }),
-    [saveSettings]
+    [saveSettings],
   );
 
   const handlePlayPause = () => {
+    // Handle synthesis voice
+    if (synthesisData && synthesisPlayerRef.current) {
+      if (isPlaying) {
+        synthesisPlayerRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        synthesisPlayerRef.current.play();
+        setIsPlaying(true);
+      }
+      return;
+    }
+
+    // Handle audio element
     const audio = audioRef.current;
     if (!audio) return;
     if (isPlaying) {
@@ -249,10 +372,15 @@ const TTSPlayer = ({
     if (isPlaying && audioRef.current) {
       audioRef.current.pause();
     }
+    if (synthesisPlayerRef.current) {
+      synthesisPlayerRef.current.cancel();
+      synthesisPlayerRef.current = null;
+    }
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
       setAudioUrl(null);
     }
+    setSynthesisData(null);
     exitVoiceMode && exitVoiceMode();
   };
 
@@ -313,7 +441,7 @@ const TTSPlayer = ({
                       </div>
                     </a>
                   </li>
-                `
+                `,
               )}
             </ul>
           </details>
@@ -353,7 +481,7 @@ const TTSPlayer = ({
                       ${s}<span class="${styles.ttsSpeedX}">x</span>
                     </a>
                   </li>
-                `
+                `,
               )}
             </ul>
           </details>
@@ -363,13 +491,13 @@ const TTSPlayer = ({
           class="${styles.ttsPlayBtn} ${loading
             ? styles.ttsLoadingSpinner
             : isPlaying
-            ? styles.pause
-            : styles.play}"
+              ? styles.pause
+              : styles.play}"
           title=${isPlaying ? "Pause" : "Play"}
           onClick=${handlePlayPause}
           aria-label=${isPlaying ? "Pause" : "Play"}
           type="button"
-          disabled=${loading || !audioUrl}
+          disabled=${loading || (!audioUrl && !synthesisData)}
           data-error=${error && error.type !== "in-trial" ? "true" : "false"}
         >
           ${loading ? PlayIcon() : isPlaying ? PauseIcon() : PlayIcon()}

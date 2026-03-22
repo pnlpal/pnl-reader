@@ -37,7 +37,7 @@ export default (speak) => {
   function activateParagraphSpeaking(
     el,
     focusMode = false,
-    nextParagraphEl = null
+    nextParagraphEl = null,
   ) {
     const wrapper = el.classList.contains("tts-paragraph-wrap")
       ? el
@@ -80,9 +80,9 @@ export default (speak) => {
   if (!document._pnlReaderParagraphListenerAdded) {
     document.addEventListener("click", function (e) {
       if (
-        e.target.classList.contains("pnl-reader-paragraph-speaker") ||
-        e.target.parentElement.classList.contains(
-          "pnl-reader-paragraph-speaker"
+        e.target?.classList.contains("pnl-reader-paragraph-speaker") ||
+        e.target?.parentElement?.classList.contains(
+          "pnl-reader-paragraph-speaker",
         )
       ) {
         const wrapper = activateParagraphSpeaking(e.target, true);
