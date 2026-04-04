@@ -37,7 +37,7 @@ async function detectLanguageFromNode(node, depth) {
   }
 
   const text = getTextFromNode(node);
-  if (!text || (text.length < 20 && depth > 1)) {
+  if (!text || (text.length < 40 && depth > 1)) {
     // Require more text from nodes for reliability
     // console.log(
     //   "Not enough text for reliable detection. Going up one level...",
