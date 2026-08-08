@@ -138,4 +138,28 @@ export default {
     }
     return response.json();
   },
+
+  async aiFollowUp({
+    word,
+    sentence,
+    detectedLangInContext,
+    userLanguage,
+    previousAssistantAnswer,
+    followUpQuestion,
+    actionKey,
+    pageTitle,
+    pageUrl,
+  }) {
+    return this.post("/api/ai-follow-up", {
+      word,
+      sentence,
+      detectedLangInContext,
+      userLanguage,
+      previousAssistantAnswer,
+      followUpQuestion,
+      actionKey,
+      pageTitle,
+      pageUrl,
+    });
+  },
 };
