@@ -317,6 +317,7 @@ if (env.NODE_ENV === "development") {
         path.resolve("src/content/detectLanguage.js"),
         path.resolve("src/content/getTextFromNode.js"),
         path.resolve("src/utils.js"),
+        path.resolve("utils/copy-on-change.js"),
       ],
       destDir: path.resolve("../dictionariez/src/shared-readonly"),
       watchMode: env.NODE_ENV === "development",
