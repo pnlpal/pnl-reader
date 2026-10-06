@@ -14,6 +14,7 @@ import injectTranslatorOnPage from "./translation/injectTranslatorOnPage.js";
 
 import getTextFromNode from "./getTextFromNode.js";
 import { detectLanguage } from "./detectLanguage.js";
+import { getCorrectedLang } from "./langCorrections.js";
 import {
   clearHighlights,
   highlightSelection,
@@ -180,7 +181,9 @@ export default function ReaderApp({
         const translatedLang = node?.getAttribute?.("data-tts-lang");
         lang = translatedLang;
         if (!lang) {
-          lang = (await detectLanguage(text, node)) || ttsLang || "";
+          const detectedLang = await detectLanguage(text, node);
+          lang =
+            (detectedLang && getCorrectedLang(detectedLang)) || ttsLang || "";
         }
 
         if (!lang) {
@@ -251,8 +254,9 @@ export default function ReaderApp({
       startNode ? allBlocks.indexOf(startNode) : 0,
     );
 
+    const detectedLang = await detectLanguage(articleContent.textContent);
     const lang =
-      (await detectLanguage(articleContent.textContent)) || ttsLang || "";
+      (detectedLang && getCorrectedLang(detectedLang)) || ttsLang || "";
     if (!lang) {
       console.error("Could not detect language for the page.");
       return;
@@ -430,8 +434,10 @@ export default function ReaderApp({
         console.warn("Could not detect language for text:", text);
         return;
       }
-      setTtsLang(lang);
-      saveSettings({ ttsLang: lang });
+      // Keep the raw detected lang for the translator, so it can record corrections
+      const correctedLang = getCorrectedLang(lang);
+      setTtsLang(correctedLang);
+      saveSettings({ ttsLang: correctedLang });
 
       // Render translator directly into the container
       const translatorElement = html`
