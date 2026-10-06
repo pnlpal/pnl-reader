@@ -389,6 +389,9 @@ export default function ReaderApp({
       // Toggle fullscreen with 'f' or 'F' key
       if (
         (e.key === "f" || e.key === "F") &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey &&
         !utils.checkEditable(document.activeElement)
       ) {
         toggleFullScreen();
