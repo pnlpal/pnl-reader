@@ -38,6 +38,44 @@ const getLanguageName = (code) => {
   return lang ? lang.name : code;
 };
 
+// Corrections of the detected source language, as { detected: corrected }.
+// localStorage is scoped to the page origin, so these are remembered per site.
+const LANG_CORRECTIONS_KEY = "PNLReader-translate-lang-corrections";
+
+const getLangCorrections = () => {
+  try {
+    return JSON.parse(localStorage.getItem(LANG_CORRECTIONS_KEY)) || {};
+  } catch (e) {
+    return {};
+  }
+};
+
+const getCorrectedLang = (detectedLang) =>
+  getLangCorrections()[detectedLang] || detectedLang;
+
+const saveLangCorrection = (detectedLang, correctedLang) => {
+  const corrections = getLangCorrections();
+  if (correctedLang === detectedLang) {
+    delete corrections[detectedLang];
+    console.log(`Removed translation language correction for: ${detectedLang}`);
+  } else {
+    corrections[detectedLang] = correctedLang;
+    console.log(
+      `Saved translation language correction: ${detectedLang} -> ${correctedLang}`,
+    );
+  }
+  try {
+    localStorage.setItem(LANG_CORRECTIONS_KEY, JSON.stringify(corrections));
+  } catch (e) {
+    console.warn("Failed to save translation language correction:", e);
+  }
+};
+
+const isEnglish = (code) => !!code && code.toLowerCase().startsWith("en");
+
+const getDefaultTargetLang = (settings, sourceLang) =>
+  settings.translateTargetLang || (isEnglish(sourceLang) ? "" : "en");
+
 const Translator = ({
   text,
   lang,
@@ -48,8 +86,9 @@ const Translator = ({
   onError,
   onClose,
 }) => {
-  const [targetLang, setTargetLang] = useState(
-    settings.translateTargetLang || ""
+  const [sourceLang, setSourceLang] = useState(() => getCorrectedLang(lang));
+  const [targetLang, setTargetLang] = useState(() =>
+    getDefaultTargetLang(settings, getCorrectedLang(lang)),
   );
   const [translatedText, setTranslatedText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -58,9 +97,18 @@ const Translator = ({
   const [copySuccess, setCopySuccess] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
-  // Translate when text or target language changes
+  // Re-resolve the source language when a new detected language comes in
   useEffect(() => {
-    if (!text || !lang || !targetLang || targetLang === lang) {
+    const newSourceLang = getCorrectedLang(lang);
+    setSourceLang(newSourceLang);
+    setTargetLang(
+      (current) => current || getDefaultTargetLang(settings, newSourceLang),
+    );
+  }, [lang]);
+
+  // Translate when text or source/target language changes
+  useEffect(() => {
+    if (!text || !sourceLang || !targetLang || targetLang === sourceLang) {
       setTranslatedText("");
       setError(null);
       setHasError(false);
@@ -68,7 +116,7 @@ const Translator = ({
     }
 
     performTranslation();
-  }, [text, targetLang, lang]);
+  }, [text, targetLang, sourceLang]);
 
   const performTranslation = async () => {
     if (!text || !text.trim()) return;
@@ -80,7 +128,7 @@ const Translator = ({
     try {
       const data = await text2Translation({
         text,
-        fromLang: lang,
+        fromLang: sourceLang,
         targetLang: targetLang,
       });
 
@@ -95,7 +143,7 @@ const Translator = ({
       if (onTranslationComplete) {
         onTranslationComplete({
           text: text,
-          fromLang: lang,
+          fromLang: sourceLang,
           targetLang: targetLang,
           ...data,
         });
@@ -123,7 +171,16 @@ const Translator = ({
         saveSettings({ translateTargetLang: lang });
       }
     },
-    [saveSettings]
+    [saveSettings],
+  );
+
+  const handleSourceLangChange = useCallback(
+    (e) => {
+      const correctedLang = e.target.value;
+      setSourceLang(correctedLang);
+      saveLangCorrection(lang, correctedLang);
+    },
+    [lang],
   );
 
   const handleSpeak = (text, lang) => {
@@ -132,7 +189,7 @@ const Translator = ({
     } else {
       window.postMessage(
         { command: "pnl-tts-play", text, lang },
-        window.location.origin
+        window.location.origin,
       );
     }
   };
@@ -173,9 +230,29 @@ const Translator = ({
             <span class="${styles.translatorFromLabel} ${styles.hideSm}"
               >From:</span
             >
-            <span class="${styles.translatorFromLang} ${styles.hideSm}"
-              >${getLanguageName(lang)}</span
-            >
+          </div>
+
+          <select
+            class="${styles.translatorTargetSelect}"
+            value=${sourceLang}
+            onChange=${handleSourceLangChange}
+            aria-label="Select source language"
+          >
+            ${sourceLang &&
+            !languages.some((l) => l.code === sourceLang) &&
+            html`<option value=${sourceLang} selected>
+              ${getLanguageName(sourceLang)}
+            </option>`}
+            ${languages.map(
+              (lang) => html`
+                <option value=${lang.code} selected=${sourceLang === lang.code}>
+                  ${lang.name}
+                </option>
+              `,
+            )}
+          </select>
+
+          <div class="${styles.translatorLangInfo}">
             <span class="${styles.translatorArrow}">→</span>
             <span class="${styles.translatorToLabel} ${styles.hideSm}"
               >To:</span
@@ -198,7 +275,7 @@ const Translator = ({
                   >
                     ${lang.name}
                   </option>
-                `
+                `,
               )}
           </select>
         </div>
@@ -242,7 +319,7 @@ const Translator = ({
       ${!loading &&
       !hasError &&
       targetLang &&
-      lang === targetLang &&
+      sourceLang === targetLang &&
       html`
         <div class="${styles.translatorWarning}">
           <p class="${styles.translatorWarningText}">
@@ -311,7 +388,7 @@ const Translator = ({
       !hasError &&
       !translatedText &&
       targetLang &&
-      lang !== targetLang &&
+      sourceLang !== targetLang &&
       text &&
       html`
         <div>
