@@ -13,6 +13,11 @@
         --card-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
         --ghost-btn-border: rgba(0, 0, 0, 0.15);
         --separator-color: rgba(0, 0, 0, 0.08);
+        --text-muted: #666;
+        --platform-bg: rgba(0, 0, 0, 0.03);
+        --ios-btn-bg: #23272f;
+        --ios-btn-text: #fff;
+        --puffins-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffcc02 100%);
       }
 
       @media (prefers-color-scheme: dark) {
@@ -25,6 +30,10 @@
           --card-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
           --ghost-btn-border: rgba(255, 255, 255, 0.2);
           --separator-color: rgba(255, 255, 255, 0.1);
+          --text-muted: #aaa;
+          --platform-bg: rgba(255, 255, 255, 0.05);
+          --ios-btn-bg: #f2f2f2;
+          --ios-btn-text: #111;
         }
       }
 
@@ -165,6 +174,141 @@
         flex-wrap: wrap;
       }
 
+      /* More tools: Puffins + Dictionariez */
+      .more-tools {
+        margin-bottom: 56px;
+      }
+
+      .more-tools h2 {
+        font-size: 1.5rem;
+        margin: 0 0 20px;
+      }
+
+      .tools-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 24px;
+      }
+
+      .tool-card.featured {
+        border-top: 4px solid #f7931e;
+      }
+
+      .tool-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .tool-head img {
+        width: 52px;
+        height: 52px;
+        border-radius: 13px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .tool-head .emoji-icon {
+        font-size: 2.4rem;
+        line-height: 1;
+      }
+
+      .tool-head h3 {
+        font-size: 1.25rem;
+      }
+
+      .tool-head .highlight {
+        background: var(--puffins-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .platforms {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .platform {
+        background: var(--platform-bg);
+        border-radius: 14px;
+        padding: 14px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        text-align: center;
+      }
+
+      .platform strong {
+        font-size: 0.95rem;
+      }
+
+      /* QR codes need a light background to scan, even in dark mode. */
+      .qr {
+        background: #fff;
+        padding: 6px;
+        border-radius: 10px;
+        line-height: 0;
+      }
+
+      .qr canvas {
+        width: 120px;
+        height: 120px;
+      }
+
+      .tool-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.92rem;
+        color: #fff;
+        background: var(--puffins-gradient);
+        transition: transform 0.15s ease;
+      }
+
+      .tool-btn.ios {
+        background: var(--ios-btn-bg);
+        color: var(--ios-btn-text);
+      }
+
+      .tool-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .platform small,
+      .tool-card .caption {
+        color: var(--text-muted);
+        font-size: 0.82rem;
+      }
+
+      .tool-card .caption {
+        text-align: center;
+        margin: -4px 0 0;
+      }
+
+      .tool-card .promo-img {
+        width: 100%;
+        aspect-ratio: 2 / 1;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid var(--card-border);
+      }
+
+      .tool-card .align-start {
+        align-self: flex-start;
+      }
+
+      @media (max-width: 900px) {
+        .tools-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       @media (max-width: 600px) {
         main {
           padding: 32px 20px 64px;
@@ -208,9 +352,95 @@
           smoother, please take a second to keep this indie ship afloat.
         </p>
         <div class="hero-highlight">
-          Choose an action below to instantly refill my HP and Mana.
+          Two quick things: meet my other tools, then pick an action below to
+          instantly refill my HP and Mana.
         </div>
       </header>
+
+      <section class="more-tools">
+        <h2>🗺️ New quest unlocked: more tools from me</h2>
+        <div class="tools-grid">
+          <article class="support-card tool-card featured">
+            <div class="tool-head">
+              <img
+                src="https://puffins.pnl.dev/favicon-180.png"
+                alt="Puffins app icon"
+              />
+              <h3>
+                <span class="highlight">Puffins</span>: your dictionaries, now
+                on your phone
+              </h3>
+            </div>
+            <p>
+              After months of work, the mobile app I've been dreaming of is
+              finally here. 1000+ dictionaries in 20+ languages, add any
+              dictionary you like, plus AI Lookup when a definition isn't
+              enough. The core is free with no ads or tracking; only AI is
+              paid, since it costs real AI and server fees.
+            </p>
+            <div class="platforms">
+              <div class="platform">
+                <strong>Android</strong>
+                <div class="qr">
+                  <canvas
+                    data-qr="https://play.google.com/store/apps/details?id=dev.pnl.puffins"
+                  ></canvas>
+                </div>
+                <a
+                  class="tool-btn"
+                  href="https://play.google.com/store/apps/details?id=dev.pnl.puffins"
+                  target="_blank"
+                  rel="noreferrer"
+                  >Google Play</a
+                >
+              </div>
+              <div class="platform">
+                <strong>iPhone</strong>
+                <div class="qr">
+                  <canvas
+                    data-qr="https://testflight.apple.com/join/swFXEk1z"
+                  ></canvas>
+                </div>
+                <a
+                  class="tool-btn ios"
+                  href="https://testflight.apple.com/join/swFXEk1z"
+                  target="_blank"
+                  rel="noreferrer"
+                  >iPhone beta</a
+                >
+                <small>via TestFlight</small>
+              </div>
+            </div>
+            <p class="caption">On your computer? Scan with your phone.</p>
+          </article>
+
+          <article class="support-card tool-card">
+            <div class="tool-head">
+              <span class="emoji-icon">📚</span>
+              <h3>Dictionariez: look up any word, on any page</h3>
+            </div>
+            <p>
+              My open-source dictionary extension, over a decade old.
+              Double-click any word for instant definitions from the
+              dictionaries you trust, plus translation, text-to-speech and Anki
+              flashcards. It pairs perfectly with
+              <span class="productName"></span>.
+            </p>
+            <img
+              class="promo-img"
+              src="https://dictionariez.pnl.dev/Dictionariez-promo-1280x640.png"
+              alt="Dictionariez browser extension"
+            />
+            <a
+              class="btn-primary align-start"
+              href="https://dictionariez.pnl.dev/"
+              target="_blank"
+              rel="noreferrer"
+              >Get Dictionariez &rarr;</a
+            >
+          </article>
+        </div>
+      </section>
 
       <section class="support-grid">
         <article class="support-card">

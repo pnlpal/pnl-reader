@@ -1,6 +1,7 @@
 import "./vendor/needsharebutton.js";
 import "./vendor/needsharebutton.css";
 import "./vendor/github-badge.js";
+import QRCode from "qrcode";
 
 const productName = "PNL Reader";
 document.title = `Share - ${productName}`;
@@ -38,3 +39,12 @@ const setupDealOfferBanner = async () => {
   }
 };
 setupDealOfferBanner();
+
+// QR codes for the Puffins download links, rendered locally.
+document.querySelectorAll("canvas[data-qr]").forEach((canvas) => {
+  QRCode.toCanvas(canvas, canvas.dataset.qr, { width: 120, margin: 1 }).catch(
+    () => {
+      canvas.closest(".qr").style.display = "none";
+    },
+  );
+});
