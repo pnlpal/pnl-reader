@@ -116,13 +116,18 @@ export default {
     return response.json();
   },
 
-  async lookupInAI({ word, sentence, detectedLangInContext }) {
+  async lookupInAI({ word, sentence, detectedLangInContext, userLanguage }) {
     const response = await fetch(pnlBase + "/api/lookup-in-ai", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ word, sentence, detectedLangInContext }),
+      body: JSON.stringify({
+        word,
+        sentence,
+        detectedLangInContext,
+        userLanguage,
+      }),
       credentials: "include",
     });
     if (!response.ok) {
