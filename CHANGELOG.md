@@ -1,3 +1,13 @@
+# v2.8.2 Oct 06, 2026
+
+- **NEW**: Change the detected source language in the translator
+  - The "From" language is now a dropdown, so you can fix a wrong detection
+  - Your correction is remembered per site, and only applies when the same language is detected again
+  - Text-to-speech in the reader view uses your corrections too, so it picks the right voice
+- **IMPROVED**: Translator defaults the target language to English for non-English text
+- **IMPROVED**: More reliable language detection for short paragraphs, using more surrounding text
+- **FIXED**: Pressing Ctrl+F / Cmd+F to search no longer toggles fullscreen
+
 # v2.8.1 Mar 22, 2026
 - Try synthesis speech for faster and high quality voices. 
 
