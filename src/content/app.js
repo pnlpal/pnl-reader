@@ -22,6 +22,7 @@ import {
 import { ReadPageIcon } from "./ttsPlayer/icons.js";
 
 import TranslatorPanel from "./translation/translatorPanel.js";
+import ReviewPrompt from "./reviewPrompt.js";
 
 const html = htm.bind(h);
 
@@ -674,6 +675,7 @@ export default function ReaderApp({
         onAudioPlayEnded=${handleTTSPlayEnded}
         nextPageLink=${nextPageLink}
       />`}
+      <${ReviewPrompt} />
     </div>
   `;
 }

@@ -53,6 +53,12 @@ chrome.runtime.onMessage.addListener(function (...args) {
     if (!sender.tab.id) {
       return;
     }
+    // Only count fresh activations, not re-injections when navigating in reader mode
+    if (!enabledTabs.some((t) => t.id === sender.tab.id)) {
+      const { readerModeCount = 0 } =
+        await chrome.storage.local.get("readerModeCount");
+      chrome.storage.local.set({ readerModeCount: readerModeCount + 1 });
+    }
     enabledTabs = enabledTabs.filter((t) => t.id !== sender.tab.id);
     enabledTabs.push({ id: sender.tab.id, url: sender.tab.url });
     chrome.storage.local.set({ enabledTabs });
@@ -83,6 +89,18 @@ chrome.runtime.onMessage.addListener(function (...args) {
         resolve(globalSettings);
       });
     });
+  });
+
+  message.on("should show review prompt", async () => {
+    const { readerModeCount = 0, reviewPromptDismissed } =
+      await chrome.storage.local.get([
+        "readerModeCount",
+        "reviewPromptDismissed",
+      ]);
+    return readerModeCount > 3 && !reviewPromptDismissed;
+  });
+  message.on("dismiss review prompt", async () => {
+    await chrome.storage.local.set({ reviewPromptDismissed: true });
   });
 
   message.on("open custom font page", async () => {

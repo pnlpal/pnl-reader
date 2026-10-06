@@ -173,6 +173,7 @@ var options = {
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
+    new webpack.EnvironmentPlugin({ BROWSER: env.BROWSER }),
     new CopyWebpackPlugin({
       patterns: [
         {
