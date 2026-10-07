@@ -26,6 +26,8 @@
     padding: 1em 18px;
     position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    // Let children size themselves by the panel's width, not the viewport's
+    container: translator-panel / inline-size;
 
     visibility: visible !important; // override some website(reddit) styles that hide it such as reddit
 
@@ -82,8 +84,18 @@
         }
 
         .translator-target-select {
-          max-width: 7em;
-          flex-shrink: 0;
+          // Size to the selected language and shrink when space runs out.
+          // field-sizing is Chromium-only for now; elsewhere the select is as
+          // wide as its longest option and relies on shrinking.
+          width: auto;
+          field-sizing: content;
+          flex: 0 1 auto;
+          min-width: 4em;
+          max-width: none;
+
+          @container translator-panel (max-width: 600px) {
+            max-width: 7em;
+          }
           font-weight: bolder;
 
           // Minimal bottom-border style
