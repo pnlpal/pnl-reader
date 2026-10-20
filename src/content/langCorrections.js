@@ -5,7 +5,7 @@ const LANG_CORRECTIONS_KEY = "PNLReader-translate-lang-corrections";
 const getLangCorrections = () => {
   try {
     return JSON.parse(localStorage.getItem(LANG_CORRECTIONS_KEY)) || {};
-  } catch (e) {
+  } catch {
     return {};
   }
 };
