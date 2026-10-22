@@ -48,6 +48,9 @@ class PNLTranslatorElement extends HTMLElement {
   }
 
   connectedCallback() {
+    // Opt out of dark-mode page inversion; the translator has its own dark theme
+    this.setAttribute("data-no-dark-invert", "");
+
     // Inject styles into shadow DOM
     const injectStyles = () => {
       // Set base font-size for rem calculations in shadow DOM

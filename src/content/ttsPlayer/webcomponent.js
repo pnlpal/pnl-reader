@@ -43,6 +43,9 @@ class PNLTTSPlayerElement extends HTMLElement {
   }
 
   connectedCallback() {
+    // Opt out of dark-mode page inversion; the player has its own dark theme
+    this.setAttribute("data-no-dark-invert", "");
+
     // Inject styles into shadow DOM
     const injectStyles = () => {
       // Set base font-size for rem calculations in shadow DOM
@@ -53,7 +56,19 @@ class PNLTTSPlayerElement extends HTMLElement {
           font-size: 18px !important;
           line-height: 1.5 !important;
         }
-        
+
+        /* Make the host a viewport-sized overlay layer, so the position:fixed
+           player parts stay put even when the page puts a filter/transform on
+           the host (e.g. dark mode inversion). Clicks pass through to the
+           page; the render target re-enables them in show(). */
+        :host {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          background: none !important;
+          z-index: 2147483647;
+        }
+
         * {
           box-sizing: border-box;
         }
