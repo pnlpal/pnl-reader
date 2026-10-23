@@ -1,3 +1,8 @@
+# v2.8.3 Oct 23, 2026
+
+- Improved language selector style in the translator.
+
+
 # v2.8.2 Oct 06, 2026
 
 - **NEW**: Change the detected source language in the translator
