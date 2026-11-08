@@ -91,13 +91,13 @@ export async function createSynthesisPlayer(
         speechSynthesis.resume();
         isPausedState = false;
       } else {
-        // Cancel any existing speech before starting new one
-        speechSynthesis.cancel();
-        // Small delay to ensure cancel completes (Chrome bug workaround)
-        setTimeout(() => {
-          speechSynthesis.speak(utterance);
-          hasStarted = true;
-        }, 10);
+        // Only cancel if something is already playing; otherwise cancel()
+        // restarts macOS AVSpeechSynthesizer cold and causes an audible click.
+        if (speechSynthesis.speaking || speechSynthesis.pending) {
+          speechSynthesis.cancel();
+        }
+        speechSynthesis.speak(utterance);
+        hasStarted = true;
       }
     },
     pause: () => {
